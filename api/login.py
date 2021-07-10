@@ -7,4 +7,4 @@ router = APIRouter()
 
 @router.post("/login")
 async def sign_in(info: schemas.LoginInfo):
-    return loginService
+    return 1
