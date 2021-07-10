@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class LoginInfo(BaseModel):
@@ -28,6 +29,27 @@ class PostNoticeInfo(BaseModel):
     content: str
     title: str
     notice_level: int
+
+
+class FoodInfo(BaseModel):
+    food_id: Optional[int] = None
+    food_name: str
+    food_info: str
+    food_price: float
+    food_recommend: int
+    food_img: str
+
+
+class ModifyMeal(BaseModel):
+    id: int
+    type: str
+    value: str
+
+
+class ModifyOrder(BaseModel):
+    order_id:int
+    food_id:int
+
 
 class AdminAddMember(BaseModel):
     # 用户工号、职位、性别、姓名

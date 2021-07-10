@@ -6,6 +6,7 @@ from api import profilesApi
 from api import noticeApi
 from api import waiterApi
 from api import adminApi
+from api import cookApi
 
 app = FastAPI()
 app.add_middleware(
@@ -20,6 +21,7 @@ app.include_router(profilesApi.profilesRouter, prefix="/api")
 app.include_router(noticeApi.noticeRouter, prefix="/api")
 app.include_router(waiterApi.waiterRouter, prefix="/api")
 app.include_router(adminApi.adminRouter, prefix="/api")
+app.include_router(cookApi.cookRouter, prefix="/api")
 
 @app.get("/")
 async def homepage_info():

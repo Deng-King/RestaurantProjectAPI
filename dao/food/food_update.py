@@ -3,7 +3,7 @@ import pymysql
 
 def updatename(ip, id, name):  # 根据id更改名称
     # 打开数据库连接
-    db = pymysql.connect(host=ip, food="root", password="00000000", database="ordersys")
+    db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
     sql = "update food set food_name='%s' where food_id = %d" % (name, id)
@@ -14,7 +14,7 @@ def updatename(ip, id, name):  # 根据id更改名称
 
 def updateinfo(ip, id, info):  # 根据id更改简介
     # 打开数据库连接
-    db = pymysql.connect(host=ip, food="root", password="00000000", database="ordersys")
+    db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
     sql = "update food set food_info='%s' where food_id = %d" % (info, id)
@@ -25,7 +25,7 @@ def updateinfo(ip, id, info):  # 根据id更改简介
 
 def updateimg(ip, id, img):  # 根据id更改图片
     # 打开数据库连接
-    db = pymysql.connect(host=ip, food="root", password="00000000", database="ordersys")
+    db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
     sql = "update food set food_img='%s' where food_id = %d" % (img, id)
@@ -36,7 +36,7 @@ def updateimg(ip, id, img):  # 根据id更改图片
 
 def updateprice(ip, id, price):  # 根据id更改价格
     # 打开数据库连接
-    db = pymysql.connect(host=ip, food="root", password="00000000", database="ordersys")
+    db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
     sql = "update food set food_price=%f where food_id = %d" % (price, id)
@@ -47,7 +47,7 @@ def updateprice(ip, id, price):  # 根据id更改价格
 
 def updatermd(ip, id, rmd):  # 根据id更改推荐情况
     # 打开数据库连接
-    db = pymysql.connect(host=ip, food="root", password="00000000", database="ordersys")
+    db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
     sql = "update food set food_rmd= %d where food_id = %d" % (rmd, id)
