@@ -1,5 +1,5 @@
 from util import responseCode
-from SqlFiles.user import user_logout
+from dao.user import user_logout
 
 def exit(id:int):
     isSuccess = user_logout.login(id)

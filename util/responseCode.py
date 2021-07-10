@@ -4,7 +4,7 @@ from typing import Union
 
 
 # 注意有个 * 号 不是笔误， 意思是调用的时候要指定参数 e.g.resp_200（data=xxxx)
-def resp_200(*, data: Union[list, dict, str]) -> Response:
+def resp_200(*, data: Union[list, dict, str]=None) -> Response:
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={

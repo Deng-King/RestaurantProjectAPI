@@ -1,6 +1,6 @@
 from util import responseCode
-from SqlFiles.user import user_login
-from dao import loginDao
+from dao.user import user_login
+
 
 def login(user_number: str, user_pwd: str):
     msg,id,position = user_login.login(user_number,user_pwd) # 数据库中查询id是否存在，是否已经登陆
