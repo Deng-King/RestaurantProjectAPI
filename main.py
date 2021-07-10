@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from api import login
+from api import loginApi
 
 app = FastAPI()
 app.add_middleware(
@@ -11,11 +11,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
-app.include_router(login.router, prefix="/api")
+app.include_router(loginApi.loginRouter, prefix="/api")
 
 
 @app.get("/")
-async def home_info():
+async def homepage_info():
     return {"home": "welcome"}
 
 
