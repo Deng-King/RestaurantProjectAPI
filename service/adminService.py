@@ -1,6 +1,7 @@
 from util import responseCode
 from dao.notice import notice_create
 from dao.food import food_create, food_delete, food_update
+from dao.user import user_create
 from settings import ip
 import schemas
 
