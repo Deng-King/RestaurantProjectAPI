@@ -1,8 +1,8 @@
 import pymysql
 from setting import ip
 
-"""
-def login( number, pwd):      # 返回   登录信息， 用户id,  用户职位(1管理员	2服务员	3后厨)
+
+def login(number, pwd):      # 返回   登录信息， 用户id,  用户职位(1管理员	2服务员	3后厨)
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
@@ -31,11 +31,9 @@ def login( number, pwd):      # 返回   登录信息， 用户id,  用户职位
             cursor.close()
             db.close()
             return '登陆成功', data[0], data[4]     # 返回   登录信息， 用户id, 用户职位
-"""
 
-def login( number:str, pwd:str):
-    if number=='20192242' and pwd=='123456':
-        return '登陆成功', number, "管理员"
+
+
 
 
 
