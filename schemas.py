@@ -7,3 +7,5 @@ class LoginInfo(BaseModel):
 
 class ProfilesExit(BaseModel):
     user_id: int
+
+
