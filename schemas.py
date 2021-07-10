@@ -28,3 +28,10 @@ class PostNoticeInfo(BaseModel):
     content: str
     title: str
     notice_level: int
+
+class AdminAddMember(BaseModel):
+    # 用户工号、职位、性别、姓名
+    user_number: str
+    user_position: int
+    user_gender: int
+    user_name: str

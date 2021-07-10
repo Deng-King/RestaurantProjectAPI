@@ -1,9 +1,10 @@
 import pymysql
-
+from settings import ip
 
 # 图像路径缺省未设置
-def create(ip, number, pwd, name, position, img='0', gender=0):
+def create(number, name, position, pwd="123456",img='0', gender=0):
     # 打开数据库连接
+    
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
