@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 import schemas
 
-router=APIRouter()
+router = APIRouter()
 
-@router.post("/signin")
-async def signin(info:schemas.loginInfo):
-    return {"user_position":"管理员"}
+
+@router.post("/login")
+async def sign_in(info: schemas.LoginInfo):
+    return {"user_position": "管理员"}
