@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from service import loginService
-from pydantic import BaseModel
 import schemas
 
 loginRouter = APIRouter()
