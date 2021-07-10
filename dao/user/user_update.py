@@ -1,7 +1,7 @@
 import pymysql
+from settings import ip
 
-
-def updateimg(ip, id, img):  # 根据id更改头像
+def updateimg(id, img):  # 根据id更改头像
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
@@ -9,10 +9,10 @@ def updateimg(ip, id, img):  # 根据id更改头像
     sql = "update user set user_img='%s' where user_id = %d" % (img, id)
     cursor.execute(sql)
     db.commit()
-    return '修改头像成功'
+    return True
 
 
-def updatepwd(ip, id, pwd):  # 根据id更改密码
+def updatepwd(id, pwd):  # 根据id更改密码
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
@@ -20,10 +20,10 @@ def updatepwd(ip, id, pwd):  # 根据id更改密码
     sql = "update user set user_pwd='%s' where user_id = %d" % (pwd, id)
     cursor.execute(sql)
     db.commit()
-    return '修改密码成功'
+    return True
 
 
-def updatepos(ip, id, position):  # 根据id更改职位
+def updatepos(id, position):  # 根据id更改职位
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
