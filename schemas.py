@@ -38,3 +38,9 @@ class FoodInfo(BaseModel):
     food_price: float
     food_recommend: int
     food_img: str
+
+
+class ModifyChoice(BaseModel):
+    id: int
+    type: str
+    value: str
