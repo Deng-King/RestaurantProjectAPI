@@ -25,5 +25,5 @@ async def remove_meal(meal_id:int):
 
 # 4.10 管理员修改菜品
 @adminRouter.post("api/admin/meals/modify",tags=["admin"])
-async def modify_meal(mod:schemas.ModifyChoice):
+async def modify_meal(mod:schemas.ModifyMeal):
     return adminService.modify_meal(mod)

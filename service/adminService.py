@@ -33,7 +33,7 @@ def remove_meal(meal_id):
     return responseCode.resp_200(data=result)
 
 
-def modify_meal(mod: schemas.ModifyChoice):
+def modify_meal(mod: schemas.ModifyMeal):
     if mod.type == "food_name":
         return responseCode.resp_200(data=food_update.updatename(
             ip, mod.id, mod.value

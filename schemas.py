@@ -40,7 +40,13 @@ class FoodInfo(BaseModel):
     food_img: str
 
 
-class ModifyChoice(BaseModel):
+class ModifyMeal(BaseModel):
     id: int
     type: str
     value: str
+
+
+class ModifyOrder(BaseModel):
+    order_id:int
+    food_id:int
+
