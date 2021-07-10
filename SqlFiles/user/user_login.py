@@ -1,5 +1,5 @@
 import pymysql
-from setting import ip
+from settings import ip
 
 
 def login(number, pwd):      # 返回   登录信息， 用户id,  用户职位(1管理员	2服务员	3后厨)

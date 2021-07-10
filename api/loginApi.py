@@ -5,7 +5,7 @@ import schemas
 
 loginRouter = APIRouter()
 
-@loginRouter.post("/login",tags=["login"])
+@loginRouter.post("/login",tags=["log"])
 async def sign_in(info:schemas.LoginInfo):
     # user_number: str
     # user_pwd: str

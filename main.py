@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from api import loginApi
+from api import profilesApi
 
 app = FastAPI()
 app.add_middleware(
@@ -12,6 +13,7 @@ app.add_middleware(
     allow_headers=["*"])
 
 app.include_router(loginApi.loginRouter, prefix="/api")
+app.include_router(profilesApi.profilesRouter, prefix="/api")
 
 
 @app.get("/")
