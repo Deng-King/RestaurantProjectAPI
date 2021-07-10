@@ -21,6 +21,7 @@ app.include_router(noticeApi.noticeRouter, prefix="/api")
 app.include_router(waiterApi.waiterRouter, prefix="/api")
 app.include_router(adminApi.adminRouter, prefix="/api")
 
+
 @app.get("/")
 async def homepage_info():
     return {"home": "welcome"}

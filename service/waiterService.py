@@ -7,6 +7,8 @@ import settings
 # 2.2 服务员点餐页面获取
 def show_meal_list():
     food_list = food_showall.show(settings.ip)
+    if food_list is None:
+        return  responseCode.resp_4xx(400,message="没有菜品可以显示")
     food_dic_list = []
     for i in food_list:
         food_dic_list.append({

@@ -13,5 +13,3 @@ def delete(ip, id):
     db.close()
     return '删除成功'
 
-ip = '192.168.137.164'
-print(delete(ip,2))
