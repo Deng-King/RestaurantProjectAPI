@@ -4,6 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from api import loginApi
 from api import profilesApi
 from api import noticeApi
+from api import waiterApi
 
 app = FastAPI()
 app.add_middleware(
@@ -16,6 +17,7 @@ app.add_middleware(
 app.include_router(loginApi.loginRouter, prefix="/api")
 app.include_router(profilesApi.profilesRouter, prefix="/api")
 app.include_router(noticeApi.noticeRouter, prefix="/api")
+app.include_router(waiterApi.waiterRouter, prefix="/api")
 
 @app.get("/")
 async def homepage_info():
