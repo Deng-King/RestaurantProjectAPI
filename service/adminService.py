@@ -6,6 +6,7 @@ from dao.user import user_delete
 from dao.user import user_showone
 from dao.user import user_update
 from dao.user import user_showall
+from dao.order import order_pay
 from settings import ip
 import schemas
 
@@ -20,6 +21,12 @@ def post_notice(info: schemas.PostNoticeInfo):
     )
     return responseCode.resp_200(data=result)
 
+def freeofcharge(Orderid:int):
+    isSuccess = order_pay(Orderid,2)
+    if isSuccess == False:
+        return responseCode.resp_4xx(400, message="数据库错误")
+    else:
+        return responseCode.resp_200(data=None)
 
 def show_profiles_list():
     profiles_list=user_showall.show(ip)
@@ -37,6 +44,7 @@ def show_profiles_list():
             "user_state":i[6]
         })
     return responseCode.resp_200(data=profiles_dict_list)
+
 
 
 def add_meal(meal: schemas.FoodInfo):

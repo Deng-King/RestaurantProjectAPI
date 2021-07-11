@@ -10,7 +10,13 @@ adminRouter = APIRouter()
 async def post_notice(notice_info: schemas.PostNoticeInfo):
     return adminService.post_notice(notice_info)
 
-#4.4 个人信息详细信息页面在管理员端的展示
+# 4.2 管理员对订单进行处理
+@adminRouter.get("/admin/meals/freeofcharge", tags=["admin"])
+async def order_freeofcharge(Orderid:int):
+    response = adminService.freeofcharge(Orderid)
+    return response
+
+# 4.4 个人信息详细信息页面在管理员端的展示
 @adminRouter.get("/admin/profiles/details", tags=["admin"])
 async def show_profiles_details(info: schemas.Profiles):
     response = adminService.show_details(info.user_id)
