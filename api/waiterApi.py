@@ -15,3 +15,9 @@ async def show_meal_list():
 @waiterRouter.get("/waiter/meals/list/details/{food_id}", tags=["waiter"])
 async def show_meal_info(food_id: int):
     return waiterService.show_meal_info(food_id)
+
+
+# 2.4 服务员点餐下单
+@waiterRouter.post("/waiter/order/post", tags=["waiter"])
+async def post_order(info: schemas.OrderInfo):
+    return waiterService.post_order(info)

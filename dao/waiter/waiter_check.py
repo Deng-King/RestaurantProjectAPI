@@ -6,11 +6,13 @@ def show(ip):
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
-    sql = "select user_id, user_number, user_name, user_position, user_img, user_gender, user_state from user where " \
-          "user_position <>1 "
+    sql = "select order_id, order_table, order_state from orderlist where order_state=0 "
     cursor.execute(sql)
     data = cursor.fetchall()
     cursor.close()
     db.close()
     return data
 
+
+ip = '124.70.200.142'
+print(show(ip))

@@ -14,3 +14,5 @@ def show(ip):
     db.close()
     return data
 
+ip = '124.70.200.142'
+print(show(ip))

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 
 class LoginInfo(BaseModel):
@@ -47,6 +47,17 @@ class ModifyMeal(BaseModel):
 
 
 class ModifyOrder(BaseModel):
-    order_id:int
-    food_id:int
+    order_id: int
+    food_id: int
 
+
+class MiniOrderInfo(BaseModel):
+    food_id:int
+    food_num:int
+
+
+class OrderInfo(BaseModel):
+    order_table: int
+    order_total: float
+    user_id: int
+    meal_info: List[MiniOrderInfo]

@@ -11,6 +11,12 @@ async def post_notice(notice_info: schemas.PostNoticeInfo):
     return adminService.post_notice(notice_info)
 
 
+#4.3 所有用户个人信息列表展示
+@adminRouter.get("/admin/profiles",tags=["admin"])
+async def show_profiles_list():
+    return adminService.show_profiles_list()
+
+
 # 4.8 管理员添加新品
 @adminRouter.post("/admin/meals/add", tags=["admin"])
 async def add_meal(meal: schemas.FoodInfo):

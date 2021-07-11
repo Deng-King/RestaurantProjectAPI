@@ -1,6 +1,7 @@
 from util import responseCode
 from dao.notice import notice_create
 from dao.food import food_create, food_delete, food_update
+from dao.user import user_showall
 from settings import ip
 import schemas
 
@@ -14,6 +15,24 @@ def post_notice(info: schemas.PostNoticeInfo):
         info.notice_level
     )
     return responseCode.resp_200(data=result)
+
+
+def show_profiles_list():
+    profiles_list=user_showall.show(ip)
+    if len(profiles_list)==0:
+        return responseCode.resp_4xx(code=400,message="用户信息为空")
+    profiles_dict_list=[]
+    for i in profiles_list:
+        profiles_dict_list.append({
+            "user_id":i[0],
+            "user_number":i[1],
+            "user_name":i[2],
+            "user_position":i[3],
+            "user_img":i[4],
+            "user_gender":i[5],
+            "user_state":i[6]
+        })
+    return responseCode.resp_200(data=profiles_dict_list)
 
 
 def add_meal(meal: schemas.FoodInfo):
