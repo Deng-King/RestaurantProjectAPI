@@ -29,6 +29,12 @@ async def post_order(info: schemas.OrderInfo):
     return waiterService.post_order(info)
 
 
+# 2.5 服务员取菜列表显示
+@waiterRouter.get("/waiter/meals/states/fetch",tags=["waiter"])
+async def show_cooked_food():
+    return waiterService.show_cooked_food()
+
+
 # 2.8 服务员对某订单确认结账
 @waiterRouter.get("/waiter/order/states/payment", tags=["waiter"])
 async def order_payment(Orderid:int):
