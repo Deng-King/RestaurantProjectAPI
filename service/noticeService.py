@@ -5,7 +5,7 @@ import settings
 
 def get_notice():
     notice_list = notice_showall.show(settings.ip)
-    if notice_list is None:
+    if len(notice_list)==0:
         return responseCode.resp_4xx(code=400, message='没有新的公告可以显示')
     notice_dic_list = []
     for i in notice_list:
