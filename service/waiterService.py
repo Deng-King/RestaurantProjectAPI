@@ -4,6 +4,9 @@ from dao.food import food_showone
 from dao.order import order_create
 from settings import ip
 import schemas
+from dao.waiter import waiter_check
+from dao.order import order_pay
+import settings
 
 
 # 2.2 服务员点餐页面获取
@@ -53,3 +56,24 @@ def post_order(info: schemas.OrderInfo):
         food_list
     )
     return responseCode.resp_200(data=result)
+
+def fetch_all_tables():
+    dataRecieved, isSuccess = waiter_check.show()
+    if isSuccess == False:
+        return responseCode.resp_4xx(400, message="数据库错误")
+
+    dataResp = []
+    for i in range(len(dataRecieved)):
+        dic = {
+            "table_number":dataRecieved[i][1],
+            "state":dataRecieved[i][2]
+        }
+        dataResp.append(dic)
+    return responseCode.resp_200(data=dataResp)
+
+def payment(Orderid:int):
+    isSuccess = order_pay(Orderid,1)
+    if isSuccess == False:
+        return responseCode.resp_4xx(400, message="数据库错误")
+    else:
+        return responseCode.resp_200(data=None)

@@ -61,3 +61,16 @@ class OrderInfo(BaseModel):
     order_total: float
     user_id: int
     meal_info: List[MiniOrderInfo]
+
+class AdminAddMember(BaseModel):
+    # 用户工号、职位、性别、姓名
+    user_number: str
+    user_position: int
+    user_gender: int
+    user_name: str
+
+class TableNumber(BaseModel):
+    table_number:int
+
+class Orderid(BaseModel):
+    order_id:int
