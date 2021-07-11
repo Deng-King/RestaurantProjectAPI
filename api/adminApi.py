@@ -66,3 +66,10 @@ async def remove_meal(meal_id:int):
 @adminRouter.post("/admin/meals/modify",tags=["admin"])
 async def modify_meal(mod:schemas.ModifyMeal):
     return adminService.modify_meal(mod)
+
+
+# 4.11 管理员对桌子数量的修改
+@adminRouter.get("/admin/table/modify",tags=["admin"])
+async def modify_table_number(info:schemas.TableNumber):
+    response = adminService.modify_table_number(info.table_number)
+    return response

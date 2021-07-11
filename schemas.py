@@ -57,3 +57,9 @@ class AdminAddMember(BaseModel):
     user_position: int
     user_gender: int
     user_name: str
+
+class TableNumber(BaseModel):
+    table_number:int
+
+class Orderid(BaseModel):
+    order_id:int

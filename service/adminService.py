@@ -135,3 +135,7 @@ def show_details(user_id:int):
         return responseCode.resp_4xx(code = 401, data = None, message = "数据库错误")
     else:
         return responseCode.resp_200(data = dataResp)
+
+
+def modify_table_number(table_number:int):
+    pass

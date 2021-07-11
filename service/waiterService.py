@@ -1,6 +1,8 @@
 from util import responseCode
 from dao.food import food_showall
 from dao.food import food_showone
+from dao.waiter import waiter_check
+from dao.order import order_pay
 import settings
 
 
@@ -34,3 +36,24 @@ def show_meal_info(food_id):
         "food_img": i[5]
     }
     return responseCode.resp_200(data=food_info_dict)
+
+def fetch_all_tables():
+    dataRecieved, isSuccess = waiter_check.show()
+    if isSuccess == False:
+        return responseCode.resp_4xx(400, message="数据库错误")
+
+    dataResp = []
+    for i in range(len(dataRecieved)):
+        dic = {
+            "table_number":dataRecieved[i][1],
+            "state":dataRecieved[i][2]
+        }
+        dataResp.append(dic)
+    return responseCode.resp_200(data=dataResp)
+
+def payment(Orderid:int):
+    isSuccess = order_pay(Orderid,1)
+    if isSuccess == False:
+        return responseCode.resp_4xx(400, message="数据库错误")
+    else:
+        return responseCode.resp_200(data=None)
