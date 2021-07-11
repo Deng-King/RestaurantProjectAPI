@@ -3,6 +3,8 @@ from dao.food import food_showall
 from dao.food import food_showone
 from dao.waiter import waiter_check
 from dao.order import order_pay
+from dao.order import order_showall
+from dao.waiter import waiter_updatefood
 import settings
 
 
@@ -57,3 +59,30 @@ def payment(Orderid:int):
         return responseCode.resp_4xx(400, message="数据库错误")
     else:
         return responseCode.resp_200(data=None)
+
+def modify_meal_state(order_id:int, food_id:int):
+    isSuccess = waiter_updatefood.update(order_id, food_id)
+    if isSuccess == False:
+        return responseCode.resp_4xx(400, message="数据库错误")
+    else:
+        return responseCode.resp_200(data=None)
+
+def get_orders():
+    # 订单编号，桌位号、付款状态（默认为待付款），
+    dataRecieved,isSuccess = order_showall.show()
+
+    dataResp = []
+    for i in range(len(dataRecieved)):
+        dic = {
+            "order_id":dataRecieved[i][0],
+            "order_table":dataRecieved[i][1],
+            "order_state":dataRecieved[i][2],
+            "order_total":dataRecieved[i][3],
+            "order_create_time":dataRecieved[i][4]
+        }
+        dataResp.append(dic)
+    
+    if isSuccess == False:
+        return responseCode.resp_4xx(400, message = "数据库错误")
+    else:
+        return responseCode.resp_200(data = dataResp)

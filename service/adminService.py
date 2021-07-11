@@ -5,6 +5,7 @@ from dao.user import user_create
 from dao.user import user_delete
 from dao.user import user_showone
 from dao.user import user_update
+from dao.order import order_pay
 from settings import ip
 import schemas
 
@@ -18,6 +19,13 @@ def post_notice(info: schemas.PostNoticeInfo):
         info.notice_level
     )
     return responseCode.resp_200(data=result)
+
+def freeofcharge(Orderid:int):
+    isSuccess = order_pay(Orderid,2)
+    if isSuccess == False:
+        return responseCode.resp_4xx(400, message="数据库错误")
+    else:
+        return responseCode.resp_200(data=None)
 
 
 def add_meal(meal: schemas.FoodInfo):

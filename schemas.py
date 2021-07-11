@@ -61,5 +61,6 @@ class AdminAddMember(BaseModel):
 class TableNumber(BaseModel):
     table_number:int
 
-class Orderid(BaseModel):
+class OrderState(BaseModel):
     order_id:int
+    food_id:int
