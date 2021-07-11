@@ -5,12 +5,14 @@ from settings import ip
 
 
 def modify_meal_state(mod: schemas.ModifyOrder):
-    result = cook_update.update(ip, mod.food_id, mod.order_id)
+    result = cook_update.update(mod.food_id, mod.order_id)
     return responseCode.resp_200(data=result)
 
 
 def show_meal_list():
-    meal_list = cook_showall.show(ip)
+    meal_list,isSuccess = cook_showall.show(ip)
+    if isSuccess == False:
+        return responseCode.resp_4xx(code=400, message="数据库错误")
     if len(meal_list) == 0:
         return responseCode.resp_4xx(code=400, message="菜品列表为空")
     meal_dict_list = []

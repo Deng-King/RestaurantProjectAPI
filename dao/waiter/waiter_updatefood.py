@@ -1,7 +1,7 @@
 import pymysql
 from settings import ip
 
-def update(order_id, food_id):
+def update(order_id, food_id, ip = ip):
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor

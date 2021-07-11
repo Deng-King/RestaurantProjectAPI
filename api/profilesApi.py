@@ -13,15 +13,15 @@ async def sign_out(info: schemas.ProfilesExit):
     return response
 
 @profilesRouter.get("/profiles",tags=["profiles"])
-async def get_profiles(info: schemas.Profiles):
+async def get_profiles(user_id:int):
     # user_id: int
-    response = profilesService.get_profiles(info.user_id)
+    response = profilesService.get_profiles(user_id)
     return response
 
 @profilesRouter.get("/profiles/details",tags=["profiles"])
-async def get_profiles_details(info: schemas.Profiles):
+async def get_profiles_details(user_id: int):
     # user_id: int
-    response = profilesService.get_profiles_details(info.user_id)
+    response = profilesService.get_profiles_details(user_id)
     return response
 
 @profilesRouter.post("/profiles/edit",tags=["profiles"])

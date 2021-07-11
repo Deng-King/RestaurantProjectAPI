@@ -30,7 +30,9 @@ def fetch_all_tables():
 
 # 2.2 服务员点餐页面获取
 def show_meal_list():
-    food_list = food_showall.show(ip)
+    food_list,isSuccess = food_showall.show(ip)
+    if isSuccess == False:
+        return responseCode.resp_4xx(code=400, message="数据库错误")
     if len(food_list) == 0:
         return responseCode.resp_4xx(code=400, message="没有菜品可以显示")
     food_dic_list = []
@@ -47,7 +49,9 @@ def show_meal_list():
 
 # 2.3 服务员菜品详细页面
 def show_meal_info(food_id):
-    i = food_showone.show(ip, food_id)
+    i,isSuccess = food_showone.show(food_id)
+    if isSuccess == False:
+        return responseCode.resp_4xx(code=400, message="数据库错误")
     print(i)
     food_info_dict = {
         "food_id": i[0],

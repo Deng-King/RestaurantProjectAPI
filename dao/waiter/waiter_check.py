@@ -1,7 +1,7 @@
 import pymysql
 from settings import ip
 
-def show():
+def show(ip = ip):
     data = ()
     try:
         # 打开数据库连接

@@ -2,7 +2,7 @@ import pymysql
 from settings import ip
 
 # 图像路径缺省未设置
-def create(number, name, position, pwd="123456",img='0', gender=0):
+def create(number, name, position, pwd="123456",img='0', gender=0, ip = ip):
     # 打开数据库连接
     # try:
         db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")

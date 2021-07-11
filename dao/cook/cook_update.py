@@ -1,7 +1,9 @@
 import pymysql
+from settings import ip
 
-def update(ip, food_id,order_id):   # 厨师将食物状态改变为准备上菜，输入是food_id和order_id
+def update(food_id,order_id,ip = ip):   # 厨师将食物状态改变为准备上菜，输入是food_id和order_id
     # 打开数据库连接
+    print("food_id,order_id,ip =",food_id,order_id,ip)
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()

@@ -13,7 +13,6 @@ import schemas
 
 def post_notice(info: schemas.PostNoticeInfo):
     result = notice_create.create(
-        ip,
         info.user_id,
         info.content,
         info.title,
@@ -21,15 +20,17 @@ def post_notice(info: schemas.PostNoticeInfo):
     )
     return responseCode.resp_200(data=result)
 
-def freeofcharge(Orderid:int):
-    isSuccess = order_pay(Orderid,2)
+def freeofcharge(order_id:int):
+    isSuccess = order_pay.update(order_id,2)
     if isSuccess == False:
         return responseCode.resp_4xx(400, message="数据库错误")
     else:
         return responseCode.resp_200(data=None)
 
 def show_profiles_list():
-    profiles_list=user_showall.show(ip)
+    profiles_list, isSuccess=user_showall.show(ip)
+    if isSuccess == False:
+        return responseCode.resp_4xx(code=400,message="数据库错误")
     if len(profiles_list)==0:
         return responseCode.resp_4xx(code=400,message="用户信息为空")
     profiles_dict_list=[]
@@ -49,7 +50,6 @@ def show_profiles_list():
 
 def add_meal(meal: schemas.FoodInfo):
     result = food_create.create(
-        ip,
         meal.food_name,
         meal.food_info,
         meal.food_price,

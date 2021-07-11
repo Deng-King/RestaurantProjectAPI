@@ -15,32 +15,32 @@ def exit(id: int):
 def get_profiles(user_id: int):
     dataRecieved, isSuccess = user_showone.show(user_id)
     # 用户编号、用户工号、用户姓名、职位
-    dataResp = {
-        "user_id": dataRecieved[0],
-        "user_number": dataRecieved[1],
-        "user_name": dataRecieved[2],
-        'user_position': dataRecieved[3],
-    }
     if isSuccess == False:
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
     else:
+        dataResp = {}
+        print(dataRecieved, isSuccess)
+        dataResp["user_id"] = dataRecieved[0]
+        dataResp["user_number"] = dataRecieved[1]
+        dataResp["user_name"] = dataRecieved[2]
+        dataResp['user_position'] = dataRecieved[3]
         return responseCode.resp_200(data=dataResp)
 
 
 def get_profiles_details(user_id: int):
     dataRecieved, isSuccess = user_showone.show(user_id)
     # {用户编号，用户工号、职位、头像路径、性别、姓名}
-    dataResp = {
-        "user_id": dataRecieved[0],
-        "user_number": dataRecieved[1],
-        'user_position': dataRecieved[3],
-        'user_img': dataRecieved[4],
-        'user_gender': dataRecieved[5],
-        "user_name": dataRecieved[2],
-    }
     if isSuccess == False:
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
     else:
+        dataResp = {
+            "user_id": dataRecieved[0],
+            "user_number": dataRecieved[1],
+            'user_position': dataRecieved[3],
+            'user_img': dataRecieved[4],
+            'user_gender': dataRecieved[5],
+            "user_name": dataRecieved[2],
+        }
         return responseCode.resp_200(data=dataResp)
 
 

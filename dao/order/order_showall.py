@@ -1,7 +1,7 @@
 import pymysql
 from settings import ip
 
-def show():
+def show(ip = ip):
     # order_id
     # order_table
     # order_state

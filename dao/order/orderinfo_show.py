@@ -1,7 +1,7 @@
 import pymysql
-#from settings import ip
+from settings import ip
 
-def show():
+def show(ip = ip):
     # 返回格式：元组套元组
     # order_id
     # food_id
@@ -22,5 +22,5 @@ def show():
     return data,True
 
 
-ip = '124.70.200.142'
-print(show())
+# ip = '124.70.200.142'
+# print(show())

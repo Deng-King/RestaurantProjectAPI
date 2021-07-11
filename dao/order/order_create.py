@@ -1,7 +1,7 @@
 import pymysql
+from settings import ip
 
-
-def create(ip, order_table, order_total, user_id, food_info):
+def create(order_table, order_total, user_id, food_info, ip = ip):
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor

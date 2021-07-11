@@ -2,7 +2,7 @@ import pymysql
 from settings import ip
 
 
-def login(number, pwd):      # 返回   登录信息， 用户id,  用户职位(1管理员	2服务员	3后厨)
+def login(number, pwd, ip = ip):      # 返回   登录信息， 用户id,  用户职位(1管理员	2服务员	3后厨)
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor

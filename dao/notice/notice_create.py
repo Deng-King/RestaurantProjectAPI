@@ -1,8 +1,8 @@
 import pymysql
-
-
+from settings import ip
 # 图像路径缺省未设置
-def create(ip, user_id, content, title, notice_level):
+def create(user_id, content, title, notice_level,ip = ip):
+    print("user_id, content, title, notice_level,ip =",user_id, content, title, notice_level,ip)
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
@@ -27,4 +27,4 @@ def create(ip, user_id, content, title, notice_level):
 # content = '111'
 # title = '1111'
 # notice_level = 2
-# print(create(ip, user_id, content, title, notice_level))
+# print(create(user_id, content, title, notice_level))

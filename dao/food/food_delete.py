@@ -1,7 +1,6 @@
 import pymysql
-
-
-def delete(ip, id):
+from settings import ip
+def delete(id,ip = ip):
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
@@ -11,5 +10,5 @@ def delete(ip, id):
     db.commit()
     cursor.close()
     db.close()
-    return '删除成功'
+    return True
 

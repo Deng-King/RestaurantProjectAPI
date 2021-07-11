@@ -4,7 +4,9 @@ import settings
 
 
 def get_notice():
-    notice_list = notice_showall.show(settings.ip)
+    notice_list,isSuccess = notice_showall.show(settings.ip)
+    if isSuccess == False:
+        return responseCode.resp_4xx(code=400, message='数据库错误')
     if len(notice_list)==0:
         return responseCode.resp_4xx(code=400, message='没有新的公告可以显示')
     notice_dic_list = []

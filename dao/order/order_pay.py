@@ -1,7 +1,7 @@
 import pymysql
 from settings import ip
 
-def update(order_id, opcode):  # opcode为1是支付，2是免单.   管理员处理订单
+def update(order_id, opcode, ip = ip):  # opcode为1是支付，2是免单.   管理员处理订单
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor

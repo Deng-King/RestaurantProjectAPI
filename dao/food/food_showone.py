@@ -1,7 +1,7 @@
 import pymysql
 from settings import ip
 
-def show(id):
+def show(id,ip = ip):
     # 打开数据库连接
     try:
         db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")

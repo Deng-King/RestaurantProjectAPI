@@ -12,14 +12,14 @@ async def post_notice(notice_info: schemas.PostNoticeInfo):
 
 # 4.2 管理员对订单进行处理
 @adminRouter.get("/admin/meals/freeofcharge", tags=["admin"])
-async def order_freeofcharge(Orderid:int):
-    response = adminService.freeofcharge(Orderid)
+async def order_freeofcharge(order_id:int):
+    response = adminService.freeofcharge(order_id)
     return response
 
 # 4.4 个人信息详细信息页面在管理员端的展示
 @adminRouter.get("/admin/profiles/details", tags=["admin"])
-async def show_profiles_details(info: schemas.Profiles):
-    response = adminService.show_details(info.user_id)
+async def show_profiles_details(user_id:int):
+    response = adminService.show_details(user_id)
     return response
 
 # 4.5 管理员添加成员
@@ -39,8 +39,8 @@ async def add_member(info: schemas.AdminAddMember):
 
 # 4.6 管理员删除成员
 @adminRouter.get("/admin/profiles/remove",tags=["admin"])
-async def remove_member(info:schemas.Profiles):
-    response = adminService.remover_member(info.user_id)
+async def remove_member(user_id:int):
+    response = adminService.remover_member(user_id)
     return response
 
 # 4.7 管理员修改成员信息
@@ -69,7 +69,7 @@ async def add_meal(meal: schemas.FoodInfo):
 
 
 # 4.9 管理员删除菜品信息
-@adminRouter.post("/admin/meals/remove", tags=["admin"])
+@adminRouter.get("/admin/meals/remove", tags=["admin"])
 async def remove_meal(meal_id:int):
     return adminService.remove_meal(meal_id)
 
@@ -82,6 +82,6 @@ async def modify_meal(mod:schemas.ModifyMeal):
 
 # 4.11 管理员对桌子数量的修改
 @adminRouter.get("/admin/table/modify",tags=["admin"])
-async def modify_table_number(info:schemas.TableNumber):
-    response = adminService.modify_table_number(info.table_number)
+async def modify_table_number(table_number:int):
+    response = adminService.modify_table_number(table_number)
     return response

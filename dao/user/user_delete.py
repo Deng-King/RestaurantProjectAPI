@@ -1,7 +1,7 @@
 import pymysql
 from settings import ip
 
-def delete(id):
+def delete(id, ip = ip):
     try:
         # 打开数据库连接
         db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
