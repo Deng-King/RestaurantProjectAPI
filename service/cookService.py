@@ -20,6 +20,7 @@ def show_meal_list():
             "food_num": i[1],
             "order_id": i[2],
             "order_table": i[3],
-            "food_state": i[4]
+            "food_state": i[4],
+            
         })
     return responseCode.resp_200(data=meal_dict_list)

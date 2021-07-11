@@ -48,6 +48,12 @@ async def show_cooked_food():
 
 # 2.8 服务员对某订单确认结账
 @waiterRouter.get("/waiter/order/states/payment", tags=["waiter"])
-async def order_payment(Orderid:int):
-    response = waiterService.payment(Orderid)
+async def order_payment(order_id:int):
+    response = waiterService.payment(order_id)
+    return response
+
+# 2.9 服务员获取订单详情
+@waiterRouter.get("/waiter/order/details", tags=["waiter"])
+async def get_order_details(order_id:int):
+    response = waiterService.get_order_details(order_id)
     return response

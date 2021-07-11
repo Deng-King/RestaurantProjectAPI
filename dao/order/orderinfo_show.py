@@ -1,16 +1,20 @@
 import pymysql
-from settings import ip
+#from settings import ip
 
-def show(id):
+def show():
+    # 返回格式：元组套元组
+    # order_id
+    # food_id
+    # food_num
+    # food_state
     # 打开数据库连接
     try:
         db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
         # 使用 cursor() 方法创建一个游标对象 cursor
         cursor = db.cursor()
-        # sql = "select food_id,food_name,food_price,food_rmd,food_img from food"
-        sql = "select * from food where food_id=%d" % (id)
+        sql = "select * from orderinfo"
         cursor.execute(sql)
-        data = cursor.fetchone()
+        data = cursor.fetchall()
         cursor.close()
         db.close()
     except:
@@ -18,5 +22,5 @@ def show(id):
     return data,True
 
 
-# ip = '192.168.137.164'
-# print(show(ip, 2))
+ip = '124.70.200.142'
+print(show())
