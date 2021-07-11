@@ -9,13 +9,15 @@ def show(id):
     # user_position,[3]
     # user_img,[4]
     # user_gender,[5]
+    # user_pwd, [6]
+    # user_state [7]
     # 打开数据库连接
     data = ()
     try:
         db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
         # 使用 cursor() 方法创建一个游标对象 cursor
         cursor = db.cursor()
-        sql = "select user_id, user_number, user_name, user_position, user_img, user_gender from user where user_id=%d " % (id)
+        sql = "select user_id, user_number, user_name, user_position, user_img, user_gender, user_pwd, user_state from user where user_id=%d " % (id)
         cursor.execute(sql)
         data = cursor.fetchone()
         cursor.close()

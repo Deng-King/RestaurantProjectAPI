@@ -10,6 +10,12 @@ adminRouter = APIRouter()
 async def post_notice(notice_info: schemas.PostNoticeInfo):
     return adminService.post_notice(notice_info)
 
+#4.4 个人信息详细信息页面在管理员端的展示
+@adminRouter.get("/admin/profiles/details", tags=["admin"])
+async def show_profiles_details(info: schemas.Profiles):
+    response = adminService.show_details(info.user_id)
+    return response
+
 # 4.5 管理员添加成员
 @adminRouter.post("/admin/profiles/add", tags=["admin"])
 async def add_member(info: schemas.AdminAddMember):
@@ -23,6 +29,25 @@ async def add_member(info: schemas.AdminAddMember):
                                         info.user_gender,
                                         info.user_name)
     return response
+
+
+# 4.6 管理员删除成员
+@adminRouter.get("/admin/profiles/remove",tags=["admin"])
+async def remove_member(info:schemas.Profiles):
+    response = adminService.remover_member(info.user_id)
+    return response
+
+# 4.7 管理员修改成员信息
+@adminRouter.post("/admin/profiles/modify",tags=["admin"])
+async def edit_profiles(info: schemas.ProfilesEdit):
+    # 当前用户编号，修改用户编号，修改码（1：修改职位，2：修改密码）
+    # user_id_a, user_id_b, tag, content
+    response = adminService.edit_profiles(info.user_id_a,
+                                            info.user_id_b,
+                                            info.tag,
+                                            info.content)
+    return response
+
 
 
 # 4.8 管理员添加新品
