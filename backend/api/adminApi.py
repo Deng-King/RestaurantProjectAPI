@@ -13,10 +13,16 @@ async def post_notice(notice_info: schemas.PostNoticeInfo):
     await manager.broadcast("有新公告发布")
     return response
 
-# 4.2 管理员对订单进行处理
-@adminRouter.get("/admin/meals/freeofcharge", tags=["admin"])
+# 4.2 管理员对订单进行免费处理
+@adminRouter.get("/admin/order/states/freeofcharge", tags=["admin"])
 async def order_freeofcharge(order_id:int):
     response = adminService.freeofcharge(order_id)
+    return response
+
+# 4.2 管理员对订单进行结账处理
+@adminRouter.get("/admin/order/states/payment", tags=["admin"])
+async def order_payment(order_id:int):
+    response = adminService.payment(order_id)
     return response
 
 # 4.4 个人信息详细信息页面在管理员端的展示

@@ -10,6 +10,7 @@ from dao.order import order_pay
 from dao.order import order_showall
 from dao.order import orderinfo_show
 from dao.waiter import waiter_updatefood
+from dao.waiter import waiter_updateorder
 import settings
 
 
@@ -115,7 +116,7 @@ def show_cooked_food():
 
 # 2.8 服务员对某订单确认结账
 def payment(Orderid: int):
-    isSuccess = order_pay.update(Orderid, 1)
+    isSuccess = waiter_updateorder.update(Orderid)
     if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     else:
