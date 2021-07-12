@@ -2,6 +2,7 @@ from util import responseCode
 from dao.food import food_showall
 from dao.food import food_showone
 from dao.order import order_create
+from dao.user import user_showone
 from settings import ip
 import schemas
 from dao.waiter import waiter_check, waiter_showall
@@ -43,7 +44,8 @@ def show_meal_list():
             "food_price": i[2],
             "food_recommend": False if i[3] == 0 else True,
             "food_img": i[4],
-            "food_value": float(0)
+            "food_value": float(0),
+            "food_num": float(0)
         })
     return responseCode.resp_200(data=food_dic_list)
 
@@ -74,7 +76,6 @@ def post_order(info: schemas.OrderInfo):
             i.food_num
         ])
     result = order_create.create(
-        ip,
         info.order_table,
         info.order_total,
         info.user_id,
@@ -85,18 +86,29 @@ def post_order(info: schemas.OrderInfo):
 
 # 2.5 服务员取菜列表显示
 def show_cooked_food():
-    food_list = waiter_showall.show(ip)
+    food_list, isSuccess = waiter_showall.show(ip)
     print(food_list)
+    if isSuccess == False:
+        return responseCode.resp_4xx(code=400, message="数据库错误")
     if len(food_list) == 0:
         return responseCode.resp_4xx(code=400, message="无待上菜的菜品")
     food_dict_list = []
     for i in food_list:
+        foodData, flag = food_showall.show()
+        if flag == False:
+            return responseCode.resp_4xx(code=400, message="数据库错误")
+        foodURL = ""
+        for item in foodData:
+            if item[1] == i[0]:
+                foodURL = item[4]
+
         food_dict_list.append({
             "food_name": i[0],
             "food_num": i[1],
             "order_id": i[2],
             "order_table": i[3],
-            "food_state": i[4]
+            "food_state": i[4],
+            "food_img":foodURL
         })
     return responseCode.resp_200(data=food_dict_list)
 
@@ -144,8 +156,8 @@ def get_order_details(Orderid:int):
     # 菜品价格、菜品图形）
     
     dataResp = {
+        "user_name":str,
         "order_id":int,
-        "user_id":int,
         "order_create_time":str,
         "order_table":int,
         "order_total":float,
@@ -175,7 +187,8 @@ def get_order_details(Orderid:int):
     
     # 下面把前五个内容放进字典里面
     dataResp["order_id"] = dataRecieved[i][0]
-    dataResp["user_id"] = dataRecieved[i][5]
+    user, flag = user_showone.show(dataRecieved[i][5])
+    dataResp["user_name"] = user[2]
     dataResp["order_create_time"] = dataRecieved[i][4]
     dataResp["order_table"] = dataRecieved[i][1]
     dataResp["order_total"] = dataRecieved[i][3]
@@ -197,7 +210,8 @@ def get_order_details(Orderid:int):
                 "food_num":int,
                 "food_state":int,
                 "food_price":float,
-                "food_img":str
+                "food_img":str,
+                "food_name":str
             }    # 初始化
             dic["food_id"] = dataRecieved[i][1]
             dic["food_num"] = dataRecieved[i][2]
@@ -216,6 +230,7 @@ def get_order_details(Orderid:int):
                 return responseCode.resp_4xx(400, message = "数据库错误")
             dic["food_price"] = dataReciFood[3]
             dic["food_img"] = dataReciFood[5]
+            dic["food_name"] = dataReciFood[1]
             # 到这里dic的内容就完了，append到列表里面就ok
 
             lisResp.append(dic)

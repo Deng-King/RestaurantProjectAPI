@@ -34,11 +34,11 @@ def get_profiles_details(user_id: int):
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
     else:
         dataResp = {
-            "user_id": dataRecieved[0],
+            # "user_id": dataRecieved[0],
             "user_number": dataRecieved[1],
-            'user_position': dataRecieved[3],
+            'user_position': "管理员" if dataRecieved[3] == 1 else "后厨" if dataRecieved[3] == 3 else "服务员",
             'user_img': dataRecieved[4],
-            'user_gender': dataRecieved[5],
+            'user_gender': "woman" if dataRecieved[5] == 1 else "man",
             "user_name": dataRecieved[2],
         }
         return responseCode.resp_200(data=dataResp)
