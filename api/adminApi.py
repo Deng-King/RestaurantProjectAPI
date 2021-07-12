@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from service import adminService
 import schemas
+from ConnectionManager import manager
 
 adminRouter = APIRouter()
 
@@ -8,7 +9,9 @@ adminRouter = APIRouter()
 # 4.1 发布公告消息
 @adminRouter.post("/announcement/post", tags=["admin"])
 async def post_notice(notice_info: schemas.PostNoticeInfo):
-    return adminService.post_notice(notice_info)
+    response=adminService.post_notice(notice_info)
+    await manager.broadcast("有新公告发布")
+    return response
 
 # 4.2 管理员对订单进行处理
 @adminRouter.get("/admin/meals/freeofcharge", tags=["admin"])

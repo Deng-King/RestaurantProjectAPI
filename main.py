@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from starlette.middleware.cors import CORSMiddleware
 from api import loginApi
 from api import profilesApi
@@ -7,6 +7,9 @@ from api import noticeApi
 from api import waiterApi
 from api import adminApi
 from api import cookApi
+from fastapi.responses import HTMLResponse
+from settings import html
+from ConnectionManager import manager
 
 app = FastAPI()
 app.add_middleware(
@@ -23,9 +26,23 @@ app.include_router(waiterApi.waiterRouter, prefix="/api")
 app.include_router(adminApi.adminRouter, prefix="/api")
 app.include_router(cookApi.cookRouter, prefix="/api")
 
+
 @app.get("/")
 async def homepage_info():
-    return {"home": "welcome"}
+    return HTMLResponse(html)
+
+
+@app.websocket("/ws/{client_id}")
+async def websocket_endpoint(websocket: WebSocket, client_id: int):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.send_personal_message(f"You wrote: {data}", websocket)
+            await manager.broadcast(f"Client #{client_id} says: {data}")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        await manager.broadcast(f"Client #{client_id} left the chat")
 
 
 if __name__ == '__main__':
