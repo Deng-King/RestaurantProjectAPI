@@ -41,8 +41,9 @@ def show_meal_list():
             "food_id": i[0],
             "food_name": i[1],
             "food_price": i[2],
-            "food_recommend": i[3],
-            "food_img": i[4]
+            "food_recommend": False if i[3] == 0 else True,
+            "food_img": i[4],
+            "food_value": float(0)
         })
     return responseCode.resp_200(data=food_dic_list)
 

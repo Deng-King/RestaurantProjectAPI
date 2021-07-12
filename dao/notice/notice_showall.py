@@ -19,7 +19,14 @@ def show(ip = ip):
             sql = 'select user_name from user where user_id = %d' % (i[1])
             cursor.execute(sql)
             name = cursor.fetchone()
-            re = ((i[0], name[0], i[2], i[3], i[4], d + " " + t),)
+            re = ((i[0], i[1], name[0], i[2], i[3], i[4], d + " " + t),)
+            # notice_id, [0]
+            # user_id, [1]
+            # user_name, [2]
+            # notice_content, [3]
+            # notice_title, [4]
+            # notice_level, [5]
+            # date [6]
             result = result + re
             # print(type(i[1]))
     except:

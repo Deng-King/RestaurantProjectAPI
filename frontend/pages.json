@@ -1,0 +1,225 @@
+{
+	"easycom": {
+		// npm安装的方式不需要前面的"@/"，下载安装的方式需要"@/"
+		// npm安装方式
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+		// 下载安装方式
+		// "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/public/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/public/notice/notice",
+			"style": {
+				"navigationBarTitleText": "公告",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+            "path" : "pages/public/information/selfinformation",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "个人信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/public/information/setinfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "修改信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/cook/cookinglist",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "后厨列表",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/waiter/order/order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "点餐界面",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/waiter/order/table",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "桌子选择",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/waiter/order/ordercontent",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商品详情",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+            "path" : "pages/waiter/orderlist/orderlist",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "点餐取菜列表",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/waiter/orderlist/orderlistcontent",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "订单信息详情",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/admin/food/add",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加菜品",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/admin/food/foodlist",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "食品列表",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/admin/notice/noticeadd",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "管理员公告",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/admin/notice/noticeaddcontent",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加公告",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/admin/staff/add",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加员工",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/admin/staff/delete",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "删除员工",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/admin/staff/stafflist",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "员工列表",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/public/image/food_img",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "配图上传",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/public/image/cover_img",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "上传头像",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/admin/food/updata",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"list": [
+			{
+				// "text": "公共公告",
+				"pagePath":"pages/public/notice/notice"
+			},
+			{
+				// "text": "公告",
+				"pagePath":"pages/admin/notice/noticeadd"
+			},
+			{
+				// "text": "我的",
+				"pagePath":"pages/public/information/selfinformation"
+			},
+			{
+				// "text": "菜品管理",
+				"pagePath":"pages/admin/food/foodlist"
+			},
+			{
+				// "text": "人员管理",
+				"pagePath":"pages/admin/staff/stafflist"
+			},
+			{
+				// "text": "上菜",
+				"pagePath":"pages/cook/cookinglist"
+			},
+			{
+				// "text": "点餐",
+				"pagePath":"pages/waiter/order/table"
+			},
+			{
+				// "text": "订单",
+				"pagePath":"pages/waiter/orderlist/orderlist"
+			}
+		]
+	}
+}

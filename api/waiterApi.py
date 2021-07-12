@@ -18,7 +18,7 @@ async def show_meal_list():
 
 
 # 2.3 服务员菜品详细页面
-@waiterRouter.get("/waiter/meals/list/details/{food_id}", tags=["waiter"])
+@waiterRouter.get("/waiter/meals/list/details/", tags=["waiter"])
 async def show_meal_info(food_id: int):
     return waiterService.show_meal_info(food_id)
 
