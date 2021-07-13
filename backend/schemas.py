@@ -18,9 +18,7 @@ class Profiles(BaseModel):
 
 class ProfilesEdit(BaseModel):
     # user_id_a, user_id_b, tag, content
-    user_id_a: int
-    user_id_b: int
-    tag: int
+    user_id: int
     content: str
 
 

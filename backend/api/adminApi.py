@@ -74,15 +74,15 @@ async def show_profiles_list():
 
 
 # 4.8 管理员添加新品
-@adminRouter.put("/admin/meals/add", tags=["admin"])
+@adminRouter.post("/admin/meals/add", tags=["admin"])
 async def add_meal(
     file:       bytes   = File(...),
     food_name:  str     = Form(...),
     food_info:  str     = Form(...),
-    food_price: float   = Form(...),
+    food_price: str   = Form(...),
     food_rmd:   int     = Form(...)
     ):
-    return adminService.add_meal(file, food_name, food_info, food_price, food_rmd)
+    return adminService.add_meal(file, food_name, food_info, float(food_price), food_rmd)
 
 
 # 4.9 管理员删除菜品信息
@@ -93,8 +93,22 @@ async def remove_meal(food_id:schemas.FoodId):
 
 # 4.10 管理员修改菜品
 @adminRouter.post("/admin/meals/modify",tags=["admin"])
-async def modify_meal(info:schemas.ModifyMeal):
-    return adminService.modify_meal(info)
+async def modify_meal(
+    file:       bytes   = File(...),
+    food_id:    int     = Form(...),
+    food_name:  str     = Form(...),
+    food_info:  str     = Form(...),
+    food_price: str   = Form(...),
+    food_rmd:   int     = Form(...)
+    ):
+    return adminService.modify_meal(    
+    file,
+    int(food_id),
+    food_name,
+    food_info,
+    float(food_price),
+    int(food_rmd)
+    )
 
 
 # 4.11 管理员对桌子数量的修改

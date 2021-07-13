@@ -30,10 +30,7 @@ async def get_profiles_details(user_id: int):
 async def edit_profiles(info: schemas.ProfilesEdit):
     # 当前用户编号，修改用户编号，修改码（1：修改头像，2：修改密码），修改内容
     # user_id_a, user_id_b, tag, content
-    response = profilesService.edit_profiles(info.user_id_a,
-                                            info.user_id_b,
-                                            info.tag,
-                                            info.content)
+    response = profilesService.edit_profiles(info.user_id,info.user_id,2,info.content)
     return response
 
 @profilesRouter.post("/profiles/image/cover", tags=["profiles"])
