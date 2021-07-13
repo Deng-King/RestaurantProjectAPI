@@ -2,6 +2,7 @@ from util import responseCode
 from dao.notice import notice_create
 from dao.food import food_create, food_delete, food_update
 from dao.food import food_showone
+from dao.food import food_update
 from dao.user import user_create
 from dao.user import user_delete
 from dao.user import user_showone
@@ -76,33 +77,40 @@ def add_meal(food: schemas.AdminAddFood):
 
 
 def remove_meal(food_id):
-    result = food_delete.delete(ip, food_id)
+    result = food_delete.delete(food_id)
+    if result == False:
+        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
     return responseCode.resp_200(data=result)
 
 
-def modify_meal(mod: schemas.ModifyMeal):
-    if mod.type == "food_name":
-        return responseCode.resp_200(data=food_update.updatename(
-            ip, mod.id, mod.value
-        ))
-    elif mod.type == "food_info":
-        return responseCode.resp_200(data=food_update.updateinfo(
-            ip, mod.id, mod.value
-        ))
-    elif mod.type == "food_price":
-        return responseCode.resp_200(data=food_update.updateprice(
-            ip, mod.id, float(mod.value)
-        ))
-    elif mod.type == "meal.food_recommend":
-        return responseCode.resp_200(data=food_update.updatermd(
-            ip, mod.id, int(mod.value)
-        ))
-    elif mod.type == "food_img":
-        return responseCode.resp_200(data=food_update.updateimg(
-            ip, mod.id, mod.value
-        ))
-    else:
-        return responseCode.resp_4xx(code=400, message="输入的信息格式错误")
+def modify_meal(food: schemas.ModifyMeal):
+
+    Flags = []
+
+    flag = False
+    flag = food_update.updatename(food.food_id,food.food_name)
+    Flags.append(flag)
+
+    flag = False
+    flag = food_update.updateinfo(food.food_id,food.food_info)
+    Flags.append(flag)
+
+    flag = False
+    flag = food_update.updateprice(food.food_id,float(food.food_price))
+    Flags.append(flag)
+
+    flag = False
+    flag = food_update.updatermd(food.food_id,int(food.food_rmd))
+    Flags.append(flag)
+
+    isSuccess = True
+    for item in Flags:
+        isSuccess = isSuccess and item
+
+    if isSuccess == False:
+        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+    return responseCode.resp_200(data = None)
+
 
 
 def create_member(user_number: str, user_position: int, user_gender: int, user_name: str):
@@ -248,15 +256,21 @@ def modify_table_number(table_number:int):
     
 
 def modify_food_image(file,food_id:int):
+    dataResp = {
+            "food_img":str
+    }
     try:
         url = "http://124.70.200.142:8080/img/food/" + food_id + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
         path = "/root/tomcat/webapps/img/food/" + food_id + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
-        dataResp = {
-            "food_img":path,
-        }
+        
+        dataResp["food_img"] = url
+        
+        flag = food_update.updateimg(food_id,url)
+        if flag == False:
+            return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
     except:
         return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
     return responseCode.resp_200(data = dataResp)

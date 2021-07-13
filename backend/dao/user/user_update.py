@@ -3,12 +3,15 @@ from settings import ip
 
 def updateimg(id, img, ip = ip):  # 根据id更改头像
     # 打开数据库连接
-    db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
-    # 使用 cursor() 方法创建一个游标对象 cursor
-    cursor = db.cursor()
-    sql = "update user set user_img='%s' where user_id = %d" % (img, id)
-    cursor.execute(sql)
-    db.commit()
+    try:
+        db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
+        # 使用 cursor() 方法创建一个游标对象 cursor
+        cursor = db.cursor()
+        sql = "update user set user_img='%s' where user_id = %d" % (img, id)
+        cursor.execute(sql)
+        db.commit()
+    except:
+        return False
     return True
 
 

@@ -80,15 +80,15 @@ async def add_meal(meal: schemas.AdminAddFood):
 
 
 # 4.9 管理员删除菜品信息
-@adminRouter.get("/admin/meals/remove", tags=["admin"])
-async def remove_meal(food_id:int):
-    return adminService.remove_meal(food_id)
+@adminRouter.post("/admin/meals/remove", tags=["admin"])
+async def remove_meal(food_id:schemas.FoodId):
+    return adminService.remove_meal(food_id.food_id)
 
 
 # 4.10 管理员修改菜品
 @adminRouter.post("/admin/meals/modify",tags=["admin"])
-async def modify_meal(mod:schemas.ModifyMeal):
-    return adminService.modify_meal(mod)
+async def modify_meal(info:schemas.ModifyMeal):
+    return adminService.modify_meal(info)
 
 
 # 4.11 管理员对桌子数量的修改
