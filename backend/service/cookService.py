@@ -25,9 +25,11 @@ def show_meal_list():
         if flag == False:
             return responseCode.resp_4xx(code=400, message="数据库错误")
         foodURL = ""
+        foodid = 0
         for item in data:
             if item[1] == i[0]:
                 foodURL = item[4]
+                foodid = item[0]
 
         data, flag = (),False
         orderCreateTime = ""
@@ -37,6 +39,8 @@ def show_meal_list():
         for item in data:
             if item[0] == i[2]:
                 orderCreateTime = item[4]
+        if i[4] != 0:
+            continue
         meal_dict_list.append({
             "food_name": i[0],
             "food_num": i[1],
@@ -45,5 +49,6 @@ def show_meal_list():
             "food_state": i[4],
             "food_img": foodURL,
             "order_create_time": orderCreateTime,
+            "food_id":foodid,
         })
     return responseCode.resp_200(data=meal_dict_list)

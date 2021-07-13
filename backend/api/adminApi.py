@@ -1,4 +1,6 @@
 from fastapi import APIRouter
+from fastapi import File
+from fastapi import Form
 from service import adminService
 import schemas
 from ConnectionManager import manager
@@ -73,7 +75,7 @@ async def show_profiles_list():
 
 # 4.8 管理员添加新品
 @adminRouter.post("/admin/meals/add", tags=["admin"])
-async def add_meal(meal: schemas.FoodInfo):
+async def add_meal(meal: schemas.AdminAddFood):
     return adminService.add_meal(meal)
 
 
@@ -94,3 +96,10 @@ async def modify_meal(mod:schemas.ModifyMeal):
 async def modify_table_number(table_number:int):
     response = adminService.modify_table_number(table_number)
     return response
+
+
+@adminRouter.post("/admin/image/photo", tags=["admin"])
+async def create_files(file: bytes = File(...), food_id: str = Form(...)):
+    response = adminService.modify_food_image(file,food_id)
+    return response
+

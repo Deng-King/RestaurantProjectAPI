@@ -39,6 +39,12 @@ class FoodInfo(BaseModel):
     food_recommend: int
     food_img: str
 
+class AdminAddFood(BaseModel):
+    food_name: str
+    food_info: str
+    food_price: float
+    food_recommend: int
+
 
 class ModifyMeal(BaseModel):
     id: int

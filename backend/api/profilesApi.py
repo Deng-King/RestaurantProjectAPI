@@ -1,4 +1,6 @@
 from fastapi import APIRouter
+from fastapi import File
+from fastapi import Form
 from service import profilesService
 from pydantic import BaseModel
 import schemas
@@ -32,4 +34,9 @@ async def edit_profiles(info: schemas.ProfilesEdit):
                                             info.user_id_b,
                                             info.tag,
                                             info.content)
+    return response
+
+@profilesRouter.post("/profiles/image/cover", tags=["profiles"])
+async def create_files(file: bytes = File(...), user_id: str = Form(...)):
+    response = profilesService.modify_image(file,user_id)
     return response

@@ -7,6 +7,9 @@ from dao.user import user_showone
 from dao.user import user_update
 from dao.user import user_showall
 from dao.order import order_pay
+from dao.table import table_create
+from dao.table import table_delete
+from dao.table import table_showall
 from settings import ip
 import schemas
 
@@ -172,4 +175,15 @@ def show_details(user_id:int):
 
 
 def modify_table_number(table_number:int):
+    # dataRecieved, 
     pass
+def modify_food_image(file,food_id:int):
+    try:
+        url = "http://124.70.200.142:8080/img/food/"+food_id+".jpg"
+        # 这里根据food_id更换数据库食品的图片链接 
+        path = "/root/tomcat/webapps/img/food/"+food_id+".jpg"
+        with open(path, 'wb') as f:
+            f.write(file)
+    except:
+        return responseCode.resp_4xx(code = 400, message = "服务器错误",data = None)
+    return responseCode.resp_200(data = None)

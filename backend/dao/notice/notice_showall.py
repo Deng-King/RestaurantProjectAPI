@@ -13,7 +13,7 @@ def show(ip = ip):
         cursor.execute(sql)
         data = cursor.fetchall()
         result = (())
-        for i in data:
+        for i in data[::-1]:
             d = str(i[5].date())
             t = str(i[5].time())
             sql = 'select user_name from user where user_id = %d' % (i[1])

@@ -136,6 +136,8 @@ def get_orders():
 
     dataResp = []
     for i in range(len(dataRecieved)):
+        if dataRecieved[i][2] != 0:
+            continue
         dic = {
             "order_id":dataRecieved[i][0],
             "order_table":dataRecieved[i][1],
