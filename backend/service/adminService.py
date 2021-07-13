@@ -52,7 +52,8 @@ def show_profiles_list():
             "user_position":i[3],
             "user_img":i[4],
             "user_gender":i[5],
-            "user_state":i[6]
+            "user_state":i[6],
+            "show": False,
         })
     return responseCode.resp_200(data=profiles_dict_list)
 
@@ -175,8 +176,50 @@ def show_details(user_id:int):
 
 
 def modify_table_number(table_number:int):
-    # dataRecieved, 
-    pass
+    dataRecieved, isSuccess = table_showall.show()
+    if isSuccess == False:
+        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+    # 目前的桌子数量
+    currentTableNum = len(dataRecieved) + 1
+    
+    # 这里要判断目前的桌子上面是否空闲
+    # 一旦有任何一张桌子空闲则返回401无权限错误
+    for table in dataRecieved:
+        if table[1] == 1:
+            return responseCode.resp_4xx(code = 401, message = "有桌位被占用，你没有权限修改桌子数量",data = None)
+    
+    # 下面有三种情况，小于等于和大于
+    if table_number == currentTableNum:
+        # 等于则返回错误
+        return responseCode.resp_4xx(code = 400, message = "桌子数量相等",data = None)
+    elif table_number < currentTableNum:
+        # 如果修改的桌子数量比之前大，则删除桌子
+        diff = abs(table_number - currentTableNum)
+        # 因为是一次一次改的，某一次删除可能会出错
+        # 要统计没有出错的数量是什么
+        isSuccess = True
+        delNum = 0
+        for i in range(diff):
+            flag = table_delete.delete()
+            if flag == True:
+                delNum += 1
+            else:
+                isSuccess = False
+        # 下面的代码判断添加是否成功决定返回值
+        if isSuccess == False:
+            msg = "删除桌位请求出现错误，目前已成功删除" + str(i+1) + "张桌位"
+            return responseCode.resp_4xx(code = 400, message = msg, data = None)
+        else:
+            return responseCode.resp_200(data = None)
+    else:
+        # 如果修改的桌子数量比之前小，则增加桌子
+        diff = abs(table_number - currentTableNum)
+        flag = table_create.create(diff)
+        if flag == False:
+            return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+        return responseCode.resp_200(data = None)
+    
+
 def modify_food_image(file,food_id:int):
     try:
         url = "http://124.70.200.142:8080/img/food/"+food_id+".jpg"
