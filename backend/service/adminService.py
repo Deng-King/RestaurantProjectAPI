@@ -205,7 +205,7 @@ def modify_table_number(table_number:int):
         # 要统计没有出错的数量是什么
         isSuccess = True
         delNum = 0
-        for i in range(diff):
+        for i in range(diff - 1):
             flag = table_delete.delete()
             if flag == True:
                 delNum += 1
@@ -219,7 +219,7 @@ def modify_table_number(table_number:int):
             return responseCode.resp_200(data = None)
     else:
         # 如果修改的桌子数量比之前小，则增加桌子
-        diff = abs(table_number - currentTableNum)
+        diff = abs(table_number - currentTableNum + 1)
         flag = table_create.create(diff)
         if flag == False:
             return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
