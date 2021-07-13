@@ -110,10 +110,30 @@ def create_member(user_number: str, user_position: int, user_gender: int, user_n
     # user_position: int
     # user_gender: int
     # user_name: str
-    msgRecived = user_create.create(number=user_number,
-                                    position=user_position,
-                                    gender=user_gender,
-                                    name=user_name)
+
+    userImage = ""
+    # 下面需要判断职位来选择相关的默认头像
+    if user_position == 1:
+        # 1代表管理员
+        userImage = "http://124.70.200.142:8080/img/person/admin.jpg"
+    elif user_position == 2:
+        # 2代表服务员
+        userImage = "http://124.70.200.142:8080/img/person/waiter.jpg"
+    elif user_position == 3:
+        # 3代表厨师
+        userImage = "http://124.70.200.142:8080/img/person/cook.jpg"
+    else:
+        return responseCode.resp_4xx(code = 400, message = '没有此职位', data = None)
+
+
+
+    msgRecived = user_create.create(
+        number=user_number,
+        position=user_position,
+        gender=user_gender,
+        name=user_name,
+        img = userImage
+        )
     if msgRecived == '创建成功':
         return responseCode.resp_200(data=None)
     elif msgRecived == '用户已存在':
@@ -234,9 +254,12 @@ def modify_food_image(file,food_id:int):
         path = "/root/tomcat/webapps/img/food/" + food_id + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
+        dataResp = {
+            "food_img":path,
+        }
     except:
         return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
-    return responseCode.resp_200(data=None)
+    return responseCode.resp_200(data = dataResp)
 
 def get_meal_details(food_id:int):
     # food_id、food_name、food_info、food_price、food_recommend、food_img
