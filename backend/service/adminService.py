@@ -71,9 +71,9 @@ def add_meal(file, food_name, food_info, food_price, food_rmd):
         return responseCode.resp_4xx(code=400, message="创建菜品失败")
     
     try:
-        url = "http://124.70.200.142:8080/img/food/" + food_id + ".jpg"
+        url = "http://124.70.200.142:8080/img/food/" + dataRecieved + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
-        path = "/root/tomcat/webapps/img/food/" + food_id + ".jpg"
+        path = "/root/tomcat/webapps/img/food/" + dataRecieved + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
         
