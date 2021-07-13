@@ -26,14 +26,14 @@ def post_notice(info: schemas.PostNoticeInfo):
 def freeofcharge(order_id:int):
     isSuccess = order_pay.update(order_id,2)
     if isSuccess == False:
-        return responseCode.resp_4xx(400, message="数据库错误")
+        return responseCode.resp_4xx(code=400, message="数据库错误")
     else:
         return responseCode.resp_200(data=None)
 
 def payment(order_id:int):
     isSuccess = order_pay.update(order_id,1)
     if isSuccess == False:
-        return responseCode.resp_4xx(400, message="数据库错误")
+        return responseCode.resp_4xx(code=400, message="数据库错误")
     else:
         return responseCode.resp_200(data=None)
 
