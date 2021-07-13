@@ -16,6 +16,7 @@ from settings import ip
 import schemas
 
 
+
 def post_notice(info: schemas.PostNoticeInfo):
     result = notice_create.create(
         info.user_id,
@@ -63,16 +64,32 @@ def show_profiles_list():
     return responseCode.resp_200(data=profiles_dict_list)
 
 
-def add_meal(food: schemas.AdminAddFood):
-    result = food_create.create(
-        ip,
-        food.food_name,
-        food.food_info,
-        food.food_price,
-        food.food_recommend,
-    )
-    if result == 0:
+def add_meal(file, food_name, food_info, food_price, food_rmd):
+    print("输出：",type(food_price),food_name,food_info,food_price,food_rmd)
+    dataRecieved, isSuccess = food_create.create(food_name,food_info,food_price,rmd = int(food_rmd))
+    if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="创建菜品失败")
+    
+    try:
+        url = "http://124.70.200.142:8080/img/food/" + food_id + ".jpg"
+        # 这里根据food_id更换数据库食品的图片链接 
+        path = "/root/tomcat/webapps/img/food/" + food_id + ".jpg"
+        with open(path, 'wb') as f:
+            f.write(file)
+        
+        dataResp["food_img"] = url
+        
+        flag = food_update.updateimg(dataRecieved,url)
+        if flag == False:
+            return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+    except:
+        return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
+    return responseCode.resp_200(data = None)
+
+
+    
+    
+    
     return responseCode.resp_200(data={"food_id": result})
 
 

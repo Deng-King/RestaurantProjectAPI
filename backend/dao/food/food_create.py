@@ -1,8 +1,8 @@
 import pymysql
-
+from settings import ip
 
 # 图片缺省值设置   成功返回id，失败返回0
-def create(ip, name, info, price, rmd, img='http://124.70.200.142:8080/img/food/food_default.jpg'):
+def create(name:str, info:str, price:float, rmd = 1, img='http://124.70.200.142:8080/img/food/food_default.jpg',ip = ip):
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
@@ -17,8 +17,8 @@ def create(ip, name, info, price, rmd, img='http://124.70.200.142:8080/img/food/
         id = cursor.fetchone()[0]
         cursor.close()
         db.close()
-        return id
+        return id, True
     except:
         cursor.close()
         db.close()
-        return 0
+        return None, False

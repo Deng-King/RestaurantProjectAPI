@@ -74,9 +74,15 @@ async def show_profiles_list():
 
 
 # 4.8 管理员添加新品
-@adminRouter.post("/admin/meals/add", tags=["admin"])
-async def add_meal(meal: schemas.AdminAddFood):
-    return adminService.add_meal(meal)
+@adminRouter.put("/admin/meals/add", tags=["admin"])
+async def add_meal(
+    file:       bytes   = File(...),
+    food_name:  str     = Form(...),
+    food_info:  str     = Form(...),
+    food_price: float   = Form(...),
+    food_rmd:   int     = Form(...)
+    ):
+    return adminService.add_meal(file, food_name, food_info, food_price, food_rmd)
 
 
 # 4.9 管理员删除菜品信息
@@ -97,11 +103,11 @@ async def modify_table_number(table_number:int):
     response = adminService.modify_table_number(table_number)
     return response
 
-# 4.12 管理员上传照片
-@adminRouter.post("/admin/image/photo", tags=["admin"])
-async def create_files(file: bytes = File(...), food_id: str = Form(...)):
-    response = adminService.modify_food_image(file,food_id)
-    return response
+# # 4.12 管理员上传照片
+# @adminRouter.post("/admin/image/photo", tags=["admin"])
+# async def create_files(file: bytes = File(...), food_id: str = Form(...)):
+#     response = adminService.modify_food_image(file,food_id)
+#     return response
 
 # 4.13 管理员返回菜品的信息
 @adminRouter.get("/admin/meal/details/fetch", tags=["admin"])
