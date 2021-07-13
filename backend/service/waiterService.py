@@ -156,7 +156,7 @@ def get_orders():
 def get_order_details(Orderid:int):
     # 订单编号、服务员姓名、创建时间、桌号、总价、
     # 菜品列表（所有信息：菜品编号、菜品数量、菜品状态、
-    # 菜品价格、菜品图形）
+    # 菜品价格、菜品图形，菜品名称）
     
     dataResp = {
         "user_name":str,

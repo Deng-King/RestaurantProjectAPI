@@ -97,9 +97,14 @@ async def modify_table_number(table_number:int):
     response = adminService.modify_table_number(table_number)
     return response
 
-
+# 4.12 管理员上传照片
 @adminRouter.post("/admin/image/photo", tags=["admin"])
 async def create_files(file: bytes = File(...), food_id: str = Form(...)):
     response = adminService.modify_food_image(file,food_id)
     return response
 
+# 4.13 管理员返回菜品的信息
+@adminRouter.get("/admin/meal/details/fetch", tags=["admin"])
+async def get_meal_details(food_id: int):
+    response = adminService.get_meal_details(food_id)
+    return response

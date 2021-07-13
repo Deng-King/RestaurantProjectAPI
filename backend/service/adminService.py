@@ -1,6 +1,7 @@
 from util import responseCode
 from dao.notice import notice_create
 from dao.food import food_create, food_delete, food_update
+from dao.food import food_showone
 from dao.user import user_create
 from dao.user import user_delete
 from dao.user import user_showone
@@ -236,3 +237,28 @@ def modify_food_image(file,food_id:int):
     except:
         return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
     return responseCode.resp_200(data=None)
+
+def get_meal_details(food_id:int):
+    # food_id、food_name、food_info、food_price、food_recommend、food_img
+    dataRecieved, isSuccess = food_showone.show(food_id)
+    print(dataRecieved, isSuccess)
+    if isSuccess == False:
+        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+    elif dataRecieved == None:
+        return responseCode.resp_4xx(code = 400, message = "未找到此菜品", data = None)
+    # dataRecieved内容：
+    # food_id [i][0]
+    # food_name [i][1]
+    # food_info [i][2]
+    # food_price [i][3]
+    # food_rmd [i][4]
+    # food_img [i][5]
+    dataResp = {
+        "food_id":dataRecieved[0],
+        "food_name":dataRecieved[1],
+        "food_info":dataRecieved[2],
+        "food_price":dataRecieved[3],
+        "food_rmd":dataRecieved[4],
+        "food_img":dataRecieved[5],
+    }
+    return responseCode.resp_200(data = dataResp)
