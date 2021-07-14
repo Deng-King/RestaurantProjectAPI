@@ -21,7 +21,7 @@ app.add_middleware(
 
 app.include_router(loginApi.loginRouter, prefix="/api")
 app.include_router(profilesApi.profilesRouter, prefix="/api")
-app.include_router(noticeApi.noticeRouter)
+app.include_router(noticeApi.noticeRouter,prefix="/api")
 app.include_router(waiterApi.waiterRouter, prefix="/api")
 app.include_router(adminApi.adminRouter, prefix="/api")
 app.include_router(cookApi.cookRouter, prefix="/api")
