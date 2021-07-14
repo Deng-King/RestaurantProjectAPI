@@ -15,6 +15,10 @@ async def fetch_all_tables():
 # 2.2 服务员点餐页面获取
 @waiterRouter.get("/waiter/meals/list", tags=["waiter"])
 async def show_meal_list():
+    """
+
+    :return:
+    """
     return waiterService.show_meal_list()
 
 
