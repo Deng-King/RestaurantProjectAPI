@@ -44,6 +44,7 @@ def updatepos(id, position, ip=ip):
         sql = "update user set user_position=%d where user_id = %d" % (position, id)
         cursor.execute(sql)
         db.commit()
+        print("运行了这里")
     except:
         return False
     return True

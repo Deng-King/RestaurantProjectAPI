@@ -224,6 +224,7 @@ def edit_profiles(info:schemas.ProfilesEdit2):
     """
     # 先获取这个id对应的职位，如果id不是管理员，则只能改自己的，如果是管理员，则可以改其他人的
     user_a, user_b = 0, 0  # 这两个是对应a和b的职位，1为管理员
+    print("输出：",info.user_id_a,info.user_id_b,info.tag,info.content)
 
     data_received, success = user_showone.show(info.user_id_a)
     if not success:

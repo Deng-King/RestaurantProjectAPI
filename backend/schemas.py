@@ -24,7 +24,7 @@ class ProfilesEdit(BaseModel):
 class ProfilesEdit2(BaseModel):
     user_id_a : int
     user_id_b : int 
-    tag : str
+    tag : int
     content : str 
 
 
