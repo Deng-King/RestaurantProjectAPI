@@ -83,9 +83,9 @@ def modify_image(file, user_id: int):
     }
     # 定义dataResp
     try:
-        url = "http://124.70.200.142:8080/img/person/"+user_id+".jpg"
+        url = "http://124.70.200.142:8080/img/person/" + str(user_id) + ".jpg"
         # 这里根据user_id更换数据库人员的头像图片链接 
-        path = "/root/tomcat/webapps/img/person/"+user_id+".jpg"
+        path = "/root/tomcat/webapps/img/person/" + str(user_id) + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
         

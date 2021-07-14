@@ -132,9 +132,9 @@ def modify_meal(file,food_id,food_name,food_info,food_price,food_rmd):
     if isSuccess == False:
         return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
     try:
-        url = "http://124.70.200.142:8080/img/food/" + food_id + ".jpg"
+        url = "http://124.70.200.142:8080/img/food/" + str(food_id) + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
-        path = "/root/tomcat/webapps/img/food/" + food_id + ".jpg"
+        path = "/root/tomcat/webapps/img/food/" + str(food_id) + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
         
