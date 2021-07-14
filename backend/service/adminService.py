@@ -49,8 +49,8 @@ def payment(order_id: int):
 
 
 def show_profiles_list():
-    profiles_list, isSuccess = user_showall.show(ip)
-    if isSuccess == False:
+    profiles_list, success = user_showall.show(ip)
+    if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     if len(profiles_list) == 0:
         return responseCode.resp_4xx(code=400, message="用户信息为空")
