@@ -74,6 +74,10 @@ async def get_orders_list():
 # 2.8 服务员对某订单确认结账
 @waiterRouter.get("/waiter/order/states/payment", tags=["waiter"])
 async def order_payment(order_id: int):
+    """
+    :param order_id:订单编号
+    :return:成功与否
+    """
     response = waiterService.payment(order_id)
     return response
 
@@ -81,5 +85,11 @@ async def order_payment(order_id: int):
 # 2.9 服务员获取订单详情
 @waiterRouter.get("/waiter/order/details", tags=["waiter"])
 async def get_order_details(order_id: int):
+    """
+       :param order_id:订单编号
+       :return:服务员姓名、订单编号、创建时间、桌号、总价、
+       菜品列表（所有信息：菜品编号、菜品数量、菜品状态、菜品价格、菜品图形、菜品名字）
+       最后以list套dict的形式返回
+    """
     response = waiterService.get_order_details(order_id)
     return response

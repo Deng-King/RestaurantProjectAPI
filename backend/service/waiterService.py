@@ -131,15 +131,6 @@ def show_cooked_food():
     return responseCode.resp_200(data=food_dict_list)
 
 
-# 2.8 服务员对某订单确认结账
-def payment(order_id: int):
-    success = waiter_updateorder.update(order_id)
-    if not success:
-        return responseCode.resp_4xx(code=400, message="数据库错误")
-    else:
-        return responseCode.resp_200(data=None)
-
-
 # 2.6 服务员更改某一道菜的状态
 def modify_meal_state(info:schemas.OrderState):
     """
@@ -154,8 +145,11 @@ def modify_meal_state(info:schemas.OrderState):
         return responseCode.resp_200(data=None)
 
 
+# 2.7 服务员结单显示页面
 def get_orders():
-    # 订单编号，桌位号、付款状态（默认为待付款），
+    """
+        :return:一个由订单的详细信息组成的dict构成的list
+    """
     order_list, success = order_showall.show()
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
@@ -187,11 +181,27 @@ def get_orders():
         return responseCode.resp_200(data=order_dict_list)
 
 
-def get_order_details(order_id: int):
-    # 订单编号、服务员姓名、创建时间、桌号、总价、
-    # 菜品列表（所有信息：菜品编号、菜品数量、菜品状态、
-    # 菜品价格、菜品图形，菜品名称）
+# 2.8 服务员对某订单确认结账
+def payment(order_id: int):
+    """
+    :param order_id:订单编号
+    :return:成功与否
+    """
+    success = waiter_updateorder.update(order_id)
+    if not success:
+        return responseCode.resp_4xx(code=400, message="数据库错误")
+    else:
+        return responseCode.resp_200(data=None)
 
+
+# 2.9 服务员获取订单详情
+def get_order_details(order_id: int):
+    """
+           :param order_id:订单编号
+           :return:服务员姓名、订单编号、创建时间、桌号、总价、
+           菜品列表（所有信息：菜品编号、菜品数量、菜品状态、菜品价格、菜品图形、菜品名字）
+           最后以list套dict的形式返回
+    """
     data_reformat = {
         "user_name": str,
         "order_id": int,

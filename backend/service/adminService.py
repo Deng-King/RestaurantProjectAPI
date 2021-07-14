@@ -18,7 +18,12 @@ import time
 import schemas
 
 
+# 4.1 发布公告消息
 def post_notice(info: schemas.PostNoticeInfo):
+    """
+        :param info:包含发布人用户编号，发布信息内容，公告标题，重要级别的对象
+        :return:成功与否
+    """
     result = notice_create.create(
         info.user_id,
         info.content,
@@ -32,23 +37,37 @@ def post_notice(info: schemas.PostNoticeInfo):
     return responseCode.resp_200(data=result)
 
 
+# 4.2 管理员对订单进行免费处理
 def freeofcharge(order_id: int):
-    isSuccess = order_pay.update(order_id, 2)
-    if isSuccess == False:
+    """
+        :param order_id:订单编号
+        :return:成功与否
+    """
+    success = order_pay.update(order_id, 2)
+    if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     else:
         return responseCode.resp_200(data=None)
 
 
+# 4.2.1 管理员对订单进行结账处理
 def payment(order_id: int):
-    isSuccess = order_pay.update(order_id, 1)
-    if isSuccess == False:
+    """
+        :param order_id:订单编号
+        :return:成功与失败
+        """
+    success = order_pay.update(order_id, 1)
+    if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     else:
         return responseCode.resp_200(data=None)
 
 
+# 4.3 所有用户个人信息列表展示
 def show_profiles_list():
+    """
+        :return: 一个list，包含字典：{用户编号、用户工号、用户姓名、职位、show（默认为false)}
+    """
     profiles_list, success = user_showall.show(ip)
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
@@ -151,13 +170,12 @@ def modify_meal(file, food_id, food_name, food_info, food_price, food_rmd):
     return responseCode.resp_200(data=None)
 
 
+# 4.5 管理员添加成员
 def create_member(user_number: str, user_position: int, user_gender: int, user_name: str):
-    # user_number: str
-    # user_position: int
-    # user_gender: int
-    # user_name: str
-
-    userImage = ""
+    """
+        :param info:用户工号、职位、性别、姓名
+        :return:成功与否
+    """
     # 下面需要判断职位来选择相关的默认头像
     if user_position == 1:
         # 1代表管理员
@@ -186,49 +204,64 @@ def create_member(user_number: str, user_position: int, user_gender: int, user_n
         return responseCode.resp_4xx(code=500, message="数据库错误")
 
 
+# 4.6 管理员删除成员
 def remover_member(user_id: int):
-    isSuccess = user_delete.delete(user_id)
-    if isSuccess == True:
+    """
+        :param user_id: 用户编号
+        :return:成功与否
+    """
+    success = user_delete.delete(user_id)
+    if success:
         return responseCode.resp_200(data=None)
-    elif isSuccess == "admin":
+    elif success == "admin":
         return responseCode.resp_4xx(code=400, message="不能删除管理员")
     else:
         return responseCode.resp_4xx(code=400, message="数据库出现错误")
 
 
-def edit_profiles(user_id_a: int, user_id_b: int, tag: int, content: str):
+# 4.7 管理员修改成员信息
+def edit_profiles(info:schemas.ProfilesEdit2):
+    """
+        :param info:当前用户编号，修改用户编号，修改码（1：修改职位，2：修改密码），修改内容
+        :return:成功与否
+    """
     # 先获取这个id对应的职位，如果id不是管理员，则只能改自己的，如果是管理员，则可以改其他人的
     user_a, user_b = 0, 0  # 这两个是对应a和b的职位，1为管理员
 
-    dataRecieved, isSuccess = user_showone.show(user_id_a)
-    if isSuccess == False:
+    data_received, success = user_showone.show(info.user_id_a)
+    if not success:
         return responseCode.resp_4xx(code=401, data=None, message="获取id错误")
-    user_a = dataRecieved[3]
+    user_a = data_received[3]
 
-    dataRecieved, isSuccess = user_showone.show(user_id_b)
-    if isSuccess == False:
+    data_received, success = user_showone.show(info.user_id_b)
+    if not success:
         return responseCode.resp_4xx(code=401, data=None, message="获取id错误")
-    user_b = dataRecieved[3]
+    user_b = data_received[3]
 
-    dataRecieved, isSuccess = (), None  # 初始化这两个变量
+    data_received, success = (), None  # 初始化这两个变量
     if user_a == 1 and user_b != 1:  # 如果当前为管理员则可以随便改，但是不可以修改其他管理员
-        if tag == 1:  # 1表示修改职位
-            isSuccess = user_update.updatepos(user_id_b, int(content))
-        elif tag == 2:  # 2表示修改密码
-            isSuccess = user_update.updatepwd(user_id_b, content)
-    elif user_a == user_b == 1 and user_id_a != user_id_b:  # 不可以修改其他管理员
+        if info.tag == 1:  # 1表示修改职位
+            success = user_update.updatepos(info.user_id_b, int(info.content))
+        elif info.tag == 2:  # 2表示修改密码
+            success = user_update.updatepwd(info.user_id_b, info.content)
+    elif user_a == user_b == 1 and info.user_id_a != info.user_id_b:  # 不可以修改其他管理员
         return responseCode.resp_4xx(code=401, data=None, message="不可以修改其他管理员")
-    elif user_id_a == user_id_b:
-        if tag == 1:  # 1表示修改头像
-            isSuccess = user_update.updateimg(user_id_b, content)
-        elif tag == 2:  # 2表示修改密码
-            isSuccess = user_update.updatepwd(user_id_b, content)
+    elif info.user_id_a == info.user_id_b:
+        if info.tag == 1:  # 1表示修改头像
+            success = user_update.updateimg(info.user_id_b, info.content)
+        elif info.tag == 2:  # 2表示修改密码
+            success = user_update.updatepwd(info.user_id_b, info.content)
     else:
         return responseCode.resp_4xx(code=401, data=None, message="此id没有修改其他用户信息的权限")
     return responseCode.resp_200(data=None)
 
 
+# 4.4 个人信息详细信息页面在管理员端的展示
 def show_details(user_id: int):
+    """
+        :param user_id:用户编号
+        :return:用户编号、用户工号、职位、密码、性别、登陆状态、姓名
+    """
     dataRecieved, isSuccess = user_showone.show(user_id)
     # {用户编号、用户工号、职位、密码、性别、登陆状态、姓名}
     dataResp = {

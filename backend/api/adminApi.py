@@ -10,14 +10,14 @@ adminRouter = APIRouter()
 
 # 4.1 发布公告消息
 @adminRouter.post("/announcement/post", tags=["admin"])
-async def post_notice(notice_info: schemas.PostNoticeInfo):
+async def post_notice(info: schemas.PostNoticeInfo):
     """
-        功能:前端发送公告信息，后端将消息存入数据库，并且给相关的接口更新状态，说明现在有新的公告发布。\n
-        参数:发布人用户编号，发布信息内容，公告标题，重要级别\n
-        返回:成功与否\n
+        :param info:包含发布人用户编号，发布信息内容，公告标题，重要级别的对象
+        :return:成功与否
     """
-    response = adminService.post_notice(notice_info)
-    await manager.broadcast(notice_info.user_id, notice_info.title)
+    response = adminService.post_notice(info)
+    # 利用websocket进行广播
+    await manager.broadcast(info.user_id, info.title)
     return response
 
 
@@ -25,9 +25,8 @@ async def post_notice(notice_info: schemas.PostNoticeInfo):
 @adminRouter.get("/admin/order/states/freeofcharge", tags=["admin"])
 async def order_freeofcharge(order_id: int):
     """
-        功能:对订单免单\n
-        参数:订单编号\n
-        返回:成功与失败\n
+    :param order_id:订单编号
+    :return:成功与否
     """
     response = adminService.freeofcharge(order_id)
     return response
@@ -37,9 +36,8 @@ async def order_freeofcharge(order_id: int):
 @adminRouter.get("/admin/order/states/payment", tags=["admin"])
 async def order_payment(order_id: int):
     """
-        功能:对订单结账\n
-        参数:订单编号\n
-        返回:成功与失败\n
+    :param order_id:订单编号
+    :return:成功与失败
     """
     response = adminService.payment(order_id)
     return response
@@ -49,8 +47,7 @@ async def order_payment(order_id: int):
 @adminRouter.get("/admin/profiles", tags=["admin"])
 async def show_profiles_list():
     """
-        返回:一个list，包含字典：{用户编号、
-        用户工号、用户姓名、职位、show（默认为false)}\n
+    :return: 一个list，包含字典：{用户编号、用户工号、用户姓名、职位、show（默认为false)}
     """
     return adminService.show_profiles_list()
 
@@ -59,9 +56,8 @@ async def show_profiles_list():
 @adminRouter.get("/admin/profiles/details", tags=["admin"])
 async def show_profiles_details(user_id: int):
     """
-        参数:用户编号\n
-        返回:\用户编号、用户工号、
-        职位、密码、性别、登陆状态、姓名\n
+    :param user_id:用户编号
+    :return:用户编号、用户工号、职位、密码、性别、登陆状态、姓名
     """
     response = adminService.show_details(user_id)
     return response
@@ -71,8 +67,8 @@ async def show_profiles_details(user_id: int):
 @adminRouter.post("/admin/profiles/add", tags=["admin"])
 async def add_member(info: schemas.AdminAddMember):
     """
-        参数:用户工号、职位、性别、姓名\n
-        返回:成功与否\n
+    :param info:用户工号、职位、性别、姓名
+    :return:成功与否
     """
     response = adminService.create_member(info.user_number,
                                           info.user_position,
@@ -85,8 +81,8 @@ async def add_member(info: schemas.AdminAddMember):
 @adminRouter.get("/admin/profiles/remove", tags=["admin"])
 async def remove_member(user_id: int):
     """
-    参数:用户编号\n
-    返回:成功与否\n
+    :param user_id: 用户编号
+    :return:成功与否
     """
     response = adminService.remover_member(user_id)
     return response
@@ -96,14 +92,10 @@ async def remove_member(user_id: int):
 @adminRouter.post("/admin/profiles/modify", tags=["admin"])
 async def edit_profiles(info: schemas.ProfilesEdit2):
     """
-        参数:当前用户编号，修改用户编号，
-        修改码（1：修改职位，2：修改密码），修改内容\n
-        返回:成功与否\n
+    :param info:当前用户编号，修改用户编号，修改码（1：修改职位，2：修改密码），修改内容
+    :return:成功与否
     """
-    response = adminService.edit_profiles(info.user_id_a,
-                                          info.user_id_b,
-                                          info.tag,
-                                          info.content)
+    response = adminService.edit_profiles(info)
     return response
 
 
