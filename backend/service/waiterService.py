@@ -20,7 +20,7 @@ def fetch_all_tables():
         return responseCode.resp_4xx(code=400, message="数据库错误")
 
     table_dict_list = []
-    for i in table_list:
+    for i in range(len(table_list)):
         table_dict_list.append({
             "table_id": table_list[i][0],
             "table_state": table_list[i][1]
