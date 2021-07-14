@@ -79,8 +79,14 @@ async def show_profiles_list():
 
 # 4.8 管理员添加新品
 @adminRouter.post("/admin/meals/add", tags=["admin"])
-async def add_meal(meal: schemas.AdminAddFood):
-    return adminService.add_meal(meal)
+async def add_meal(
+    file:       bytes   = File(...),
+    food_name:  str     = Form(...),
+    food_info:  str     = Form(...),
+    food_price: str   = Form(...),
+    food_rmd:   int     = Form(...)
+    ):
+    return adminService.add_meal(file, food_name, food_info, float(food_price), food_rmd)
 
 
 # 4.9 管理员删除菜品信息

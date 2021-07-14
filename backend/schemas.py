@@ -18,9 +18,7 @@ class Profiles(BaseModel):
 
 class ProfilesEdit(BaseModel):
     # user_id_a, user_id_b, tag, content
-    user_id_a: int
-    user_id_b: int
-    tag: int
+    user_id: int
     content: str
 
 
@@ -47,9 +45,11 @@ class AdminAddFood(BaseModel):
 
 
 class ModifyMeal(BaseModel):
-    id: int
-    type: str
-    value: str
+    food_id: int
+    food_name: str
+    food_info: str
+    food_price: float
+    food_rmd: int
 
 
 class ModifyOrder(BaseModel):
@@ -80,4 +80,7 @@ class TableNumber(BaseModel):
 
 class OrderState(BaseModel):
     order_id:int
+    food_id:int
+    
+class FoodId(BaseModel):
     food_id:int
