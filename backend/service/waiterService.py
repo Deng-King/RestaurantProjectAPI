@@ -5,7 +5,7 @@ from dao.order import order_create
 from dao.user import user_showone
 from settings import ip
 import schemas
-from dao.waiter import waiter_check, waiter_showall
+from dao.waiter import waiter_showall
 from dao.order import order_pay
 from dao.order import order_showall
 from dao.order import orderinfo_show
@@ -117,11 +117,12 @@ def show_cooked_food():
     if not flag:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     foodURL = ""
-    # 将菜品名与菜品信息进行比较
     for i in food_list:
+        # 将菜品名与菜品信息进行比较,获取图片地址
         for item in foodData:
             if item[1] == i[0]:
                 foodURL = item[4]
+        # 建立字典
         food_dict_list.append({
             "food_name": i[0],
             "food_num": i[1],

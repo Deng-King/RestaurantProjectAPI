@@ -17,7 +17,7 @@ async def post_notice(notice_info: schemas.PostNoticeInfo):
         返回:成功与否\n
     """
     response = adminService.post_notice(notice_info)
-    await manager.broadcast(notice_info.title)
+    await manager.broadcast(notice_info.user_id,notice_info.title)
     return response
 
 

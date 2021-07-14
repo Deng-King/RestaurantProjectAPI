@@ -4,7 +4,7 @@ import pymysql
 # 显示notice_id对应公告的详细信息，
 # 成功返回notice_id,user_id,user_name,notice_content,notice_title,notice_level,notice_create_time以及true
 # 失败返回none和false
-def show(ip = ip,notice_id):
+def show(notice_id,ip = ip):
     try:
         # 打开数据库连接
         db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")

@@ -1,5 +1,6 @@
 from fastapi import FastAPI, WebSocket
 from typing import List
+from dao.user import user_showone
 
 
 class ConnectionManager:
@@ -13,12 +14,13 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
-
-    async def broadcast(self, message: str):
+    async def broadcast(self,user_id:int, message: str):
         print(self.active_connections)
         for connection in self.active_connections:
+            url = str(connection.url)
+            id = int(url.split('/')[-1])
+            if user_showone.show(id)[0][3] == user_id:
+                continue
             await connection.send_text(message)
 
 

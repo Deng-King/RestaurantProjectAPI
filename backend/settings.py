@@ -16,7 +16,7 @@ html = """
         <ul id='messages'>
         </ul>
         <script>
-            var client_id = Date.now()
+            var client_id = 1
             document.querySelector("#ws-id").textContent = client_id;
             var ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
             ws.onmessage = function(event) {
@@ -41,4 +41,14 @@ html = """
     功能:\n
     参数:\n
     返回:\n
+"""
+
+"""
+print(self.active_connections)
+        for connection in self.active_connections:
+            url = str(connection.url)
+            id = int(url.split('/')[-1])
+            if user_showone.show(id)[0][3] == 1:
+                continue
+            await connection.send_text(message)
 """
