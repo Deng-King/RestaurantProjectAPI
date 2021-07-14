@@ -170,3 +170,13 @@ async def get_meal_details(food_id: int):
     """
     response = adminService.get_meal_details(food_id)
     return response
+
+# 4.14 管理员获取所有状态的订单
+@adminRouter.get("/admin/orders/list", tags=["admin"])
+async def get_orders():
+    """
+        参数:无\n
+        返回:一个list，包含状态为n的订单，其中包含{订单编号，桌位号、付款状态，订单创建时间}\n
+    """
+    response = adminService.get_orders()
+    return response
