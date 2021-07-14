@@ -9,6 +9,7 @@ from dao.user import user_showone
 from dao.user import user_update
 from dao.user import user_showall
 from dao.order import order_pay
+from dao.order import order_showall
 from dao.table import table_create
 from dao.table import table_delete
 from dao.table import table_showall
@@ -337,3 +338,23 @@ def get_meal_details(food_id: int):
         "food_img": dataRecieved[5],
     }
     return responseCode.resp_200(data=dataResp)
+
+def get_orders():
+    # 订单编号，桌位号、付款状态（默认为待付款），
+    dataRecieved, isSuccess = order_showall.show()
+
+    dataResp = []
+    for i in range(len(dataRecieved)):
+        dic = {
+            "order_id": dataRecieved[i][0],
+            "order_table": dataRecieved[i][1],
+            "order_state": dataRecieved[i][2],
+            "order_total": dataRecieved[i][3],
+            "order_create_time": dataRecieved[i][4]
+        }
+        dataResp.append(dic)
+
+    if isSuccess == False:
+        return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
+    else:
+        return responseCode.resp_200(data=dataResp)
