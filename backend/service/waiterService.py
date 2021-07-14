@@ -193,7 +193,8 @@ def get_order_details(Orderid:int):
     dataResp["order_id"] = dataRecieved[i][0]
     user, flag = user_showone.show(dataRecieved[i][5])
     if flag == "not found":
-        return responseCode.resp_4xx(code = 400, message = "未找到数据", data = None)
+        return responseCode.resp_4xx(code = 400, message = "未找到用户(id为:"+\
+            str(dataRecieved[i][5])+")的数据，请检查数据库", data = None)
     elif flag == False:
         return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
     dataResp["user_name"] = user[2]
