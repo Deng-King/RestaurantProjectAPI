@@ -113,12 +113,17 @@ def show_cooked_food():
     food_data, flag = food_showall.show()  # 调用数据库函数，获取全部已有的菜品信息，
     if not flag:
         return responseCode.resp_4xx(code=400, message="数据库错误")
+    
+    # 初始化参数
     food_url = ""
+    food_id = 0
+
     for i in food_list:
         # 将菜品名与菜品信息进行比较,获取图片地址
         for item in food_data:
             if item[1] == i[0]:
                 food_url = item[4]
+                food_id = item[0]
         # 建立字典
         food_dict_list.append({
             "food_name": i[0],
@@ -126,7 +131,8 @@ def show_cooked_food():
             "order_id": i[2],
             "order_table": i[3],
             "food_state": i[4],
-            "food_img": food_url
+            "food_img": food_url,
+            "food_id":food_id
         })
     return responseCode.resp_200(data=food_dict_list)
 
