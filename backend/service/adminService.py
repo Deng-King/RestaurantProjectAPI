@@ -91,29 +91,25 @@ def show_profiles_list():
 
 def add_meal(file, food_name, food_info, food_price, food_rmd):
     print("输出：", type(food_price), food_name, food_info, food_price, food_rmd)
-    dataRecieved, isSuccess = food_create.create(food_name, food_info, food_price, rmd=int(food_rmd))
-    if isSuccess == False:
+    data, success = food_create.create(food_name, food_info, food_price, rmd=int(food_rmd))
+    if not success:
         return responseCode.resp_4xx(code=400, message="创建菜品失败")
-
     try:
         # tick 是当前的时间(单位s)
         ticks = str(int(time.time()))
-        url = "http://124.70.200.142:8080/img/food/" + dataRecieved + ".jpg"
+        url = "http://124.70.200.142:8080/img/food/" + data + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
-        path = "/root/tomcat/webapps/img/food/" + dataRecieved + ".jpg"
+        path = "/root/tomcat/webapps/img/food/" + data + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
-
-        dataResp["food_img"] = url
-
-        flag = food_update.updateimg(dataRecieved, url)
+        flag = food_update.updateimg(data, url)
         if flag == False:
             return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
+        return responseCode.resp_200(data={"food_id": data})
     except:
         return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
-    return responseCode.resp_200(data=None)
 
-    return responseCode.resp_200(data={"food_id": result})
+
 
 
 def remove_meal(food_id):
