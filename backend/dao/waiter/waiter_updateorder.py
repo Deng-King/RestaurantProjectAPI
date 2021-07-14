@@ -19,7 +19,7 @@ def update(order_id, ip=ip):
             if i[0] < 2:
                 cursor.close()
                 db.close()
-                return False
+                return "有菜品未上桌"
         # 根据订单编号将对应的未付款订单状态改为准备付款
         sql = "update orderlist set order_state=1 where order_id = %d and order_state=0" % (order_id)
         cursor.execute(sql)

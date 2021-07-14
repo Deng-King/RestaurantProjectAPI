@@ -172,3 +172,13 @@ async def get_orders():
     """
     response = adminService.get_orders()
     return response
+
+# 4.15 管理员删除公告
+@adminRouter.get("/admin/announcement/delete", tags=["admin"])
+async def announcement_delete(notice_id:int):
+    """
+        参数:notice_id\n
+        返回:公告是否删除\n
+    """
+    response = adminService.announcement_delete(notice_id)
+    return response

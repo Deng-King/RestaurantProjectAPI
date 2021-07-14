@@ -188,7 +188,9 @@ def payment(order_id: int):
     :return:成功与否
     """
     success = waiter_updateorder.update(order_id)
-    if not success:
+    if success == "有菜品未上桌":
+        return responseCode.resp_4xx(code=400, message="有菜品未上桌")
+    elif not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     else:
         return responseCode.resp_200(data=None)
@@ -275,6 +277,10 @@ def get_order_details(order_id: int):
             # food_img, [i][5]
             if not success:
                 return responseCode.resp_4xx(code=400, message="数据库错误")
+            elif data_food == None:
+                return responseCode.resp_4xx(code=400, message="未找到(food_id = "\
+                     + str(order_list[i][1]) + ")的数据，请检查数据库")
+            
             dic["food_price"] = data_food[3]
             dic["food_img"] = data_food[5]
             dic["food_name"] = data_food[1]

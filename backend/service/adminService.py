@@ -1,5 +1,6 @@
 from util import responseCode
 from dao.notice import notice_create
+from dao.notice import notice_delete
 from dao.food import food_create, food_delete, food_update
 from dao.food import food_showone
 from dao.food import food_update
@@ -391,3 +392,12 @@ def get_orders():
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     else:
         return responseCode.resp_200(data=dataResp)
+
+def announcement_delete(notice_id:int):
+    isSuccess = notice_delete.delete(notice_id)
+    if isSuccess == "未找到此公告":
+        return responseCode.resp_4xx(code = 400, message = "未找到notice_id为"\
+            + str(notice_id) + "的公告，请检查数据库", data = None)
+    elif not isSuccess:
+        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+    return responseCode.resp_200(data = None)
