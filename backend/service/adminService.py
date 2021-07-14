@@ -17,7 +17,6 @@ import time
 import schemas
 
 
-
 def post_notice(info: schemas.PostNoticeInfo):
     result = notice_create.create(
         info.user_id,
@@ -25,10 +24,10 @@ def post_notice(info: schemas.PostNoticeInfo):
         info.title,
         info.notice_level
     )
-    if result == False:
-        return responseCode.resp_4xx(data = None, code = 400, message="数据库错误")
+    if not result:
+        return responseCode.resp_4xx(data=None, code=400, message="数据库错误")
     elif result == "无法连接数据库":
-        return responseCode.resp_4xx(data = None, code = 400, message="无法连接数据库")
+        return responseCode.resp_4xx(data=None, code=400, message="无法连接数据库")
     return responseCode.resp_200(data=result)
 
 
@@ -57,24 +56,24 @@ def show_profiles_list():
     profiles_dict_list = []
     for i in profiles_list:
         profiles_dict_list.append({
-            "user_id":i[0],
-            "user_number":i[1],
-            "user_name":i[2],
-            "user_position":i[3],
-            "user_img":i[4],
-            "user_gender":i[5],
-            "user_state":i[6],
+            "user_id": i[0],
+            "user_number": i[1],
+            "user_name": i[2],
+            "user_position": i[3],
+            "user_img": i[4],
+            "user_gender": i[5],
+            "user_state": i[6],
             "show": False,
         })
     return responseCode.resp_200(data=profiles_dict_list)
 
 
 def add_meal(file, food_name, food_info, food_price, food_rmd):
-    print("输出：",type(food_price),food_name,food_info,food_price,food_rmd)
-    dataRecieved, isSuccess = food_create.create(food_name,food_info,food_price,rmd = int(food_rmd))
+    print("输出：", type(food_price), food_name, food_info, food_price, food_rmd)
+    dataRecieved, isSuccess = food_create.create(food_name, food_info, food_price, rmd=int(food_rmd))
     if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="创建菜品失败")
-    
+
     try:
         # tick 是当前的时间(单位s)
         ticks = str(int(time.time()))
@@ -83,31 +82,27 @@ def add_meal(file, food_name, food_info, food_price, food_rmd):
         path = "/root/tomcat/webapps/img/food/" + dataRecieved + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
-        
+
         dataResp["food_img"] = url
-        
-        flag = food_update.updateimg(dataRecieved,url)
+
+        flag = food_update.updateimg(dataRecieved, url)
         if flag == False:
-            return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+            return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     except:
         return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
-    return responseCode.resp_200(data = None)
+    return responseCode.resp_200(data=None)
 
-
-    
-    
-    
     return responseCode.resp_200(data={"food_id": result})
 
 
 def remove_meal(food_id):
     result = food_delete.delete(food_id)
     if result == False:
-        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+        return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     return responseCode.resp_200(data=result)
 
 
-def modify_meal(file,food_id,food_name,food_info,food_price,food_rmd):
+def modify_meal(file, food_id, food_name, food_info, food_price, food_rmd):
     # file,
     # int(food_id),
     # food_name,
@@ -117,19 +112,19 @@ def modify_meal(file,food_id,food_name,food_info,food_price,food_rmd):
     Flags = []
 
     flag = False
-    flag = food_update.updatename(food_id,food_name)
+    flag = food_update.updatename(food_id, food_name)
     Flags.append(flag)
 
     flag = False
-    flag = food_update.updateinfo(food_id,food_info)
+    flag = food_update.updateinfo(food_id, food_info)
     Flags.append(flag)
 
     flag = False
-    flag = food_update.updateprice(food_id,float(food_price))
+    flag = food_update.updateprice(food_id, float(food_price))
     Flags.append(flag)
 
     flag = False
-    flag = food_update.updatermd(food_id,int(food_rmd))
+    flag = food_update.updatermd(food_id, int(food_rmd))
     Flags.append(flag)
 
     isSuccess = True
@@ -137,7 +132,7 @@ def modify_meal(file,food_id,food_name,food_info,food_price,food_rmd):
         isSuccess = isSuccess and item
 
     if isSuccess == False:
-        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+        return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     try:
         # tick 是当前的时间(单位s)
         ticks = str(int(time.time()))
@@ -146,14 +141,13 @@ def modify_meal(file,food_id,food_name,food_info,food_price,food_rmd):
         path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
-        
-        flag = food_update.updateimg(food_id,url)
+
+        flag = food_update.updateimg(food_id, url)
         if flag == False:
-            return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+            return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     except:
         return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
-    return responseCode.resp_200(data = None)
-
+    return responseCode.resp_200(data=None)
 
 
 def create_member(user_number: str, user_position: int, user_gender: int, user_name: str):
@@ -174,17 +168,15 @@ def create_member(user_number: str, user_position: int, user_gender: int, user_n
         # 3代表厨师
         userImage = "http://124.70.200.142:8080/img/person/cook.jpg"
     else:
-        return responseCode.resp_4xx(code = 400, message = '没有此职位', data = None)
-
-
+        return responseCode.resp_4xx(code=400, message='没有此职位', data=None)
 
     msgRecived = user_create.create(
         number=user_number,
         position=user_position,
         gender=user_gender,
         name=user_name,
-        img = userImage
-        )
+        img=userImage
+    )
     if msgRecived == '创建成功':
         return responseCode.resp_200(data=None)
     elif msgRecived == '用户已存在':
@@ -253,23 +245,23 @@ def show_details(user_id: int):
         return responseCode.resp_200(data=dataResp)
 
 
-def modify_table_number(table_number:int):
+def modify_table_number(table_number: int):
     dataRecieved, isSuccess = table_showall.show()
     if isSuccess == False:
-        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+        return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     # 目前的桌子数量
     currentTableNum = len(dataRecieved) + 1
-    
+
     # 这里要判断目前的桌子上面是否空闲
     # 一旦有任何一张桌子空闲则返回401无权限错误
     for table in dataRecieved:
         if table[1] == 1:
-            return responseCode.resp_4xx(code = 401, message = "有桌位被占用，你没有权限修改桌子数量",data = None)
-    
+            return responseCode.resp_4xx(code=401, message="有桌位被占用，你没有权限修改桌子数量", data=None)
+
     # 下面有三种情况，小于等于和大于
     if table_number == currentTableNum:
         # 等于则返回错误
-        return responseCode.resp_4xx(code = 400, message = "桌子数量相等",data = None)
+        return responseCode.resp_4xx(code=400, message="桌子数量相等", data=None)
     elif table_number < currentTableNum:
         # 如果修改的桌子数量比之前大，则删除桌子
         diff = abs(table_number - currentTableNum)
@@ -285,22 +277,22 @@ def modify_table_number(table_number:int):
                 isSuccess = False
         # 下面的代码判断添加是否成功决定返回值
         if isSuccess == False:
-            msg = "删除桌位请求出现错误，目前已成功删除" + str(i+1) + "张桌位"
-            return responseCode.resp_4xx(code = 400, message = msg, data = None)
+            msg = "删除桌位请求出现错误，目前已成功删除" + str(i + 1) + "张桌位"
+            return responseCode.resp_4xx(code=400, message=msg, data=None)
         else:
-            return responseCode.resp_200(data = None)
+            return responseCode.resp_200(data=None)
     else:
         # 如果修改的桌子数量比之前小，则增加桌子
         diff = abs(table_number - currentTableNum + 1)
         flag = table_create.create(diff)
         if flag == False:
-            return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
-        return responseCode.resp_200(data = None)
-    
+            return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
+        return responseCode.resp_200(data=None)
 
-def modify_food_image(file,food_id:int):
+
+def modify_food_image(file, food_id: int):
     dataResp = {
-            "food_img":str
+        "food_img": str
     }
     try:
         # tick 是当前的时间(单位s)
@@ -310,24 +302,25 @@ def modify_food_image(file,food_id:int):
         path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
-        
+
         dataResp["food_img"] = url
-        
-        flag = food_update.updateimg(food_id,url)
+
+        flag = food_update.updateimg(food_id, url)
         if flag == False:
-            return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+            return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     except:
         return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
-    return responseCode.resp_200(data = dataResp)
+    return responseCode.resp_200(data=dataResp)
 
-def get_meal_details(food_id:int):
+
+def get_meal_details(food_id: int):
     # food_id、food_name、food_info、food_price、food_recommend、food_img
     dataRecieved, isSuccess = food_showone.show(food_id)
     print(dataRecieved, isSuccess)
     if isSuccess == False:
-        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
+        return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     elif dataRecieved == None:
-        return responseCode.resp_4xx(code = 400, message = "未找到此菜品", data = None)
+        return responseCode.resp_4xx(code=400, message="未找到此菜品", data=None)
     # dataRecieved内容：
     # food_id [i][0]
     # food_name [i][1]
@@ -336,11 +329,11 @@ def get_meal_details(food_id:int):
     # food_rmd [i][4]
     # food_img [i][5]
     dataResp = {
-        "food_id":dataRecieved[0],
-        "food_name":dataRecieved[1],
-        "food_info":dataRecieved[2],
-        "food_price":dataRecieved[3],
-        "food_rmd":dataRecieved[4],
-        "food_img":dataRecieved[5],
+        "food_id": dataRecieved[0],
+        "food_name": dataRecieved[1],
+        "food_info": dataRecieved[2],
+        "food_price": dataRecieved[3],
+        "food_rmd": dataRecieved[4],
+        "food_img": dataRecieved[5],
     }
-    return responseCode.resp_200(data = dataResp)
+    return responseCode.resp_200(data=dataResp)

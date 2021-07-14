@@ -16,8 +16,7 @@ async def fetch_all_tables():
 @waiterRouter.get("/waiter/meals/list", tags=["waiter"])
 async def show_meal_list():
     """
-
-    :return:
+    :return: 由dict型的菜品组成的list
     """
     return waiterService.show_meal_list()
 
@@ -25,7 +24,30 @@ async def show_meal_list():
 # 2.3 服务员菜品详细页面
 @waiterRouter.get("/waiter/meals/list/details/", tags=["waiter"])
 async def show_meal_info(food_id: int):
+    """
+    :param food_id: 菜品id
+    :return: 菜品详细信息构成的字典
+    """
     return waiterService.show_meal_info(food_id)
+
+
+# 2.4 服务员点餐下单
+@waiterRouter.post("/waiter/order/post", tags=["waiter"])
+async def post_order(info: schemas.OrderInfo):
+    """
+    :param info: 包含订单各种信息的一个类
+    :return: 成功与否
+    """
+    return waiterService.post_order(info)
+
+
+# 2.5 服务员取菜列表显示
+@waiterRouter.get("/waiter/meals/states/fetch", tags=["waiter"])
+async def show_cooked_food():
+    """
+    :return: 由待上菜订单信息dict组成的list
+    """
+    return waiterService.show_cooked_food()
 
 
 # 2.6 服务员更改某一道菜的状态
@@ -40,18 +62,6 @@ async def modify_meal_state(info: schemas.OrderState):
 async def get_orders_list():
     response = waiterService.get_orders()
     return response
-
-
-# 2.4 服务员点餐下单
-@waiterRouter.post("/waiter/order/post", tags=["waiter"])
-async def post_order(info: schemas.OrderInfo):
-    return waiterService.post_order(info)
-
-
-# 2.5 服务员取菜列表显示
-@waiterRouter.get("/waiter/meals/states/fetch", tags=["waiter"])
-async def show_cooked_food():
-    return waiterService.show_cooked_food()
 
 
 # 2.8 服务员对某订单确认结账
