@@ -21,7 +21,7 @@ app.add_middleware(
 
 app.include_router(loginApi.loginRouter, prefix="/api")
 app.include_router(profilesApi.profilesRouter, prefix="/api")
-app.include_router(noticeApi.noticeRouter)
+app.include_router(noticeApi.noticeRouter,prefix="/api")
 app.include_router(waiterApi.waiterRouter, prefix="/api")
 app.include_router(adminApi.adminRouter, prefix="/api")
 app.include_router(cookApi.cookRouter, prefix="/api")
@@ -46,5 +46,5 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app='main:app', host="127.0.0.1", port=8000, reload=True, debug=True)
+    uvicorn.run(app='main:app', host="192.168.229.250", port=8000, reload=True, debug=True)
     # uvicorn main:app --reload
