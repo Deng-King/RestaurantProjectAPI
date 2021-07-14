@@ -2,6 +2,7 @@ from util import responseCode
 from dao.user import user_logout
 from dao.user import user_showone
 from dao.user import user_update
+import time
 
 
 def exit(id: int):
@@ -83,9 +84,11 @@ def modify_image(file, user_id: int):
     }
     # 定义dataResp
     try:
-        url = "http://124.70.200.142:8080/img/person/" + str(user_id) + ".jpg"
+        # tick 是当前的时间(单位s)
+        ticks = str(int(time.time()))
+        url = "http://124.70.200.142:8080/img/person/" + ticks + ".jpg"
         # 这里根据user_id更换数据库人员的头像图片链接 
-        path = "/root/tomcat/webapps/img/person/" + str(user_id) + ".jpg"
+        path = "/root/tomcat/webapps/img/person/" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
         

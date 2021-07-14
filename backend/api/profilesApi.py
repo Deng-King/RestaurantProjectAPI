@@ -31,6 +31,11 @@ async def get_profiles_details(user_id: int):
 
 @profilesRouter.post("/profiles/edit", tags=["profiles"])
 async def edit_profiles(info: schemas.ProfilesEdit):
+    """
+    接口功能：根据前端返回的信息修改数库个人信息内容\n
+    接收参数：user_number(str), user_pwd(str)\n
+    返回数据：data = {"user_id": id, "user_position": position}\n
+    """
     # 当前用户编号，修改用户编号，修改码（1：修改头像，2：修改密码），修改内容
     # user_id_a, user_id_b, tag, content
     response = profilesService.edit_profiles(info.user_id_a,

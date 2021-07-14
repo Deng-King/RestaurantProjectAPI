@@ -55,6 +55,11 @@ async def add_member(info: schemas.AdminAddMember):
 # 4.6 管理员删除成员
 @adminRouter.get("/admin/profiles/remove", tags=["admin"])
 async def remove_member(user_id: int):
+    """
+    接口功能：通过user_id查找对应的员工，将其工作状态修改为“离职”\n
+    接收参数：user_id(int)\n
+    返回数据：data = True or False\n
+    """
     response = adminService.remover_member(user_id)
     return response
 
@@ -107,11 +112,11 @@ async def modify_table_number(table_number: int):
     response = adminService.modify_table_number(table_number)
     return response
 
-# 4.12 管理员上传照片
-@adminRouter.post("/admin/image/photo", tags=["admin"])
-async def create_files(file: bytes = File(...), food_id: int = Form(...)):
-    response = adminService.modify_food_image(file, food_id)
-    return response
+# # 4.12 管理员上传照片
+# @adminRouter.post("/admin/image/photo", tags=["admin"])
+# async def create_files(file: bytes = File(...), food_id: int = Form(...)):
+#     response = adminService.modify_food_image(file, food_id)
+#     return response
 
 # 4.13 管理员返回菜品的信息
 @adminRouter.get("/admin/meal/details/fetch", tags=["admin"])

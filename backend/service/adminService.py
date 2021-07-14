@@ -13,6 +13,7 @@ from dao.table import table_create
 from dao.table import table_delete
 from dao.table import table_showall
 from settings import ip
+import time
 import schemas
 
 
@@ -24,6 +25,10 @@ def post_notice(info: schemas.PostNoticeInfo):
         info.title,
         info.notice_level
     )
+    if result == False:
+        return responseCode.resp_4xx(data = None, code = 400, message="数据库错误")
+    elif result == "无法连接数据库":
+        return responseCode.resp_4xx(data = None, code = 400, message="无法连接数据库")
     return responseCode.resp_200(data=result)
 
 
@@ -71,6 +76,8 @@ def add_meal(file, food_name, food_info, food_price, food_rmd):
         return responseCode.resp_4xx(code=400, message="创建菜品失败")
     
     try:
+        # tick 是当前的时间(单位s)
+        ticks = str(int(time.time()))
         url = "http://124.70.200.142:8080/img/food/" + dataRecieved + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
         path = "/root/tomcat/webapps/img/food/" + dataRecieved + ".jpg"
@@ -132,9 +139,11 @@ def modify_meal(file,food_id,food_name,food_info,food_price,food_rmd):
     if isSuccess == False:
         return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
     try:
-        url = "http://124.70.200.142:8080/img/food/" + str(food_id) + ".jpg"
+        # tick 是当前的时间(单位s)
+        ticks = str(int(time.time()))
+        url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
-        path = "/root/tomcat/webapps/img/food/" + str(food_id) + ".jpg"
+        path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
         
@@ -294,9 +303,11 @@ def modify_food_image(file,food_id:int):
             "food_img":str
     }
     try:
-        url = "http://124.70.200.142:8080/img/food/" + food_id + ".jpg"
+        # tick 是当前的时间(单位s)
+        ticks = str(int(time.time()))
+        url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
-        path = "/root/tomcat/webapps/img/food/" + food_id + ".jpg"
+        path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
         
