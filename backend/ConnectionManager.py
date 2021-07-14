@@ -1,4 +1,4 @@
-from fastapi import FastAPI, WebSocket
+from fastapi import WebSocket
 from typing import List
 from dao.user import user_showone
 
@@ -14,7 +14,7 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
-    async def broadcast(self,user_id:int, message: str):
+    async def broadcast(self, user_id: int, message: str):
         print(self.active_connections)
         for connection in self.active_connections:
             url = str(connection.url)

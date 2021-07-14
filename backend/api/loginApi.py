@@ -5,12 +5,12 @@ import schemas
 loginRouter = APIRouter()
 
 
+# 1.1登陆和身份验证功能
 @loginRouter.post("/login", tags=["log"])
-async def sign_in(info: schemas.LoginInfo):
+async def login(info: schemas.LoginInfo):
     """
-    功能:前端提供账号与密码，后端以此查询数据库\n
-    参数:账号和密码\n
-    返回:用户编号、用户编号对应的身份\n
+    :param info:一个包含登录信息的对象
+    :return:用户编号、用户编号对应的身份
     """
-    response = loginService.login(info.user_number, info.user_pwd)
+    response = loginService.login(info)
     return response

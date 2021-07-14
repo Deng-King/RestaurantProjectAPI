@@ -17,7 +17,7 @@ async def post_notice(notice_info: schemas.PostNoticeInfo):
         返回:成功与否\n
     """
     response = adminService.post_notice(notice_info)
-    await manager.broadcast(notice_info.user_id,notice_info.title)
+    await manager.broadcast(notice_info.user_id, notice_info.title)
     return response
 
 
@@ -93,7 +93,7 @@ async def remove_member(user_id: int):
 
 
 # 4.7 管理员修改成员信息
-@adminRouter.post("/admin/profiles/modify",tags=["admin"])
+@adminRouter.post("/admin/profiles/modify", tags=["admin"])
 async def edit_profiles(info: schemas.ProfilesEdit2):
     """
         参数:当前用户编号，修改用户编号，
@@ -110,12 +110,12 @@ async def edit_profiles(info: schemas.ProfilesEdit2):
 # 4.8 管理员添加新品
 @adminRouter.post("/admin/meals/add", tags=["admin"])
 async def add_meal(
-    file:       bytes   = File(...),
-    food_name:  str     = Form(...),
-    food_info:  str     = Form(...),
-    food_price: str   = Form(...),
-    food_rmd:   int     = Form(...)
-    ):
+        file: bytes = File(...),
+        food_name: str = Form(...),
+        food_info: str = Form(...),
+        food_price: str = Form(...),
+        food_rmd: int = Form(...)
+):
     """
         参数:菜品编号，菜品名称，
         菜品介绍，图像路径，菜品价格，是否推荐\n
@@ -153,6 +153,7 @@ async def modify_table_number(table_number: int):
     """
     response = adminService.modify_table_number(table_number)
     return response
+
 
 # # 4.12 管理员上传照片
 # @adminRouter.post("/admin/image/photo", tags=["admin"])

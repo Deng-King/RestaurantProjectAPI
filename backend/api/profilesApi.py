@@ -7,10 +7,13 @@ import schemas
 profilesRouter = APIRouter()
 
 
+# 1.5退出请求 ***********要改
 @profilesRouter.post("/profiles/exit", tags=["profiles"])
 async def sign_out(info: schemas.ProfilesExit):
-    # user_number: str
-    # user_pwd: str
+    """
+    :param info:
+    :return:
+    """
     response = profilesService.exit(info.user_id)
     return response
 

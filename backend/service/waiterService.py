@@ -105,7 +105,7 @@ def show_cooked_food():
     """
         :return: 由待上菜订单信息dict组成的list
     """
-    food_list, isSuccess = waiter_showall.show(ip) # 调用数据库函数，得到待上菜信息列表
+    food_list, isSuccess = waiter_showall.show(ip)  # 调用数据库函数，得到待上菜信息列表
     # 检验取回的list是否有效
     if not isSuccess:
         return responseCode.resp_4xx(code=400, message="数据库错误")
@@ -153,25 +153,34 @@ def modify_meal_state(order_id: int, food_id: int):
 
 def get_orders():
     # 订单编号，桌位号、付款状态（默认为待付款），
-    dataRecieved, isSuccess = order_showall.show()
+    order_list, isSuccess = order_showall.show()
 
-    dataResp = []
-    for i in range(len(dataRecieved)):
-        if dataRecieved[i][2] != 0:
+    order_dict_list = []
+    for order in order_list:
+        if order[2] != 0:
             continue
-        dic = {
-            "order_id": dataRecieved[i][0],
-            "order_table": dataRecieved[i][1],
-            "order_state": dataRecieved[i][2],
-            "order_total": dataRecieved[i][3],
-            "order_create_time": dataRecieved[i][4]
-        }
-        dataResp.append(dic)
+        table_food_list, success = orderinfo_show.show(order[0])
+        if not success:
+            return responseCode.resp_4xx(code=400, message="访问订单菜品信息错误")
+        complete = True
+        for food in table_food_list:
+            if food[3] != 1:
+                complete = False
+                break
 
-    if isSuccess == False:
+        order_dict_list.append({
+            "order_id": order[0],
+            "order_table": order[1],
+            "order_state": order[2],
+            "order_total": order[3],
+            "order_create_time": order[4],
+            "order_complete": complete
+        })
+
+    if not isSuccess:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     else:
-        return responseCode.resp_200(data=dataResp)
+        return responseCode.resp_200(data=order_dict_list)
 
 
 def get_order_details(Orderid: int):
