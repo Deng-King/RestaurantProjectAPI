@@ -11,20 +11,21 @@ from dao.order import order_showall
 from dao.order import orderinfo_show
 from dao.waiter import waiter_updatefood
 from dao.waiter import waiter_updateorder
+from dao.table import table_showall
 import settings
 
 
 # 2.1 服务员桌位请求显示
 def fetch_all_tables():
-    dataRecieved, isSuccess = waiter_check.show()
+    dataRecieved, isSuccess = table_showall.show()
     if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="数据库错误")
 
     dataResp = []
     for i in range(len(dataRecieved)):
         dic = {
-            "table_number": dataRecieved[i][1],
-            "state": dataRecieved[i][2]
+            "table_id": dataRecieved[i][0],
+            "table_state": dataRecieved[i][1]
         }
         dataResp.append(dic)
     return responseCode.resp_200(data=dataResp)
@@ -126,7 +127,7 @@ def payment(Orderid: int):
 def modify_meal_state(order_id:int, food_id:int):
     isSuccess = waiter_updatefood.update(order_id, food_id)
     if isSuccess == False:
-        return responseCode.resp_4xx(400, message="数据库错误")
+        return responseCode.resp_4xx(code = 400, message="数据库错误", data = None)
     else:
         return responseCode.resp_200(data=None)
 
@@ -148,7 +149,7 @@ def get_orders():
         dataResp.append(dic)
     
     if isSuccess == False:
-        return responseCode.resp_4xx(400, message = "数据库错误")
+        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
     else:
         return responseCode.resp_200(data = dataResp)
 
@@ -180,7 +181,7 @@ def get_order_details(Orderid:int):
     # order_create_time, [i][4] 
     # user_id 服务员id, [i][5]
     if isSuccess == False:
-        return responseCode.resp_4xx(400, message = "数据库错误")
+        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
 
     i = 0   # 初始化
     # 线性查找，只有一对一的映射关系，可以找到了中途退出遍历
@@ -191,6 +192,10 @@ def get_order_details(Orderid:int):
     # 下面把前五个内容放进字典里面
     dataResp["order_id"] = dataRecieved[i][0]
     user, flag = user_showone.show(dataRecieved[i][5])
+    if flag == "not found":
+        return responseCode.resp_4xx(code = 400, message = "未找到数据", data = None)
+    elif flag == False:
+        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
     dataResp["user_name"] = user[2]
     dataResp["order_create_time"] = dataRecieved[i][4]
     dataResp["order_table"] = dataRecieved[i][1]

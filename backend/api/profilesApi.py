@@ -34,6 +34,6 @@ async def edit_profiles(info: schemas.ProfilesEdit):
     return response
 
 @profilesRouter.post("/profiles/image/cover", tags=["profiles"])
-async def modify_image(file: bytes = File(...), user_id: pygame.display.init() = Form(...)):
+async def modify_image(file: bytes = File(...), user_id: int = Form(...)):
     response = profilesService.modify_image(file,user_id)
     return response
