@@ -113,11 +113,12 @@ def show_cooked_food():
         return responseCode.resp_4xx(code=400, message="无待上菜的菜品")
     # 将信息由list转换为dict类型
     food_dict_list = []
+    foodData, flag = food_showall.show()  # 调用数据库函数，获取全部已有的菜品信息，
+    if not flag:
+        return responseCode.resp_4xx(code=400, message="数据库错误")
+    foodURL = ""
+    # 将菜品名与菜品信息进行比较
     for i in food_list:
-        foodData, flag = food_showall.show() # 调用数据库函数，获取全部已有的菜品信息
-        if not flag:
-            return responseCode.resp_4xx(code=400, message="数据库错误")
-        foodURL = ""
         for item in foodData:
             if item[1] == i[0]:
                 foodURL = item[4]
