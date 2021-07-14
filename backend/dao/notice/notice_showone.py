@@ -4,7 +4,7 @@ import pymysql
 
 
 # 图像路径缺省未设置
-def show(ip = ip):
+def show(notice_id,ip = ip):
     try:
         # 打开数据库连接
         db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")

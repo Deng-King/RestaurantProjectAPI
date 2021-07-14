@@ -21,6 +21,12 @@ class ProfilesEdit(BaseModel):
     user_id: int
     content: str
 
+class ProfilesEdit2(BaseModel):
+    user_id_a : int
+    user_id_b : int 
+    tag : str
+    content : str 
+
 
 class PostNoticeInfo(BaseModel):
     user_id: int

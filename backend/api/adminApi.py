@@ -60,8 +60,8 @@ async def remove_member(user_id: int):
 
 
 # 4.7 管理员修改成员信息
-@adminRouter.post("/admin/profiles/modify", tags=["admin"])
-async def edit_profiles(info: schemas.ProfilesEdit):
+@adminRouter.post("/admin/profiles/modify",tags=["admin"])
+async def edit_profiles(info: schemas.ProfilesEdit2):
     # 当前用户编号，修改用户编号，修改码（1：修改职位，2：修改密码）
     # user_id_a, user_id_b, tag, content
     response = adminService.edit_profiles(info.user_id_a,
