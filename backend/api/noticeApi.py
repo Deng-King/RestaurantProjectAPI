@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from service import noticeService
-import schemas
 
 noticeRouter = APIRouter()
 
