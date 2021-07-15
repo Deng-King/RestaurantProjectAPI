@@ -301,7 +301,7 @@ def modify_table_number(table_number: int):
     if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     # 目前的桌子数量
-    currentTableNum = len(dataRecieved) + 1
+    currentTableNum = len(dataRecieved)
 
     # 这里要判断目前的桌子上面是否空闲
     # 一旦有任何一张桌子空闲则返回401无权限错误
