@@ -89,43 +89,52 @@ def show_profiles_list():
     return responseCode.resp_200(data=profiles_dict_list)
 
 
+# 4.8 管理员添加新品
 def add_meal(file, food_name, food_info, food_price, food_rmd):
+    """
+        :param file: 菜品图片文件
+        :param food_name: 菜品名
+        :param food_info: 菜品信息
+        :param food_price: 菜品价格
+        :param food_rmd: 是否推荐菜品
+        :return:成功与否
+    """
     print("输出：", type(food_price), food_name, food_info, food_price, food_rmd)
-    data, success = food_create.create(food_name, food_info, food_price, rmd=int(food_rmd))
+    ticks = str(int(time.time()))
+    url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
+    path = "C:\\Documents\\学习\\实训\\git\\backup\\RestaurantProjectAPI\\backend\\" + ticks + ".jpg"
+    with open(path, 'wb') as f:
+        f.write(file)
+
+    data, success = food_create.create(food_name, food_info, food_price, rmd=int(food_rmd), img=url)
     if not success:
         return responseCode.resp_4xx(code=400, message="创建菜品失败")
-    try:
-        # tick 是当前的时间(单位s)
-        ticks = str(int(time.time()))
-        url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
-        # 这里根据food_id更换数据库食品的图片链接 
-        path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
-        with open(path, 'wb') as f:
-            f.write(file)
-        flag = food_update.updateimg(data, url)
-        if flag == False:
-            return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
-        return responseCode.resp_200(data={"food_id": data})
-    except:
-        return responseCode.resp_4xx(code=400, message="服务器错误", data=None)
+    return responseCode.resp_200(data={"food_id": data})
 
 
-
-
+# 4.9 管理员删除菜品信息
 def remove_meal(food_id):
+    """
+        :param food_id: 菜品编号
+        :return: 成功与否
+    """
     result = food_delete.delete(food_id)
     if result == False:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     return responseCode.resp_200(data=result)
 
 
+# 4.10 管理员修改菜品
 def modify_meal(file, food_id, food_name, food_info, food_price, food_rmd):
-    # file,
-    # int(food_id),
-    # food_name,
-    # food_info,
-    # float(food_price),
-    # int(food_rmd)
+    """
+        :param file: 菜品图片文件
+        :param food_id:菜品编号
+        :param food_name: 菜品名
+        :param food_info: 菜品信息
+        :param food_price: 菜品价格
+        :param food_rmd: 是否推荐菜品
+        :return:成功与否
+    """
     Flags = []
 
     flag = False
@@ -155,7 +164,8 @@ def modify_meal(file, food_id, food_name, food_info, food_price, food_rmd):
         ticks = str(int(time.time()))
         url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
-        path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
+        # path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
+        path = "C:\\Documents\\学习\\实训\\git\\backup\\RestaurantProjectAPI\\backend\\" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
 
@@ -217,14 +227,14 @@ def remover_member(user_id: int):
 
 
 # 4.7 管理员修改成员信息
-def edit_profiles(info:schemas.ProfilesEdit2):
+def edit_profiles(info: schemas.ProfilesEdit2):
     """
         :param info:当前用户编号，修改用户编号，修改码（1：修改职位，2：修改密码），修改内容
         :return:成功与否
     """
     # 先获取这个id对应的职位，如果id不是管理员，则只能改自己的，如果是管理员，则可以改其他人的
     user_a, user_b = 0, 0  # 这两个是对应a和b的职位，1为管理员
-    print("输出：",info.user_id_a,info.user_id_b,info.tag,info.content)
+    print("输出：", info.user_id_a, info.user_id_b, info.tag, info.content)
 
     data_received, success = user_showone.show(info.user_id_a)
     if not success:
@@ -277,7 +287,12 @@ def show_details(user_id: int):
         return responseCode.resp_200(data=dataResp)
 
 
+# 4.11 管理员对桌子数量的修改
 def modify_table_number(table_number: int):
+    """
+        :param table_number: 桌子数量
+        :return: 成功与否
+    """
     dataRecieved, isSuccess = table_showall.show()
     if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
@@ -345,8 +360,12 @@ def modify_food_image(file, food_id: int):
     return responseCode.resp_200(data=dataResp)
 
 
+# 4.13 管理员返回菜品的信息
 def get_meal_details(food_id: int):
-    # food_id、food_name、food_info、food_price、food_recommend、food_img
+    """
+        :param food_id: 菜品编号
+        :return: 菜品的全部信息组成的dict
+    """
     dataRecieved, isSuccess = food_showone.show(food_id)
     print(dataRecieved, isSuccess)
     if isSuccess == False:
@@ -370,8 +389,12 @@ def get_meal_details(food_id: int):
     }
     return responseCode.resp_200(data=dataResp)
 
+
+# 4.14 管理员获取所有状态的订单
 def get_orders():
-    # 订单编号，桌位号、付款状态（默认为待付款），
+    """
+        :return: 一个list，包含状态为n的订单，其中包含{订单编号，桌位号、付款状态，订单创建时间}
+    """
     dataRecieved, isSuccess = order_showall.show()
 
     dataResp = []
@@ -390,11 +413,17 @@ def get_orders():
     else:
         return responseCode.resp_200(data=dataResp)
 
-def announcement_delete(notice_id:int):
+
+# 4.15 管理员删除公告
+def announcement_delete(notice_id: int):
+    """
+        :param notice_id: 公告编号
+        :return:成功与否
+    """
     isSuccess = notice_delete.delete(notice_id)
     if isSuccess == "未找到此公告":
-        return responseCode.resp_4xx(code = 400, message = "未找到notice_id为"\
-            + str(notice_id) + "的公告，请检查数据库", data = None)
+        return responseCode.resp_4xx(code=400, message="未找到notice_id为" \
+                                                       + str(notice_id) + "的公告，请检查数据库", data=None)
     elif not isSuccess:
-        return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
-    return responseCode.resp_200(data = None)
+        return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
+    return responseCode.resp_200(data=None)

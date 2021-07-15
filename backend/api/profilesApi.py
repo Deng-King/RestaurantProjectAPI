@@ -17,38 +17,49 @@ async def sign_out(info: schemas.ProfilesExit):
     response = profilesService.exit(info.user_id)
     return response
 
-
+# 1.6获取个人信息概览
 @profilesRouter.get("/profiles", tags=["profiles"])
 async def get_profiles(user_id: int):
-    # user_id: int
+    """
+    :param user_id:用户编号
+    :return:字典：{用户编号、用户工号、用户姓名、职位}
+    """
     response = profilesService.get_profiles(user_id)
     return response
 
 
+# 1.4个人信息详细查询
 @profilesRouter.get("/profiles/details", tags=["profiles"])
 async def get_profiles_details(user_id: int):
-    # user_id: int
+    """
+    :param user_id:用户编号
+    :return:字典：{用户编号，用户工号、职位（字符串）、头像路径、性别(字符串)、姓名}
+    """
     response = profilesService.get_profiles_details(user_id)
     return response
 
 
+# 1.3 修改个人密码功能
 @profilesRouter.post("/profiles/edit", tags=["profiles"])
 async def edit_profiles(info: schemas.ProfilesEdit):
     """
-    接口功能：根据前端返回的信息修改数库个人信息内容\n
-    接收参数：user_number(str), user_pwd(str)\n
-    返回数据：data = {"user_id": id, "user_position": position}\n
+    :param info: 一个包含用户编号与修改内容的对象
+    :return: 成功与否
     """
-    # 当前用户编号，修改用户编号，修改码（1：修改头像，2：修改密码），修改内容
-    # user_id_a, user_id_b, tag, content
-    response = profilesService.edit_profiles(info.user_id_a,
-                                             info.user_id_b,
-                                             info.tag,
+    response = profilesService.edit_profiles(info.user_id,
+                                             info.user_id,
+                                             2,
                                              info.content)
     return response
 
 
+# 1.7 修改个人头像功能
 @profilesRouter.post("/profiles/image/cover", tags=["profiles"])
 async def modify_image(file: bytes = File(...), user_id: int = Form(...)):
+    """
+    :param file:头像文件
+    :param user_id:用户编号
+    :return:成功与否
+    """
     response = profilesService.modify_image(file,user_id)
     return response

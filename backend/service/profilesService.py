@@ -13,7 +13,12 @@ def exit(id: int):
         return responseCode.resp_200(data=None)
 
 
+# 1.6获取个人信息概览
 def get_profiles(user_id: int):
+    """
+        :param user_id:用户编号
+        :return:字典：{用户编号、用户工号、用户姓名、职位}
+    """
     dataRecieved, isSuccess = user_showone.show(user_id)
     # 用户编号、用户工号、用户姓名、职位
     if isSuccess == False:
@@ -28,7 +33,12 @@ def get_profiles(user_id: int):
         return responseCode.resp_200(data=dataResp)
 
 
+# 1.4个人信息详细查询
 def get_profiles_details(user_id: int):
+    """
+        :param user_id:用户编号
+        :return:字典：{用户编号，用户工号、职位（字符串）、头像路径、性别(字符串)、姓名}
+    """
     dataRecieved, isSuccess = user_showone.show(user_id)
     # {用户编号，用户工号、职位、头像路径、性别、姓名}
     if isSuccess == False:
@@ -45,7 +55,15 @@ def get_profiles_details(user_id: int):
         return responseCode.resp_200(data=dataResp)
 
 
+# 1.3 修改个人信息功能
 def edit_profiles(user_id_a: int, user_id_b: int, tag: int, content: str):
+    """
+    :param user_id_a: 执行修改操作的用户的编号
+    :param user_id_b: 被修改的用户的编号
+    :param tag: 用于选择修改内容，2是修改密码，1是修改头像
+    :param content: 修改内容
+    :return: 成功与否
+    """
     # 先获取这个id对应的职位，如果id不是管理员，则只能改自己的，如果是管理员，则可以改其他人的
     user_a, user_b = 0, 0  # 这两个是对应a和b的职位，1为管理员
 
@@ -78,7 +96,13 @@ def edit_profiles(user_id_a: int, user_id_b: int, tag: int, content: str):
     return responseCode.resp_200(data=None)
 
 
+# 1.7 修改个人头像功能
 def modify_image(file, user_id: int):
+    """
+        :param file:头像文件
+        :param user_id:用户编号
+        :return:成功与否
+    """
     dataResp = {
         "user_img":str
     }

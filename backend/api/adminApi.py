@@ -109,9 +109,12 @@ async def add_meal(
         food_rmd: int = Form(...)
 ):
     """
-        参数:菜品编号，菜品名称，
-        菜品介绍，图像路径，菜品价格，是否推荐\n
-        返回:成功与否\n
+    :param file: 菜品图片文件
+    :param food_name: 菜品名
+    :param food_info: 菜品信息
+    :param food_price: 菜品价格
+    :param food_rmd: 是否推荐菜品
+    :return:成功与否
     """
     return adminService.add_meal(file, food_name, food_info, float(food_price), food_rmd)
 
@@ -120,28 +123,46 @@ async def add_meal(
 @adminRouter.get("/admin/meals/remove", tags=["admin"])
 async def remove_meal(food_id: int):
     """
-        参数:菜品编号\n
-        返回:成功与否\n
+    :param food_id: 菜品编号
+    :return: 成功与否
     """
     return adminService.remove_meal(food_id)
 
 
 # 4.10 管理员修改菜品
 @adminRouter.post("/admin/meals/modify", tags=["admin"])
-async def modify_meal(mod: schemas.ModifyMeal):
+async def modify_meal(
+        file: bytes = File(...),
+        food_id: int = Form(...),
+        food_name: str = Form(...),
+        food_info: str = Form(...),
+        food_price: str = Form(...),
+        food_rmd: int = Form(...)):
     """
-        参数:菜品编号，菜品名称，菜品介绍，菜品价格，是否推荐\n
-        返回:成功与否\n
+    :param file: 菜品图片文件
+    :param food_id:菜品编号
+    :param food_name: 菜品名
+    :param food_info: 菜品信息
+    :param food_price: 菜品价格
+    :param food_rmd: 是否推荐菜品
+    :return:成功与否
     """
-    return adminService.modify_meal(mod)
+    return adminService.modify_meal(
+        file,
+        food_id,
+        food_name,
+        food_info,
+        food_price,
+        food_rmd
+    )
 
 
 # 4.11 管理员对桌子数量的修改
 @adminRouter.get("/admin/table/modify", tags=["admin"])
 async def modify_table_number(table_number: int):
     """
-        参数:桌子数量\n
-        返回:成功与否\n
+    :param table_number: 桌子数量
+    :return: 成功与否
     """
     response = adminService.modify_table_number(table_number)
     return response
@@ -157,28 +178,29 @@ async def modify_table_number(table_number: int):
 @adminRouter.get("/admin/meal/details/fetch", tags=["admin"])
 async def get_meal_details(food_id: int):
     """
-        参数:菜品的id\n
-        返回:food_id、food_name、food_info、food_price、food_recommend、food_img\n
+    :param food_id: 菜品编号
+    :return: 菜品的全部信息组成的dict
     """
     response = adminService.get_meal_details(food_id)
     return response
+
 
 # 4.14 管理员获取所有状态的订单
 @adminRouter.get("/admin/orders/list", tags=["admin"])
 async def get_orders():
     """
-        参数:无\n
-        返回:一个list，包含状态为n的订单，其中包含{订单编号，桌位号、付款状态，订单创建时间}\n
+    :return: 一个list，包含状态为n的订单，其中包含{订单编号，桌位号、付款状态，订单创建时间}
     """
     response = adminService.get_orders()
     return response
 
+
 # 4.15 管理员删除公告
 @adminRouter.get("/admin/announcement/delete", tags=["admin"])
-async def announcement_delete(notice_id:int):
+async def announcement_delete(notice_id: int):
     """
-        参数:notice_id\n
-        返回:公告是否删除\n
+    :param notice_id: 公告编号
+    :return:成功与否
     """
     response = adminService.announcement_delete(notice_id)
     return response
