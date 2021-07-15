@@ -399,16 +399,25 @@ def get_orders():
     """
         :return: 一个list，包含状态为n的订单，其中包含{订单编号，桌位号、付款状态，订单创建时间}
     """
-    dataRecieved, isSuccess = order_showall.show()
+    dataReceived, isSuccess = order_showall.show()
+    # dataReceived内容为：数据： 
+    # order_id, [i][0]
+    # order_table, [i][1]
+    # order_state, [i][2]
+    # order_total, [i][3]
+    # order_create_time, [i][4]
+    # user_id(服务员id), [i][5]
+    # order_end_time[i][6]
 
     dataResp = []
-    for i in range(len(dataRecieved)):
+    for i in range(len(dataReceived)):
         dic = {
-            "order_id": dataRecieved[i][0],
-            "order_table": dataRecieved[i][1],
-            "order_state": dataRecieved[i][2],
-            "order_total": dataRecieved[i][3],
-            "order_create_time": dataRecieved[i][4]
+            "order_id": dataReceived[i][0],
+            "order_table": dataReceived[i][1],
+            "order_state": dataReceived[i][2],
+            "order_total": dataReceived[i][3],
+            "order_create_time": dataReceived[i][4],
+            "order_end_time": dataReceived[i][6]
         }
         dataResp.append(dic)
 

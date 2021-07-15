@@ -189,7 +189,7 @@ async def get_meal_details(food_id: int):
 @router.get("/admin/orders/list", tags=["admin"])
 async def get_orders():
     """
-    :return: 一个list，包含状态为n的订单，其中包含{订单编号，桌位号、付款状态，订单创建时间}
+    :return: 一个list，包含状态为n的订单，其中包含{订单编号，桌位号、付款状态，订单创建时间，订单结束时间}
     """
     response = adminService.get_orders()
     return response
