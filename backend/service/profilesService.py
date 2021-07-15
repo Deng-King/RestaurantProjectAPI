@@ -97,7 +97,7 @@ def edit_profiles(user_id_a: int, user_id_b: int, tag: int, content: str):
 
 
 # 1.7 修改个人头像功能
-def modify_image(file, user_id: int):
+def modify_image(file:bytes, user_id: int):
     """
         :param file:头像文件
         :param user_id:用户编号
@@ -112,16 +112,14 @@ def modify_image(file, user_id: int):
         ticks = str(int(time.time()))
         url = "http://124.70.200.142:8080/img/person/" + ticks + ".jpg"
         # 这里根据user_id更换数据库人员的头像图片链接 
-        path = "/root/tomcat/webapps/img/person/" + ticks + ".jpg"
+        path = "C:\\Documents\\学习\\实训\\git\\pic\\" + ticks + ".jpg"
+        print("path="+path)
         with open(path, 'wb') as f:
             f.write(file)
-        
         flag = user_update.updateimg(user_id,url)
         if flag == False:
             return responseCode.resp_4xx(code = 400, message = "数据库错误", data = None)
-
         dataResp["user_img"] = url
-        print("运行了这里")
     except:
         return responseCode.resp_4xx(code = 400, message = "更换头像出错",data = None)
     return responseCode.resp_200(data =dataResp)

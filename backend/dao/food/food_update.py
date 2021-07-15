@@ -11,7 +11,7 @@ def updatename(id, name, ip=ip):
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
     try:
-        sql = "select * from food where food_name = %s and food_valid = 1" % (name)
+        sql = "select * from food where food_name = '%s' and food_valid = 1" % (name)
         cnt = cursor.execute(sql)
         if cnt == 0:
             sql = "update food set food_name='%s' where food_id = %d" % (name, id)

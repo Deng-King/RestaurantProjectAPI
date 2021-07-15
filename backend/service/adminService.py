@@ -90,7 +90,7 @@ def show_profiles_list():
 
 
 # 4.8 管理员添加新品
-def add_meal(file, food_name, food_info, food_price, food_rmd):
+def add_meal(file:bytes, food_name:str, food_info:str, food_price:float, food_rmd:int):
     """
         :param file: 菜品图片文件
         :param food_name: 菜品名
@@ -99,14 +99,18 @@ def add_meal(file, food_name, food_info, food_price, food_rmd):
         :param food_rmd: 是否推荐菜品
         :return:成功与否
     """
-    print("输出：", type(food_price), food_name, food_info, food_price, food_rmd)
+    print("输出：", type(food_name), food_name, food_info, food_price, food_rmd)
     ticks = str(int(time.time()))
     url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
-    path = "C:\\Documents\\学习\\实训\\git\\backup\\RestaurantProjectAPI\\backend\\" + ticks + ".jpg"
+    path = "C:\\Documents\\学习\\实训\\git\\pic\\" + ticks + ".jpg"
     with open(path, 'wb') as f:
         f.write(file)
-
-    data, success = food_create.create(food_name, food_info, food_price, rmd=int(food_rmd), img=url)
+    data, success = food_create.create(
+        name=food_name,
+        info=food_info,
+        price=food_price,
+        rmd=int(food_rmd),
+        img=url)
     if not success:
         return responseCode.resp_4xx(code=400, message="创建菜品失败")
     return responseCode.resp_200(data={"food_id": data})

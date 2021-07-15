@@ -105,7 +105,7 @@ async def add_meal(
         file: bytes = File(...),
         food_name: str = Form(...),
         food_info: str = Form(...),
-        food_price: str = Form(...),
+        food_price: float = Form(...),
         food_rmd: int = Form(...)
 ):
     """
@@ -116,7 +116,7 @@ async def add_meal(
     :param food_rmd: 是否推荐菜品
     :return:成功与否
     """
-    return adminService.add_meal(file, food_name, food_info, float(food_price), food_rmd)
+    return adminService.add_meal(file, food_name, food_info, food_price, food_rmd)
 
 
 # 4.9 管理员删除菜品信息

@@ -83,6 +83,8 @@ def post_order(info: schemas.OrderInfo):
     # 提取info中的菜品id及其数量
     food_list = []
     for i in info.meal_info:
+        if i.food_num==0:
+            continue
         food_list.append([
             i.food_id,
             i.food_num
