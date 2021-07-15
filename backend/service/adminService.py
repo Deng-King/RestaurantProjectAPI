@@ -11,6 +11,7 @@ from dao.user import user_update
 from dao.user import user_showall
 from dao.order import order_pay
 from dao.order import order_showall
+from dao.order import orderinfo_show
 from dao.table import table_create
 from dao.table import table_delete
 from dao.table import table_showall
@@ -440,3 +441,101 @@ def announcement_delete(notice_id: int):
     elif not isSuccess:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     return responseCode.resp_200(data=None)
+
+def get_order_details(order_id: int):
+    """
+           :param order_id:订单编号
+           :return:服务员姓名、订单编号、创建时间、结束时间、桌号、总价、
+           菜品列表（所有信息：菜品编号、菜品数量、菜品状态、菜品价格、菜品图形、菜品名字）
+           最后以list套dict的形式返回
+    """
+    data_reformat = {
+        "user_name": str,
+        "order_id": int,
+        "order_create_time": str,
+        "order_end_time": str,
+        "order_table": int,
+        "order_total": float,
+        "meal_list": list  # 最后这个是列表套字典
+    }  # 将变量dataResp定义为字典，同时指定内容
+
+    lis_resp = []  # 将变量lisResp定义为列表
+
+    # 先获取这个订单的基本信息
+    dataReceived, success = order_showall.show()
+    # dataReceived返回的是全部信息，需要进行筛选
+    # order_id, dataReceived[i][0] 
+    # order_table, dataReceived[i][1] 
+    # order_state, dataReceived[i][2] 
+    # order_total, dataReceived[i][3] 
+    # order_create_time, dataReceived[i][4] 
+    # user_id 服务员id, dataReceived[i][5]
+    # order_end_time, dataReceived[i][6]
+    if not success:
+        return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
+
+    i = 0  # 初始化
+    # 线性查找，只有一对一的映射关系，可以找到了中途退出遍历
+    for i in range(len(dataReceived)):
+        if dataReceived[i][0] == order_id:
+            break  # 此刻拿到了这个id对应的订单信息
+
+    # 下面把前五个内容放进字典里面
+    data_reformat["order_id"] = dataReceived[i][0]
+    user, flag = user_showone.show(dataReceived[i][5])
+    if flag == "not found":
+        return responseCode.resp_4xx(code=400, message="未找到用户(id为:" + \
+                                                       str(dataReceived[i][5]) + ")的数据，请检查数据库", data=None)
+    elif flag == False:
+        return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
+    data_reformat["user_name"] = user[2]
+    data_reformat["order_create_time"] = dataReceived[i][4]
+    data_reformat["order_table"] = dataReceived[i][1]
+    data_reformat["order_total"] = dataReceived[i][3]
+    data_reformat["order_end_time"] = dataReceived[i][6]
+
+    # 之后再获取这个订单的对应的菜品列表
+    # 好习惯，先清空变量
+    dataReceived, success, i = (), False, 0
+    # 调用数据库获取信息
+    dataReceived, success = orderinfo_show.show(order_id)
+    # 返回的是元组，需要遍历筛选。因为存在一对多现象，需要全部遍历一次
+    # order_id, [i][0]
+    # food_id, [i][1]
+    # food_num, [i][2]
+    # food_state, [i][3]
+    for i in range(len(dataReceived)):
+        if dataReceived[i][0] == order_id:
+            dic = {
+                "food_id": dataReceived[i][1],
+                "food_num": dataReceived[i][2],
+                "food_state": dataReceived[i][3],
+                "food_price": float,
+                "food_img": str,
+                "food_name": str
+            }  # 初始化
+            # 这里根据food_id去查找这一道菜的价格和图片
+            data_food, success = food_showone.show(dataReceived[i][1])
+            # 返回的是每一道菜的信息
+            # food_id, [i][0]
+            # food_name, [i][1]
+            # food_info, [i][2]
+            # food_price, [i][3]
+            # food_rmd, [i][4]
+            # food_img, [i][5]
+            if not success:
+                return responseCode.resp_4xx(code=400, message="数据库错误")
+            elif data_food == None:
+                return responseCode.resp_4xx(code=400, message="未找到(food_id = "\
+                     + str(dataReceived[i][1]) + ")的数据，请检查数据库")
+            
+            dic["food_price"] = data_food[3]
+            dic["food_img"] = data_food[5]
+            dic["food_name"] = data_food[1]
+            # 到这里dic的内容就完了，append到列表里面就ok
+
+            lis_resp.append(dic)
+
+    # 不要忘了把处理好的lisResp装回返回字典里面
+    data_reformat["meal_list"] = lis_resp
+    return responseCode.resp_200(data=data_reformat)

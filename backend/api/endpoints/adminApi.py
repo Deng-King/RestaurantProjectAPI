@@ -204,3 +204,16 @@ async def announcement_delete(notice_id: int):
     """
     response = adminService.announcement_delete(notice_id)
     return response
+
+# 4.16 管理员查看订单详情
+@router.get("/admin/order/details", tags=["admin"])
+async def get_order_details(order_id: int):
+    """
+       :param order_id:订单编号
+       :return:服务员姓名、订单编号、创建时间、结束时间、桌号、总价、
+       菜品列表（所有信息：菜品编号、菜品数量、菜品状态、菜品价格、菜品图形、菜品名字）
+       最后以list套dict的形式返回
+    """
+    response = adminService.get_order_details(order_id)
+    return response
+

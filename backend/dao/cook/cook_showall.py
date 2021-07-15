@@ -22,6 +22,7 @@ def show(ip=ip):
         # 关闭游标和数据库
         cursor.close()
         db.close()
+        print(result)
     except:
         return None, False
     # 返回后厨做菜列表和操作成功
