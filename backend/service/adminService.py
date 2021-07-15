@@ -445,7 +445,7 @@ def announcement_delete(notice_id: int):
 def get_order_details(order_id: int):
     """
            :param order_id:订单编号
-           :return:服务员姓名、订单编号、创建时间、结束时间、桌号、总价、
+           :return:服务员姓名、订单编号、创建时间、结束时间、桌号、总价、订单状态
            菜品列表（所有信息：菜品编号、菜品数量、菜品状态、菜品价格、菜品图形、菜品名字）
            最后以list套dict的形式返回
     """
@@ -455,6 +455,7 @@ def get_order_details(order_id: int):
         "order_create_time": str,
         "order_end_time": str,
         "order_table": int,
+        "order_state": int,
         "order_total": float,
         "meal_list": list  # 最后这个是列表套字典
     }  # 将变量dataResp定义为字典，同时指定内容
@@ -493,6 +494,7 @@ def get_order_details(order_id: int):
     data_reformat["order_table"] = dataReceived[i][1]
     data_reformat["order_total"] = dataReceived[i][3]
     data_reformat["order_end_time"] = dataReceived[i][6]
+    data_reformat["order_state"] = dataReceived[i][2]
 
     # 之后再获取这个订单的对应的菜品列表
     # 好习惯，先清空变量
