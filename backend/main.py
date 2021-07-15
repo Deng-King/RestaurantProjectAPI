@@ -1,17 +1,10 @@
 import uvicorn
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket
 from starlette.middleware.cors import CORSMiddleware
-from api import loginApi
-from api import profilesApi
-from api import noticeApi
-from api import waiterApi
-from api import adminApi
-from api import cookApi
+from api.endpoints import cookApi, waiterApi, noticeApi, profilesApi, loginApi, adminApi
 from fastapi.responses import HTMLResponse
 from settings import html
 from ConnectionManager import manager
-from service import profilesService
-from dao.user import user_showone
 
 app = FastAPI()
 app.add_middleware(
@@ -21,12 +14,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
-app.include_router(loginApi.loginRouter, prefix="/api")
-app.include_router(profilesApi.profilesRouter, prefix="/api")
-app.include_router(noticeApi.noticeRouter,prefix="/api")
-app.include_router(waiterApi.waiterRouter, prefix="/api")
-app.include_router(adminApi.adminRouter, prefix="/api")
-app.include_router(cookApi.cookRouter, prefix="/api")
+app.include_router(loginApi.router, prefix="/api")
+app.include_router(profilesApi.router, prefix="/api")
+app.include_router(noticeApi.router, prefix="/api")
+app.include_router(waiterApi.router, prefix="/api")
+app.include_router(adminApi.router, prefix="/api")
+app.include_router(cookApi.router, prefix="/api")
 
 
 @app.get("/")

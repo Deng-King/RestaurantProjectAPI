@@ -4,11 +4,11 @@ from fastapi import Form
 from service import profilesService
 import schemas
 
-profilesRouter = APIRouter()
+router = APIRouter()
 
 
 # 1.5退出请求 ***********要改
-@profilesRouter.post("/profiles/exit", tags=["profiles"])
+@router.post("/profiles/exit", tags=["profiles"])
 async def sign_out(info: schemas.ProfilesExit):
     """
     :param info:
@@ -18,7 +18,7 @@ async def sign_out(info: schemas.ProfilesExit):
     return response
 
 # 1.6获取个人信息概览
-@profilesRouter.get("/profiles", tags=["profiles"])
+@router.get("/profiles", tags=["profiles"])
 async def get_profiles(user_id: int):
     """
     :param user_id:用户编号
@@ -29,7 +29,7 @@ async def get_profiles(user_id: int):
 
 
 # 1.4个人信息详细查询
-@profilesRouter.get("/profiles/details", tags=["profiles"])
+@router.get("/profiles/details", tags=["profiles"])
 async def get_profiles_details(user_id: int):
     """
     :param user_id:用户编号
@@ -40,7 +40,7 @@ async def get_profiles_details(user_id: int):
 
 
 # 1.3 修改个人密码功能
-@profilesRouter.post("/profiles/edit", tags=["profiles"])
+@router.post("/profiles/edit", tags=["profiles"])
 async def edit_profiles(info: schemas.ProfilesEdit):
     """
     :param info: 一个包含用户编号与修改内容的对象
@@ -54,7 +54,7 @@ async def edit_profiles(info: schemas.ProfilesEdit):
 
 
 # 1.7 修改个人头像功能
-@profilesRouter.post("/profiles/image/cover", tags=["profiles"])
+@router.post("/profiles/image/cover", tags=["profiles"])
 async def modify_image(file: bytes = File(...), user_id: int = Form(...)):
     """
     :param file:头像文件
