@@ -112,7 +112,7 @@ def modify_image(file:bytes, user_id: int):
         ticks = str(int(time.time()))
         url = "http://124.70.200.142:8080/img/person/" + ticks + ".jpg"
         # 这里根据user_id更换数据库人员的头像图片链接 
-        path = "C:\\Documents\\学习\\实训\\git\\pic\\" + ticks + ".jpg"
+        path = "/root/tomcat/webapps/img/person/" + ticks + ".jpg"
         print("path="+path)
         with open(path, 'wb') as f:
             f.write(file)

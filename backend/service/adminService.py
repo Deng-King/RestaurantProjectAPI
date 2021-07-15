@@ -103,7 +103,7 @@ def add_meal(file:bytes, food_name:str, food_info:str, food_price:float, food_rm
     print("输出：", type(food_name), food_name, food_info, food_price, food_rmd)
     ticks = str(int(time.time()))
     url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
-    path = "C:\\Documents\\学习\\实训\\git\\pic\\" + ticks + ".jpg"
+    path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
     with open(path, 'wb') as f:
         f.write(file)
     data, success = food_create.create(
@@ -169,8 +169,7 @@ def modify_meal(file, food_id, food_name, food_info, food_price, food_rmd):
         ticks = str(int(time.time()))
         url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
-        # path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
-        path = "C:\\Documents\\学习\\实训\\git\\backup\\RestaurantProjectAPI\\backend\\" + ticks + ".jpg"
+        path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
 
