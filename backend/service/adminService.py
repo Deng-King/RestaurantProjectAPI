@@ -97,9 +97,9 @@ def add_meal(file, food_name, food_info, food_price, food_rmd):
     try:
         # tick 是当前的时间(单位s)
         ticks = str(int(time.time()))
-        url = "http://124.70.200.142:8080/img/food/" + data + ".jpg"
+        url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
-        path = "/root/tomcat/webapps/img/food/" + data + ".jpg"
+        path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
         flag = food_update.updateimg(data, url)
