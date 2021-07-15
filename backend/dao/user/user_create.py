@@ -3,7 +3,9 @@ from settings import ip
 
 
 # 新建用户，输入用户数据，返回“成功”或“用户已存在”
-def create(number, name, position, pwd="123456", img='', gender=0, ip=ip):
+def create(number, name, position, pwd="e10adc3949ba59abbe56e057f20f883e"\
+    , img='', gender=0, ip=ip):
+    # 密码是123456的哈希值
     # 打开数据库连接
     db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
     # 使用 cursor() 方法创建一个游标对象 cursor
