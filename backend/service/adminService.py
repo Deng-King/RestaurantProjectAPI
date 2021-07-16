@@ -167,6 +167,8 @@ def modify_meal(file, food_id, food_name, food_info, food_price, food_rmd):
     # 更新菜品名字
     flag = False
     flag = food_update.updatename(food_id, food_name)
+    if flag == "菜品名已存在":
+        return responseCode.resp_4xx(code=400, message="菜品名已存在", data=None)
     Flags.append(flag)
 
     # 更新菜品简介
