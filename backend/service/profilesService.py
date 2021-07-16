@@ -39,18 +39,18 @@ def get_profiles_details(user_id: int):
         :param user_id:用户编号
         :return:字典：{用户编号，用户工号、职位（字符串）、头像路径、性别(字符串)、姓名}
     """
-    dataRecieved, isSuccess = user_showone.show(user_id)
+    dataReceived, isSuccess = user_showone.show(user_id)
     # {用户编号，用户工号、职位、头像路径、性别、姓名}
     if isSuccess == False:
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
     else:
         dataResp = {
             # "user_id": dataRecieved[0],
-            "user_number": dataRecieved[1],
-            'user_position': "管理员" if dataRecieved[3] == 1 else "后厨" if dataRecieved[3] == 3 else "服务员",
-            'user_img': dataRecieved[4],
-            'user_gender': "woman" if dataRecieved[5] == 1 else "man",
-            "user_name": dataRecieved[2],
+            "user_number": dataReceived[1],
+            'user_position': "管理员" if dataReceived[3] == 1 else "后厨" if dataReceived[3] == 3 else "服务员",
+            'user_img': dataReceived[4],
+            'user_gender': "woman" if dataReceived[5] == 1 else "man",
+            "user_name": dataReceived[2],
         }
         return responseCode.resp_200(data=dataResp)
 
