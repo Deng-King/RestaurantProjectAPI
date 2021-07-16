@@ -34,12 +34,21 @@ def show_meal_list():
     :return: 由dict型的菜品组成的list
     """
     food_list, success = food_showall.show(ip)  # 调用数据库函数，得到菜品列表
+    # 返回值包含
+    # food_id == food_list[i][0]
+    # food_name == food_list[i][1]
+    # food_price == food_list[i][2]
+    # food_rmd == food_list[i][3]
+    # food_img == food_list[i][4]
+
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     if len(food_list) == 0:
         return responseCode.resp_4xx(code=400, message="没有菜品可以显示")
     # 将菜品信息列表转换为字典
-    food_dic_list = []
+    food_dic_list = []  # 此list为返回的list
+
+    # 将返回的东西添加进list
     for i in food_list:
         food_dic_list.append({
             "food_id": i[0],
