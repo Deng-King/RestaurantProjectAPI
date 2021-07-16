@@ -19,17 +19,27 @@ def get_profiles(user_id: int):
         :param user_id:用户编号
         :return:字典：{用户编号、用户工号、用户姓名、职位}
     """
-    dataRecieved, isSuccess = user_showone.show(user_id)
+    dataReceived, isSuccess = user_showone.show(user_id)
     # 用户编号、用户工号、用户姓名、职位
+    # dataReceived内容
+    # user_id == dataReceived[0]
+    # user_number == dataReceived[1]
+    # user_name == dataReceived[2]
+    # user_position == dataReceived[3]
+    # user_img == dataReceived[4]
+    # user_gender == dataReceived[5]
+    # user_pwd == dataReceived[6]
+    # user_state == dataReceived[7]
+
     if isSuccess == False:
+        # 如果错误
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
     else:
-        dataResp = {}
-        print(dataRecieved, isSuccess)
-        dataResp["user_id"] = dataRecieved[0]
-        dataResp["user_number"] = dataRecieved[1]
-        dataResp["user_name"] = dataRecieved[2]
-        dataResp['user_position'] = dataRecieved[3]
+        dataResp = {}   # 初始化返回字典
+        dataResp["user_id"] = dataReceived[0]
+        dataResp["user_number"] = dataReceived[1]
+        dataResp["user_name"] = dataReceived[2]
+        dataResp['user_position'] = dataReceived[3]
         return responseCode.resp_200(data=dataResp)
 
 
@@ -49,7 +59,7 @@ def get_profiles_details(user_id: int):
     # user_gender == dataReceived[5]
     # user_pwd == dataReceived[6]
     # user_state == dataReceived[7]
-    
+
     if isSuccess == False:
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
     else:
