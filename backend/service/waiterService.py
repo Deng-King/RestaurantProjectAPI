@@ -69,6 +69,14 @@ def show_food_info(food_id):
         :return: 菜品详细信息构成的字典
     """
     info, success = food_showone.show(food_id)  # 调用数据库函数，得到某个菜品的信息list
+    # info数据返回内容
+    # food_id == info[0]
+    # food_name == info[1]
+    # food_info == info[2]
+    # food_price == info[3]
+    # food_rmd == info[4]
+    # food_img == info[5]
+    
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     # 将list转换为dict
