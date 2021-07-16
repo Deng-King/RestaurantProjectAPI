@@ -4,6 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from api.endpoints import cookApi, waiterApi, noticeApi, profilesApi, loginApi, adminApi
 from ConnectionManager import manager
 
+# 配置跨域
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -12,6 +13,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
+# 设置路由
 app.include_router(loginApi.router, prefix="/api")
 app.include_router(profilesApi.router, prefix="/api")
 app.include_router(noticeApi.router, prefix="/api")
@@ -19,7 +21,7 @@ app.include_router(waiterApi.router, prefix="/api")
 app.include_router(adminApi.router, prefix="/api")
 app.include_router(cookApi.router, prefix="/api")
 
-
+# 使用websocket实现事时通信
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
@@ -28,7 +30,6 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             data = await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast_post_notice(f"Client #{client_id} disconnect")
 
 
 if __name__ == '__main__':

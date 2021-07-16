@@ -368,7 +368,6 @@ def modify_table_number(table_number: int):
         :param table_number: 桌子数量
         :return: 成功与否
     """
-
     dataRecieved, isSuccess = table_showall.show()
 
     if isSuccess == False:

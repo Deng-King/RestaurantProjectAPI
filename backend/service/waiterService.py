@@ -15,10 +15,11 @@ from dao.table import table_showall
 
 # 2.1 服务员桌位请求显示
 def fetch_all_tables():
+    # 调用数据库函数
     table_list, success = table_showall.show()
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
-
+    # 将list转为dict
     table_dict_list = []
     for i in range(len(table_list)):
         table_dict_list.append({
@@ -76,7 +77,6 @@ def show_food_info(food_id):
     # food_price == info[3]
     # food_rmd == info[4]
     # food_img == info[5]
-
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     # 将list转换为dict
@@ -100,7 +100,8 @@ def post_order(info: schemas.OrderInfo):
     # 提取info中的菜品id及其数量
     food_list = []
     for i in info.meal_info:
-        if i.food_num==0:
+        # 如果菜品数量为0则不显示
+        if i.food_num == 0:
             continue
         food_list.append([
             i.food_id,
@@ -113,7 +114,7 @@ def post_order(info: schemas.OrderInfo):
         info.user_id,
         food_list
     )
-    return True,responseCode.resp_200(data=result)
+    return True, responseCode.resp_200(data=result)
 
 
 # 2.5 服务员取菜列表显示
@@ -147,7 +148,7 @@ def show_cooked_food():
     # 如果调用菜品信息出错
     if not flag:
         return responseCode.resp_4xx(code=400, message="数据库错误")
-    
+
     # 初始化参数
     food_url = ""
     food_id = 0
@@ -159,7 +160,7 @@ def show_cooked_food():
             if item[1] == i[0]:
                 food_url = item[4]
                 food_id = item[0]
-        
+
         # 建立字典
         food_dict_list.append({
             "food_name": i[0],
@@ -168,13 +169,13 @@ def show_cooked_food():
             "order_table": i[3],
             "food_state": i[4],
             "food_img": food_url,
-            "food_id":food_id
+            "food_id": food_id
         })
     return responseCode.resp_200(data=food_dict_list)
 
 
 # 2.6 服务员更改某一道菜的状态
-def modify_meal_state(info:schemas.OrderState):
+def modify_meal_state(info: schemas.OrderState):
     """
         :param info: 包含订单号与菜品编号的对象
         :return: 成功与否
@@ -192,22 +193,25 @@ def get_orders():
     """
         :return:一个由订单的详细信息组成的dict构成的list
     """
+    #调用数据库函数
     order_list, success = order_showall.show()
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
+    # 将list转为dict
     order_dict_list = []
     for order in order_list:
-        if order[2] != 0:
+        if order[2] != 0:# 只显示未付款状态的订单
             continue
         table_food_list, success = orderinfo_show.show(order[0])
         if not success:
             return responseCode.resp_4xx(code=400, message="访问订单菜品信息错误")
         complete = True
+        # 检测订单中的所有菜品是否都已经处于等待上菜的状态
         for food in table_food_list:
             if food[3] != 1:
                 complete = False
                 break
-
+        # 建立dict
         order_dict_list.append({
             "order_id": order[0],
             "order_table": order[1],
@@ -229,13 +233,14 @@ def payment(order_id: int):
     :param order_id:订单编号
     :return:成功与否
     """
+    # 调用数据库函数
     success = waiter_updateorder.update(order_id)
     if success == "有菜品未上桌":
-        return False,responseCode.resp_4xx(code=400, message="有菜品未上桌")
+        return False, responseCode.resp_4xx(code=400, message="有菜品未上桌")
     elif not success:
-        return False,responseCode.resp_4xx(code=400, message="数据库错误")
+        return False, responseCode.resp_4xx(code=400, message="数据库错误")
     else:
-        return True,responseCode.resp_200(data=None)
+        return True, responseCode.resp_200(data=None)
 
 
 # 2.9 服务员获取订单详情
@@ -320,9 +325,9 @@ def get_order_details(order_id: int):
             if not success:
                 return responseCode.resp_4xx(code=400, message="数据库错误")
             elif data_food == None:
-                return responseCode.resp_4xx(code=400, message="未找到(food_id = "\
-                     + str(order_list[i][1]) + ")的数据，请检查数据库")
-            
+                return responseCode.resp_4xx(code=400, message="未找到(food_id = " \
+                                                               + str(order_list[i][1]) + ")的数据，请检查数据库")
+
             dic["food_price"] = data_food[3]
             dic["food_img"] = data_food[5]
             dic["food_name"] = data_food[1]

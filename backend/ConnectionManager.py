@@ -7,10 +7,12 @@ class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
 
+    # 连接
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
         self.active_connections.append(websocket)
 
+    # 断开连接
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
