@@ -21,7 +21,7 @@ async def modify_meal_state(mod: schemas.ModifyOrder):
 
 
 # 3.2 后厨菜品列表显示
-@router.get("/cook/meals/states/fetch", tags=["cook"])
+@router.get("/cook/meals/states/list", tags=["cook"])
 async def show_meal_list():
     """
     :return: 包含多个菜品信息的dict组成的list

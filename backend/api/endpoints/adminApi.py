@@ -171,7 +171,7 @@ async def modify_table_number(table_number: int):
 
 
 # 4.13 管理员返回菜品的信息
-@router.get("/admin/meal/details/fetch", tags=["admin"])
+@router.get("/admin/meal/details/search", tags=["admin"])
 async def get_meal_details(food_id: int):
     """
     :param food_id: 菜品编号

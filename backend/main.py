@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI, WebSocket,WebSocketDisconnect
 from starlette.middleware.cors import CORSMiddleware
-from api.endpoints import cookApi, waiterApi, noticeApi, profilesApi, loginApi, adminApi
 from ConnectionManager import manager
+from api.api import api_router
 
 # 配置跨域
 app = FastAPI()
@@ -14,12 +14,7 @@ app.add_middleware(
     allow_headers=["*"])
 
 # 设置路由
-app.include_router(loginApi.router, prefix="/api")
-app.include_router(profilesApi.router, prefix="/api")
-app.include_router(noticeApi.router, prefix="/api")
-app.include_router(waiterApi.router, prefix="/api")
-app.include_router(adminApi.router, prefix="/api")
-app.include_router(cookApi.router, prefix="/api")
+app.include_router(api_router)
 
 # 使用websocket实现事时通信
 @app.websocket("/ws/{client_id}")
@@ -33,6 +28,6 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app='main:app', host="192.168.244.33", port=8000, reload=True, debug=True)
+    uvicorn.run(app='main:app', host="127.0.0.1", port=8000, reload=True, debug=True)
     # uvicorn.run(app='main:app', host="127.0.0.1", port=8000, reload=True, debug=True)
     # uvicorn main:app --reload

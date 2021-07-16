@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 # 2.1 服务员桌位请求显示
-@router.get("/waiter/table/fetch", tags=["waiter"])
+@router.get("/waiter/table/list", tags=["waiter"])
 async def fetch_all_tables():
     response = waiterService.fetch_all_tables()
     return response
@@ -49,7 +49,7 @@ async def post_order(info: schemas.OrderInfo):
 
 
 # 2.5 服务员取菜列表显示
-@router.get("/waiter/meals/states/fetch", tags=["waiter"])
+@router.get("/waiter/meals/states/list", tags=["waiter"])
 async def show_cooked_food():
     """
     :return: 由待上菜订单信息dict组成的list
@@ -69,7 +69,7 @@ async def modify_meal_state(info: schemas.OrderState):
 
 
 # 2.7 服务员结单显示页面
-@router.get("/waiter/orders/list/fetch", tags=["waiter"])
+@router.get("/waiter/orders/list", tags=["waiter"])
 async def get_orders_list():
     """
     :return:一个由订单的详细信息组成的dict构成的list
