@@ -62,7 +62,7 @@ def get_profiles_details(user_id: int):
 
     if isSuccess == False:
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
-    else:
+    elif len(dataReceived)>0:
         dataResp = {
             # "user_id": dataRecieved[0],
             "user_number": dataReceived[1],
