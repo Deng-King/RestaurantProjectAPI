@@ -49,11 +49,3 @@ def updatepos(id, position, ip=ip):
         return False
     return True
 
-# ip = '124.70.200.142'
-# id = 1
-# img = 'tupian'
-# pwd = '666321'
-# position = 1
-# print(updateimg(ip, id, img))
-# print(updatepwd(ip, id, pwd))
-# print(updatepos(ip, id, position))

@@ -29,5 +29,3 @@ def create(number, ip=ip):
         return False
     return True
 
-# ip = '124.70.200.142'
-# print(create(2,ip))

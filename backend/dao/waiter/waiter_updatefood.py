@@ -25,5 +25,3 @@ def update(order_id, food_id, ip=ip):
         db.close()
         return False
 
-# ip = '124.70.200.142'
-# print(ip,3,1)

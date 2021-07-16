@@ -19,6 +19,3 @@ def show(id, ip=ip):
     except:
         return None, False
     return data, True
-
-# ip = '192.168.137.164'
-# print(show(ip, 2))

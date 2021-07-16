@@ -22,10 +22,3 @@ def create(user_id, content, title, notice_level, ip=ip):
         cursor.close()
         db.close()
         return '创建失败'
-
-# ip = '124.70.200.142'
-# user_id = 1
-# content = '111'
-# title = '1111'
-# notice_level = 2
-# print(create(user_id, content, title, notice_level))

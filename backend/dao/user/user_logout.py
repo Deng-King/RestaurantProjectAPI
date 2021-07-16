@@ -17,6 +17,3 @@ def login(id, ip=ip):
         return False
     return True
 
-# ip = '124.70.200.142'
-# id = 1
-# print(login(ip, id))

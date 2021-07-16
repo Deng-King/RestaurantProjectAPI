@@ -25,5 +25,3 @@ def delete(id, ip=ip):
         return False
     return True
 
-# ip = '124.70.200.142'
-# print(delete(28,ip))

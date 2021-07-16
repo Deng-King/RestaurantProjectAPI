@@ -31,9 +31,3 @@ def create(name: str, info: str, price: float, rmd=0,
         return id, True
     else:
         return None, False
-
-
-"""except:
-        cursor.close()
-        db.close()
-        return None, False"""

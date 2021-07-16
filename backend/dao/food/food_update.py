@@ -96,4 +96,3 @@ def updatermd(id, rmd, ip=ip):
         cursor.close()
         db.close()
         return False
-# ip = '124.70.200.142'

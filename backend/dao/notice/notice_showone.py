@@ -27,6 +27,3 @@ def show(notice_id,ip = ip):
     return result,True
 
 
-# ip = '124.70.200.142'
-# notice_id = 24
-# print(show(ip,notice_id))
