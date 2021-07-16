@@ -15,7 +15,6 @@ class ConnectionManager:
         self.active_connections.remove(websocket)
 
     async def broadcast(self, user_id: int, message: str):
-        print(self.active_connections)
         for connection in self.active_connections:
             url = str(connection.url)
             client_id = int(url.split('/')[-1])
