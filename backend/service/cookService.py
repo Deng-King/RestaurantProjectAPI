@@ -14,8 +14,10 @@ def modify_meal_state(mod: schemas.ModifyOrder):
         :return: 成功与否
     """
     # 直接调用数据库函数修改菜品状态
-    result = cook_update.update(mod.food_id, mod.order_id)
-    return responseCode.resp_200(data=result)
+    success = cook_update.update(mod.food_id, mod.order_id)
+    if not success:
+        return False,responseCode.resp_4xx(code=400, message="修改菜品状态失败")
+    return True,responseCode.resp_200(data="修改菜品状态成功")
 
 
 # 3.2 后厨菜品列表显示

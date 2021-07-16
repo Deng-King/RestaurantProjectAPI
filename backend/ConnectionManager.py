@@ -14,13 +14,41 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
-    async def broadcast(self, user_id: int, message: str):
+    # 管理员发布公告使用的广播
+    async def broadcast_post_notice(self, user_id: int):
         for connection in self.active_connections:
             url = str(connection.url)
             client_id = int(url.split('/')[-1])
-            if user_showone.show(client_id)[0][3] == user_id:
+            if client_id == user_id:
                 continue
-            await connection.send_text(message)
+            await connection.send_text("1")
+
+    # 服务员提交订单使用的广播
+    async def broadcast_post_order(self):
+        for connection in self.active_connections:
+            url = str(connection.url)
+            client_id = int(url.split('/')[-1])
+            print(user_showone.show(client_id)[0][3])
+            if user_showone.show(client_id)[0][3] == 3:
+                await connection.send_text("2")
+
+    # 厨师更改菜品状态使用的广播
+    async def broadcast_meal_states(self):
+        for connection in self.active_connections:
+            url = str(connection.url)
+            client_id = int(url.split('/')[-1])
+            print(user_showone.show(client_id)[0][3])
+            if user_showone.show(client_id)[0][3] == 2:
+                await connection.send_text("2")
+
+    # 服务员更改订单状态使用的广播
+    async def broadcast_order_states(self):
+        for connection in self.active_connections:
+            url = str(connection.url)
+            client_id = int(url.split('/')[-1])
+            print(user_showone.show(client_id)[0][3])
+            if user_showone.show(client_id)[0][3] == 1:
+                await connection.send_text("2")
 
 
 manager = ConnectionManager()

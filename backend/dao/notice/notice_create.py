@@ -16,12 +16,12 @@ def create(user_id, content, title, notice_level, ip=ip):
         db.commit()
         cursor.close()
         db.close()
-        return '创建成功'
+        return True
     except:
         db.rollback()
         cursor.close()
         db.close()
-        return '创建失败'
+        return False
 
 # ip = '124.70.200.142'
 # user_id = 1

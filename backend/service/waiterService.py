@@ -96,7 +96,7 @@ def post_order(info: schemas.OrderInfo):
         info.user_id,
         food_list
     )
-    return responseCode.resp_200(data=result)
+    return True,responseCode.resp_200(data=result)
 
 
 # 2.5 服务员取菜列表显示
@@ -197,11 +197,11 @@ def payment(order_id: int):
     """
     success = waiter_updateorder.update(order_id)
     if success == "有菜品未上桌":
-        return responseCode.resp_4xx(code=400, message="有菜品未上桌")
+        return False,responseCode.resp_4xx(code=400, message="有菜品未上桌")
     elif not success:
-        return responseCode.resp_4xx(code=400, message="数据库错误")
+        return False,responseCode.resp_4xx(code=400, message="数据库错误")
     else:
-        return responseCode.resp_200(data=None)
+        return True,responseCode.resp_200(data=None)
 
 
 # 2.9 服务员获取订单详情

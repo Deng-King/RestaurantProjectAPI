@@ -5,11 +5,11 @@ from settings import ip
 # 展示公告列表，成功则返回notice表中所有内容和true，失败则返回none和false
 # 返回数据格式为：notice_id,user_id,user_name,notice_content,notice_title,notice_level,notice_create_time
 def show(ip=ip):
+    # 打开数据库连接
+    db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
+    # 使用 cursor() 方法创建一个游标对象 cursor
+    cursor = db.cursor()
     try:
-        # 打开数据库连接
-        db = pymysql.connect(host=ip, user="root", password="00000000", database="ordersys")
-        # 使用 cursor() 方法创建一个游标对象 cursor
-        cursor = db.cursor()
         sql = "select * from notice"
         cursor.execute(sql)
         data = cursor.fetchall()

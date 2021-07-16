@@ -19,7 +19,7 @@ def update(food_id, order_id, ip=ip):
         db.close()
         return True
     except:
-        # 若执行语句出错，则回滚到之前的状态，关闭数据库，并返回true
+        # 若执行语句出错，则回滚到之前的状态，关闭数据库，并返回false
         db.rollback()
         cursor.close()
         db.close()

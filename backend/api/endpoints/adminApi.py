@@ -3,6 +3,7 @@ from fastapi import File
 from fastapi import Form
 from service import adminService
 import schemas
+import json
 from ConnectionManager import manager
 
 router = APIRouter()
@@ -15,9 +16,10 @@ async def post_notice(info: schemas.PostNoticeInfo):
         :param info:包含发布人用户编号，发布信息内容，公告标题，重要级别的对象
         :return:成功与否
     """
-    response = adminService.post_notice(info)
-    # 利用websocket进行广播
-    await manager.broadcast(info.user_id, info.title)
+    success, response = adminService.post_notice(info)
+    if success:
+        # 利用websocket进行广播
+        await manager.broadcast_post_notice(info.user_id)
     return response
 
 
@@ -205,6 +207,7 @@ async def announcement_delete(notice_id: int):
     response = adminService.announcement_delete(notice_id)
     return response
 
+
 # 4.16 管理员查看订单详情
 @router.get("/admin/order/details", tags=["admin"])
 async def get_order_details(order_id: int):
@@ -216,4 +219,3 @@ async def get_order_details(order_id: int):
     """
     response = adminService.get_order_details(order_id)
     return response
-

@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from service import waiterService
+from ConnectionManager import manager
 import schemas
 
 router = APIRouter()
@@ -38,7 +39,13 @@ async def post_order(info: schemas.OrderInfo):
     :param info: 包含订单各种信息的一个类
     :return: 成功与否
     """
-    return waiterService.post_order(info)
+    success, response = waiterService.post_order(info)
+    print(success)
+    if success:
+        # 利用websocket进行广播
+        print("broadcast")
+        await manager.broadcast_post_order()
+    return response
 
 
 # 2.5 服务员取菜列表显示
@@ -78,7 +85,10 @@ async def order_payment(order_id: int):
     :param order_id:订单编号
     :return:成功与否
     """
-    response = waiterService.payment(order_id)
+    success, response = waiterService.payment(order_id)
+    if success:
+        # 利用websocket进行广播
+        await manager.broadcast_order_states()
     return response
 
 

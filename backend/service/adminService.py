@@ -15,6 +15,7 @@ from dao.order import orderinfo_show
 from dao.table import table_create
 from dao.table import table_delete
 from dao.table import table_showall
+from ConnectionManager import manager
 from settings import ip
 import time
 import schemas
@@ -33,10 +34,8 @@ def post_notice(info: schemas.PostNoticeInfo):
         info.notice_level
     )
     if not result:
-        return responseCode.resp_4xx(data=None, code=400, message="数据库错误")
-    elif result == "无法连接数据库":
-        return responseCode.resp_4xx(data=None, code=400, message="无法连接数据库")
-    return responseCode.resp_200(data=result)
+        return False,responseCode.resp_4xx(data=None, code=400, message="数据库错误")
+    return True,responseCode.resp_200(data=result)
 
 
 # 4.2 管理员对订单进行免费处理
@@ -91,7 +90,7 @@ def show_profiles_list():
 
 
 # 4.8 管理员添加新品
-def add_meal(file:bytes, food_name:str, food_info:str, food_price:float, food_rmd:int):
+def add_meal(file: bytes, food_name: str, food_info: str, food_price: float, food_rmd: int):
     """
         :param file: 菜品图片文件
         :param food_name: 菜品名
@@ -100,7 +99,6 @@ def add_meal(file:bytes, food_name:str, food_info:str, food_price:float, food_rm
         :param food_rmd: 是否推荐菜品
         :return:成功与否
     """
-    print("输出：", type(food_name), food_name, food_info, food_price, food_rmd)
     ticks = str(int(time.time()))
     url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
     path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
@@ -238,7 +236,6 @@ def edit_profiles(info: schemas.ProfilesEdit2):
     """
     # 先获取这个id对应的职位，如果id不是管理员，则只能改自己的，如果是管理员，则可以改其他人的
     user_a, user_b = 0, 0  # 这两个是对应a和b的职位，1为管理员
-    print("输出：", info.user_id_a, info.user_id_b, info.tag, info.content)
 
     data_received, success = user_showone.show(info.user_id_a)
     if not success:
@@ -371,7 +368,6 @@ def get_meal_details(food_id: int):
         :return: 菜品的全部信息组成的dict
     """
     dataRecieved, isSuccess = food_showone.show(food_id)
-    print(dataRecieved, isSuccess)
     if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     elif dataRecieved == None:
@@ -440,6 +436,7 @@ def announcement_delete(notice_id: int):
     elif not isSuccess:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     return responseCode.resp_200(data=None)
+
 
 def get_order_details(order_id: int):
     """
@@ -527,9 +524,9 @@ def get_order_details(order_id: int):
             if not success:
                 return responseCode.resp_4xx(code=400, message="数据库错误")
             elif data_food == None:
-                return responseCode.resp_4xx(code=400, message="未找到(food_id = "\
-                     + str(dataReceived[i][1]) + ")的数据，请检查数据库")
-            
+                return responseCode.resp_4xx(code=400, message="未找到(food_id = " \
+                                                               + str(dataReceived[i][1]) + ")的数据，请检查数据库")
+
             dic["food_price"] = data_food[3]
             dic["food_img"] = data_food[5]
             dic["food_name"] = data_food[1]

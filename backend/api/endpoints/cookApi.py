@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from service import cookService
+from ConnectionManager import manager
 import schemas
 
 router = APIRouter()
@@ -12,7 +13,11 @@ async def modify_meal_state(mod: schemas.ModifyOrder):
     :param mod: 包含修改菜品状态的订单号，菜品编号的一个类
     :return: 成功与否
     """
-    return cookService.modify_meal_state(mod)
+    success,response=cookService.modify_meal_state(mod)
+    if success:
+        # 利用websocket进行广播
+        await manager.broadcast_meal_states()
+    return response
 
 
 # 3.2 后厨菜品列表显示
