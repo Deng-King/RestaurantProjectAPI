@@ -11,12 +11,19 @@ def updatename(id, name, ip=ip):
     # 使用 cursor() 方法创建一个游标对象 cursor
     cursor = db.cursor()
     try:
-        sql = "select * from food where food_name = '%s' and food_valid = 1" % (name)
+        # 判断修改后的菜品名称是否与之前有效的菜品重名（排除自身）
+        sql = "select * from food where food_name = '%s' and food_valid = 1 and food_id <>%d" % (name,id)
         cnt = cursor.execute(sql)
+        # 如果不重名则更新信息
         if cnt == 0:
             sql = "update food set food_name='%s' where food_id = %d" % (name, id)
             cursor.execute(sql)
             db.commit()
+        # 重名则返回已存在
+        else:
+            cursor.close()
+            db.close()
+            return "菜品名已存在"
         cursor.close()
         db.close()
     except:
