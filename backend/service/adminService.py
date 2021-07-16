@@ -32,6 +32,7 @@ def post_notice(info: schemas.PostNoticeInfo):
         info.title,
         info.notice_level
     )
+    # result返回值有True、False和"无法连接数据库"三种情况
     if not result:
         return responseCode.resp_4xx(data=None, code=400, message="数据库错误")
     elif result == "无法连接数据库":
@@ -46,6 +47,7 @@ def freeofcharge(order_id: int):
         :return:成功与否
     """
     success = order_pay.update(order_id, 2)
+    # success 返回值有False和True两种情况
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     else:
@@ -58,7 +60,8 @@ def payment(order_id: int):
         :param order_id:订单编号
         :return:成功与失败
         """
-    success = order_pay.update(order_id, 1)
+    success = order_pay.update(order_id, 1) # 这里传参1代表将状态修改为1
+    # success 返回值有False和True两种情况   
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     else:
@@ -71,11 +74,25 @@ def show_profiles_list():
         :return: 一个list，包含字典：{用户编号、用户工号、用户姓名、职位、show（默认为false)}
     """
     profiles_list, success = user_showall.show(ip)
+    # profiles_list的内容有：
+    # user_id == profiles_list[i][0]
+    # user_number == profiles_list[i][1]
+    # user_name == profiles_list[i][2]
+    # user_position == profiles_list[i][3]
+    # user_img == profiles_list[i][4]
+    # user_gender == profiles_list[i][5]
+    # user_state == profiles_list[i][6]
+
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     if len(profiles_list) == 0:
+        # 如果返回的数据为空列表的话就代表当前没有数据
         return responseCode.resp_4xx(code=400, message="用户信息为空")
+
+    # 初始化
     profiles_dict_list = []
+
+    # 对profiles_list每一个内容遍历
     for i in profiles_list:
         profiles_dict_list.append({
             "user_id": i[0],
@@ -85,7 +102,7 @@ def show_profiles_list():
             "user_img": i[4],
             "user_gender": i[5],
             "user_state": i[6],
-            "show": False,
+            "show": False,  # 这里衡为False
         })
     return responseCode.resp_200(data=profiles_dict_list)
 
@@ -100,9 +117,13 @@ def add_meal(file:bytes, food_name:str, food_info:str, food_price:float, food_rm
         :param food_rmd: 是否推荐菜品
         :return:成功与否
     """
-    print("输出：", type(food_name), food_name, food_info, food_price, food_rmd)
+
+    # 获取当前时间
     ticks = str(int(time.time()))
+
+    # 这个是在服务器中保存的图片访问链接
     url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
+    # 服务器图片保存链接
     path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
     with open(path, 'wb') as f:
         f.write(file)
@@ -140,24 +161,32 @@ def modify_meal(file, food_id, food_name, food_info, food_price, food_rmd):
         :param food_rmd: 是否推荐菜品
         :return:成功与否
     """
+
+    # 状态初始化
     Flags = []
 
+    # 更新菜品名字
     flag = False
     flag = food_update.updatename(food_id, food_name)
     Flags.append(flag)
 
+    # 更新菜品简介
     flag = False
     flag = food_update.updateinfo(food_id, food_info)
     Flags.append(flag)
 
+    # 更新菜品价格
     flag = False
     flag = food_update.updateprice(food_id, float(food_price))
     Flags.append(flag)
 
+    # 更新菜品推荐
     flag = False
     flag = food_update.updatermd(food_id, int(food_rmd))
     Flags.append(flag)
 
+    # 下面对每一个更新状态进行检查，全部取并
+    # 如果有一个状态为False则返回错误
     isSuccess = True
     for item in Flags:
         isSuccess = isSuccess and item
@@ -173,6 +202,7 @@ def modify_meal(file, food_id, food_name, food_info, food_price, food_rmd):
         with open(path, 'wb') as f:
             f.write(file)
 
+        # 更新图片链接
         flag = food_update.updateimg(food_id, url)
         if flag == False:
             return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
@@ -200,6 +230,7 @@ def create_member(user_number: str, user_position: int, user_gender: int, user_n
     else:
         return responseCode.resp_4xx(code=400, message='没有此职位', data=None)
 
+    # 在数据库中创建用户
     msgRecived = user_create.create(
         number=user_number,
         position=user_position,
@@ -207,9 +238,11 @@ def create_member(user_number: str, user_position: int, user_gender: int, user_n
         name=user_name,
         img=userImage
     )
+    # msgRecived有三种返回值：'创建成功'，添加错误'和True
     if msgRecived == '创建成功':
         return responseCode.resp_200(data=None)
-    elif msgRecived == '用户已存在':
+    elif msgRecived == '添加错误':
+        # 返回这个表示此工号已经存在
         return responseCode.resp_4xx(code=400, message="此工号已经存在")
     else:
         return responseCode.resp_4xx(code=500, message="数据库错误")
@@ -221,10 +254,15 @@ def remover_member(user_id: int):
         :param user_id: 用户编号
         :return:成功与否
     """
+    
+    # 在数据库中删除
     success = user_delete.delete(user_id)
+    # success有三种返回值：True，False和"admin"
+    
     if success:
         return responseCode.resp_200(data=None)
     elif success == "admin":
+        # 表示删除的是管理员
         return responseCode.resp_4xx(code=400, message="不能删除管理员")
     else:
         return responseCode.resp_4xx(code=400, message="数据库出现错误")
@@ -236,32 +274,55 @@ def edit_profiles(info: schemas.ProfilesEdit2):
         :param info:当前用户编号，修改用户编号，修改码（1：修改职位，2：修改密码），修改内容
         :return:成功与否
     """
+
     # 先获取这个id对应的职位，如果id不是管理员，则只能改自己的，如果是管理员，则可以改其他人的
     user_a, user_b = 0, 0  # 这两个是对应a和b的职位，1为管理员
-    print("输出：", info.user_id_a, info.user_id_b, info.tag, info.content)
 
     data_received, success = user_showone.show(info.user_id_a)
+    # data_received数据包括：
+    # user_id == data_received[0]
+    # user_number == data_received[1]
+    # user_name == data_received[2]
+    # user_position == data_received[3]
+    # user_img == data_received[4]
+    # user_gender == data_received[5]
+    # user_pwd == data_received[6]
+    # user_state == data_received[7]
+
     if not success:
         return responseCode.resp_4xx(code=401, data=None, message="获取id错误")
+    
+    # a的职位
     user_a = data_received[3]
 
     data_received, success = user_showone.show(info.user_id_b)
+    # data_received内容和上面同理
     if not success:
         return responseCode.resp_4xx(code=401, data=None, message="获取id错误")
+
+    # b的职位
     user_b = data_received[3]
 
-    data_received, success = (), None  # 初始化这两个变量
-    if user_a == 1 and user_b != 1:  # 如果当前为管理员则可以随便改，但是不可以修改其他管理员
-        if info.tag == 1:  # 1表示修改职位
+    # 初始化这两个变量
+    data_received, success = (), None  
+
+    if user_a == 1 and user_b != 1:  
+        # 如果当前为管理员则可以随便改，但是不可以修改其他管理员
+        if info.tag == 1:  
+            # 1表示修改职位
             success = user_update.updatepos(info.user_id_b, int(info.content))
-        elif info.tag == 2:  # 2表示修改密码
+        elif info.tag == 2:  
+            # 2表示修改密码
             success = user_update.updatepwd(info.user_id_b, info.content)
-    elif user_a == user_b == 1 and info.user_id_a != info.user_id_b:  # 不可以修改其他管理员
+    elif user_a == user_b == 1 and info.user_id_a != info.user_id_b:  
+        # 不可以修改其他管理员
         return responseCode.resp_4xx(code=401, data=None, message="不可以修改其他管理员")
     elif info.user_id_a == info.user_id_b:
-        if info.tag == 1:  # 1表示修改头像
+        if info.tag == 1:  
+            # 1表示修改头像
             success = user_update.updateimg(info.user_id_b, info.content)
-        elif info.tag == 2:  # 2表示修改密码
+        elif info.tag == 2:  
+            # 2表示修改密码
             success = user_update.updatepwd(info.user_id_b, info.content)
     else:
         return responseCode.resp_4xx(code=401, data=None, message="此id没有修改其他用户信息的权限")
@@ -274,8 +335,18 @@ def show_details(user_id: int):
         :param user_id:用户编号
         :return:用户编号、用户工号、职位、密码、性别、登陆状态、姓名
     """
+
     dataRecieved, isSuccess = user_showone.show(user_id)
-    # {用户编号、用户工号、职位、密码、性别、登陆状态、姓名}
+    # dataRecieved内容
+    # user_id == dataRecieved[0]
+    # user_number == dataRecieved[1]
+    # user_name == dataRecieved[2]
+    # user_position == dataRecieved[3]
+    # user_img == dataRecieved[4]
+    # user_gender == dataRecieved[5]
+    # user_pwd == dataRecieved[6]
+    # user_state == dataRecieved[7]
+
     dataResp = {
         "user_id": dataRecieved[0],
         "user_number": dataRecieved[1],
@@ -285,6 +356,7 @@ def show_details(user_id: int):
         'user_state': dataRecieved[7],
         "user_name": dataRecieved[2],
     }
+
     if isSuccess == False:
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
     else:
@@ -297,7 +369,9 @@ def modify_table_number(table_number: int):
         :param table_number: 桌子数量
         :return: 成功与否
     """
+
     dataRecieved, isSuccess = table_showall.show()
+
     if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     # 目前的桌子数量
@@ -342,20 +416,25 @@ def modify_table_number(table_number: int):
 
 
 def modify_food_image(file, food_id: int):
+
     dataResp = {
         "food_img": str
     }
+    # 先定义返回的字典以及里面的内容
     try:
         # tick 是当前的时间(单位s)
         ticks = str(int(time.time()))
+
         url = "http://124.70.200.142:8080/img/food/" + ticks + ".jpg"
         # 这里根据food_id更换数据库食品的图片链接 
         path = "/root/tomcat/webapps/img/food/" + ticks + ".jpg"
         with open(path, 'wb') as f:
             f.write(file)
 
+        # 更新内容
         dataResp["food_img"] = url
 
+        # 在数据库中更新图片新地址
         flag = food_update.updateimg(food_id, url)
         if flag == False:
             return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
@@ -370,19 +449,23 @@ def get_meal_details(food_id: int):
         :param food_id: 菜品编号
         :return: 菜品的全部信息组成的dict
     """
+
     dataRecieved, isSuccess = food_showone.show(food_id)
-    print(dataRecieved, isSuccess)
+    # dataRecieved内容：
+    # food_id == dataRecieved[i][0]
+    # food_name == dataRecieved[i][1]
+    # food_info == dataRecieved[i][2]
+    # food_price == dataRecieved[i][3]
+    # food_rmd == dataRecieved[i][4]
+    # food_img == dataRecieved[i][5]
+
     if isSuccess == False:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
     elif dataRecieved == None:
+        # 如果返回的数据里面没有内容
         return responseCode.resp_4xx(code=400, message="未找到此菜品", data=None)
-    # dataRecieved内容：
-    # food_id [i][0]
-    # food_name [i][1]
-    # food_info [i][2]
-    # food_price [i][3]
-    # food_rmd [i][4]
-    # food_img [i][5]
+
+    # 构建返回的字典
     dataResp = {
         "food_id": dataRecieved[0],
         "food_name": dataRecieved[1],
@@ -399,6 +482,7 @@ def get_orders():
     """
         :return: 一个list，包含状态为n的订单，其中包含{订单编号，桌位号、付款状态，订单创建时间}
     """
+
     dataReceived, isSuccess = order_showall.show()
     # dataReceived内容为:
     # order_id == dataReceived[i][0]
@@ -409,7 +493,10 @@ def get_orders():
     # user_id(服务员id) == dataReceived[i][5]
     # order_end_time == dataReceived[i][6]
 
+    # 返回列表初始化
     dataResp = []
+
+    # 下面对每一个内容处理成字典
     for i in range(len(dataReceived)):
         dic = {
             "order_id": dataReceived[i][0],
@@ -433,7 +520,10 @@ def announcement_delete(notice_id: int):
         :param notice_id: 公告编号
         :return:成功与否
     """
+
     isSuccess = notice_delete.delete(notice_id)
+    # isSuccess的返回情况为True False和"未找到此公告"
+
     if isSuccess == "未找到此公告":
         return responseCode.resp_4xx(code=400, message="未找到notice_id为" \
                                                        + str(notice_id) + "的公告，请检查数据库", data=None)
@@ -448,6 +538,8 @@ def get_order_details(order_id: int):
            菜品列表（所有信息：菜品编号、菜品数量、菜品状态、菜品价格、菜品图形、菜品名字）
            最后以list套dict的形式返回
     """
+
+    # 将变量dataResp定义为字典，同时指定内容
     data_reformat = {
         "user_name": str,
         "order_id": int,
@@ -457,9 +549,10 @@ def get_order_details(order_id: int):
         "order_state": int,
         "order_total": float,
         "meal_list": list  # 最后这个是列表套字典
-    }  # 将变量dataResp定义为字典，同时指定内容
+    }  
 
-    lis_resp = []  # 将变量lisResp定义为列表
+    # 将变量lisResp定义为列表
+    lis_resp = []  
 
     # 先获取这个订单的基本信息
     dataReceived, success = order_showall.show()
@@ -471,6 +564,7 @@ def get_order_details(order_id: int):
     # order_create_time, dataReceived[i][4] 
     # user_id 服务员id, dataReceived[i][5]
     # order_end_time, dataReceived[i][6]
+
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
 
@@ -478,16 +572,22 @@ def get_order_details(order_id: int):
     # 线性查找，只有一对一的映射关系，可以找到了中途退出遍历
     for i in range(len(dataReceived)):
         if dataReceived[i][0] == order_id:
-            break  # 此刻拿到了这个id对应的订单信息
+            break  
+            # 此刻拿到了这个id对应的订单信息
 
     # 下面把前五个内容放进字典里面
     data_reformat["order_id"] = dataReceived[i][0]
     user, flag = user_showone.show(dataReceived[i][5])
+    # flag的返回值为 True False 和 "not found"
+
     if flag == "not found":
+        # 如果没有找到
         return responseCode.resp_4xx(code=400, message="未找到用户(id为:" + \
                                                        str(dataReceived[i][5]) + ")的数据，请检查数据库", data=None)
     elif flag == False:
         return responseCode.resp_4xx(code=400, message="数据库错误", data=None)
+
+    # 将内容放进字典
     data_reformat["user_name"] = user[2]
     data_reformat["order_create_time"] = dataReceived[i][4]
     data_reformat["order_table"] = dataReceived[i][1]
