@@ -7,7 +7,7 @@ import schemas
 router = APIRouter()
 
 
-# 1.5退出请求 ***********要改
+# 1.5退出请求
 @router.post("/profiles/exit", tags=["profiles"])
 async def sign_out(info: schemas.ProfilesExit):
     """
@@ -16,6 +16,7 @@ async def sign_out(info: schemas.ProfilesExit):
     """
     response = profilesService.exit(info.user_id)
     return response
+
 
 # 1.6获取个人信息概览
 @router.get("/profiles", tags=["profiles"])
@@ -61,5 +62,5 @@ async def modify_image(file: bytes = File(...), user_id: int = Form(...)):
     :param user_id:用户编号
     :return:成功与否
     """
-    response = profilesService.modify_image(file,user_id)
+    response = profilesService.modify_image(file, user_id)
     return response

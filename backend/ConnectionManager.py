@@ -18,8 +18,8 @@ class ConnectionManager:
         print(self.active_connections)
         for connection in self.active_connections:
             url = str(connection.url)
-            id = int(url.split('/')[-1])
-            if user_showone.show(id)[0][3] == user_id:
+            client_id = int(url.split('/')[-1])
+            if user_showone.show(client_id)[0][3] == user_id:
                 continue
             await connection.send_text(message)
 
