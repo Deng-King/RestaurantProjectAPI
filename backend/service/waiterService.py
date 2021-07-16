@@ -76,7 +76,7 @@ def show_food_info(food_id):
     # food_price == info[3]
     # food_rmd == info[4]
     # food_img == info[5]
-    
+
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     # 将list转换为dict
@@ -122,6 +122,13 @@ def show_cooked_food():
         :return: 由待上菜订单信息dict组成的list
     """
     food_list, success = waiter_showall.show(ip)  # 调用数据库函数，得到待上菜信息列表
+    # food_list中的数据为：
+    # food_name == food_list[i][0]
+    # food_num == food_list[i][1]
+    # order_id == food_list[i][2]
+    # order_table == food_list[i][3]
+    # food_state == food_list[i][4]
+
     # 检验取回的list是否有效
     if not success:
         return responseCode.resp_4xx(code=400, message="数据库错误")
@@ -130,6 +137,14 @@ def show_cooked_food():
     # 将信息由list转换为dict类型
     food_dict_list = []
     food_data, flag = food_showall.show()  # 调用数据库函数，获取全部已有的菜品信息，
+    # food_data中的数据为：
+    # food_id == food_data[i][0]
+    # food_name == food_data[i][1]
+    # food_price == food_data[i][2]
+    # food_rmd == food_data[i][3]
+    # food_img == food_data[i][4]
+
+    # 如果调用菜品信息出错
     if not flag:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     
@@ -137,12 +152,14 @@ def show_cooked_food():
     food_url = ""
     food_id = 0
 
+    # 将food_list中每一个元素取出来
     for i in food_list:
         # 将菜品名与菜品信息进行比较,获取图片地址
         for item in food_data:
             if item[1] == i[0]:
                 food_url = item[4]
                 food_id = item[0]
+        
         # 建立字典
         food_dict_list.append({
             "food_name": i[0],
