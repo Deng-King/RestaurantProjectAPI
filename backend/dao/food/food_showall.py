@@ -22,5 +22,3 @@ def show(ip=ip):
         return None, False
     return data, True
 
-# ip = '192.168.137.164'
-# print(show(ip))

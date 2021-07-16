@@ -28,5 +28,4 @@ def show(id, ip=ip):
         db.close()
         return None, False
 
-# ip = '124.70.200.142'
-# print(show(1))
+

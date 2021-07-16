@@ -33,11 +33,5 @@ def create(number, name, position, pwd="e10adc3949ba59abbe56e057f20f883e"\
         db.close()
         return '添加错误'
 
-# ip = '124.70.200.142'
-# number = '20192242'
-# pwd = '123456'
-# name = 'wei'
-# position = 1
-# img = 'tupian'
-# gender = 0
-# print(create(ip, number, pwd, name, position, img, gender))
+
+

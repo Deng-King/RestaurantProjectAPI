@@ -28,5 +28,3 @@ def show(ip=ip):
     # 返回后厨做菜列表和操作成功
     return result, True
 
-# ip = '124.70.200.142'
-# print(show(ip))

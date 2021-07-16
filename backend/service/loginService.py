@@ -9,7 +9,10 @@ def login(info: schemas.LoginInfo):
         :param info:一个包含登录信息的对象
         :return:用户编号、用户编号对应的身份
     """
-    msg, user_id, position = user_login.login(info.user_number, info.user_pwd)  # 数据库中查询id是否存在，是否已经登陆
+    # 数据库中查询id是否存在，是否已经登陆
+    msg, user_id, position = user_login.login(info.user_number, info.user_pwd)  
+    # msg可能的返回值有：'用户名错误'，'用户已登录'，'密码错误'
+
     if msg == '用户名错误':
         return responseCode.resp_4xx(code=401, message="用户不存在")
     elif msg == '用户已登录':

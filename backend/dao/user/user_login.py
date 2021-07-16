@@ -40,7 +40,3 @@ def login(number, pwd, ip=ip):
             db.close()
             return '登陆成功', data[0], data[4]
 
-# ip = '124.70.200.142'
-# id = '20192242'
-# pwd = '123456'
-# print(login(ip, id, pwd))

@@ -20,5 +20,3 @@ def show(order_id):
         return None, False
     return data, True
 
-# ip = '124.70.200.142'
-# print(show())

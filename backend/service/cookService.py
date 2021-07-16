@@ -27,9 +27,17 @@ def show_meal_list():
     """
     # 调用数据库函数，获取一个包含菜品信息的list
     meal_list, isSuccess = cook_showall.show(ip)
+    # meal_list返回值
+    # food_name == meal_list[i][0]
+    # food_num == meal_list[i][1]
+    # order_id == meal_list[i][2]
+    # order_table == meal_list[i][3]
+    # food_state == meal_list[i][4]
+
     if not isSuccess:
         return responseCode.resp_4xx(code=400, message="数据库错误")
     if len(meal_list) == 0:
+        # 如果菜品列表没有元素
         return responseCode.resp_4xx(code=400, message="菜品列表为空")
     # 将list中的元素从list转为dict
     meal_dict_list = []
@@ -47,11 +55,25 @@ def show_meal_list():
         # 获取订单的建立时间
         orderCreateTime = ""
         data, flag = order_showall.show()
+        # data的返回值有：
+        # order_id == data[i][0]
+        # order_table == data[i][1]
+        # order_state == data[i][2]
+        # order_total == data[i][3]
+        # order_create_time == data[i][4]
+        # user_id(服务员id) == data[i][5]
+        # order_end_time == data[i][6]
+
         if not flag:
             return responseCode.resp_4xx(code=400, message="数据库错误")
+
+        # 遍历data中每一个元素
         for item in data:
             if item[0] == i[2]:
+                # 如果order_id 的值相对应
                 orderCreateTime = item[4]
+
+        # 如果meal的状态不为0则不需要在厨师端展示
         if i[4] != 0:
             continue
         # 建立dict

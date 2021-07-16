@@ -40,9 +40,3 @@ def show(ip=ip):
     db.close()
     return result, True
 
-# ip = '124.70.200.142'
-# user_id = 1
-# content = '111'
-# title = '1111'
-# notice_level = 1
-# print(show(ip))

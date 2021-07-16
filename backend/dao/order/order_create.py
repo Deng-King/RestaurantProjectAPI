@@ -49,9 +49,3 @@ def create(order_table, order_total, user_id, food_info, ip=ip):
         db.close()
         return '创建失败'
 
-# ip = '124.70.200.142'
-# order_table = 1
-# order_total = 100
-# user_id = 1
-# food_info = [[1, 2], [2, 1], [3, 5]]
-# print(create(ip, order_table, order_total, user_id, food_info))
