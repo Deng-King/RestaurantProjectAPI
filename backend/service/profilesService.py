@@ -40,7 +40,16 @@ def get_profiles_details(user_id: int):
         :return:字典：{用户编号，用户工号、职位（字符串）、头像路径、性别(字符串)、姓名}
     """
     dataReceived, isSuccess = user_showone.show(user_id)
-    # {用户编号，用户工号、职位、头像路径、性别、姓名}
+    # dataReceived详细内容如下
+    # user_id == dataReceived[0]
+    # user_number == dataReceived[1]
+    # user_name == dataReceived[2]
+    # user_position == dataReceived[3]
+    # user_img == dataReceived[4]
+    # user_gender == dataReceived[5]
+    # user_pwd == dataReceived[6]
+    # user_state == dataReceived[7]
+    
     if isSuccess == False:
         return responseCode.resp_4xx(code=401, data=None, message="数据库错误")
     else:
